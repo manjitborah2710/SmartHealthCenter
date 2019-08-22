@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\doctor",
+    "\\doctor\\templates",
+    "\\doctor\\templates\\doctor"
   ],
+  "SelectedNode": "\\doctor\\templates\\doctor\\error.html",
   "PreviewInSolutionExplorer": false
 }
