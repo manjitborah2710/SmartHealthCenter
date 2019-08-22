@@ -8,4 +8,7 @@ urlpatterns = [
     path('viewStaff',views.displayHealthCenterStaff,name="display-staff-view"),
     path('empanelledfirms',views.displayEmpanelledFirms,name="display-empanelled-firms"),
     path('medicinestock',views.displayMedicine,name="display-medicine")
+    path('viewRequisitionMedicine',views.displayRequisitionMedicine,name="display-requisitionmedicine-view"),
+    path('addRequisitionMedicine',views.addRequisitionMedicine,name="add-requisitionmedicine-view"),
+    path('insertrequisitionmedicine',views.insertIntoRequisitionMedicine,name="insert-into-requisitionmedicine-view")
 ]
