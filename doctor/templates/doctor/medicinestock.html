@@ -1,0 +1,38 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <h1>Current Medicine Stock</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Batch Number</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Manufacturing Company</th>
+                <th>Expiry Date</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in data  %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.category }}</td>
+                <td>{{ i.batch_no }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.manufacturing_company }}</td>
+                <td>{{ i.expiry_date }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+</body>
+{% endblock content-block %}
