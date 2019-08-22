@@ -1,0 +1,30 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <h1>Empanelled Firms</h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in data  %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.email }}</td>
+                <td>{{ i.phone }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+</body>
+{% endblock content-block %}

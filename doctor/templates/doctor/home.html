@@ -2,12 +2,15 @@
 {% load staticfiles %}
 
 {% block content-block %}
-    <body class="body">
-        <p>User shayad login ho geya..balle balle</p>
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <div>
         <a class="btn btn-primary" href="{% url 'display-staff-view' %}">Health Center Staff</a>
+        <a class="btn btn-primary" href="{% url 'display-empanelled-firms' %}">Empanelled Firms</a>
         <a class="btn btn-primary" href="{% url 'display-requisitionmedicine-view' %}">Requisition Medicine</a>
         <a class="btn btn-primary" href="{% url 'add-requisitionmedicine-view' %}">Add Requisition Medicine</a>
         <a href="{% url 'logout-view'  %}">Logout</a>
-    </body>
-{% endblock content-block %}
-    
+    </div>
+    {% include 'doctor/footer.html' %}
+</body>
+{% endblock %}

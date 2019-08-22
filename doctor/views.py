@@ -4,7 +4,9 @@ from django.http import HttpResponse
 
 from django.contrib.auth import login,logout,authenticate
 
-from .models import HealthCentreStaff,RequisitionMedicine,Requisition,Medicine
+
+from .models import HealthCentreStaff,RequisitionMedicine,Requisition,Medicine,EmpanelledFirm
+
 # Create your views here.
 
 def indexView(request):
@@ -114,3 +116,24 @@ def checkForPermission(request,permission):
             return 1
         return 0
     return -1
+
+def displayEmpanelledFirms(req):
+    user = req.user
+    if user.is_authenticated:
+        if user.has_perm("doctor.view_empanelledfirm"):
+            data=EmpanelledFirm.objects.all()
+            print(data)
+            l = []
+            for i in data:
+                d={
+                    'name' : i.firm_name,
+                    'email' : i.firm_email,
+                    'phone' : i.firm_phone
+                  }
+                l.append(d)
+            ctx={
+                'data':l
+                }
+            return render(req,'doctor/firmtable.html',context=ctx)
+        else:
+            return render(req,'doctor/error.html')
