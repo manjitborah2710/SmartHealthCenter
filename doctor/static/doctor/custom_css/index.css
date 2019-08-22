@@ -1,0 +1,114 @@
+
+.body{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    background-color: rgb(210, 230, 233);
+    display:flex; 
+    flex-direction:column; 
+   
+}
+
+/*------------------------------------code for header--------------------------------------------*/
+.header{
+    height: 150px;
+    background-color: rgb(25, 132, 146);
+}
+.logo-header{
+   
+    height:150px;
+    position: relative;
+    padding-left: 50px;
+}
+.header-content-left{
+    float: left;
+}
+.heading{
+    float:left;
+    padding-top: 50px;
+}
+.header-content-right{
+    padding-top: 65px;
+    padding-right: 40px;
+    float: right;
+    color: white;
+   
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  li{
+      display: inline-block;
+      padding-left: 20px;
+  }
+ 
+.link-style{
+    color: white;
+    float: right;
+    position: relative;
+    padding-top: 3px;
+    padding-left: 5px;
+}
+/*-------------------------------code for login section----------------------------*/
+
+
+.form-div{
+    position: relative;
+    width:30%;
+    margin: 20px auto;
+    background-color: rgb(163, 208, 214);
+    }
+.form-bg{
+    background-color: rgb(25, 132, 146);
+    height: 100px;
+}
+.form-data{
+    height: 90%;
+    width: 90%;
+    margin: 10% auto;
+}
+.logo{
+    height: 100px;
+    width:100px;
+    float: left;
+    margin-right: 15%;
+}
+.btn-custom-style{
+    position: relative;
+    width: 100%;
+    color: aliceblue;
+    background-color: rgb(25, 132, 146);
+}
+.btn:hover{
+    background-color: rgb(10, 54, 59);  
+}
+.form-h2{
+
+    position: relative;
+    padding-top: 7%;
+    color: aliceblue;
+    
+}
+.form-control{
+    background-color: rgb(233, 240, 241);
+}
+/*--------------------------------code for footer--------------------------------*/
+.footer{
+    height: 50px;
+    background-color: rgb(7, 71, 80);
+    margin-top: auto;
+    
+}
+.copyright{
+    text-decoration: none;
+    text-align: center;
+    color: white;
+    position: relative;
+    padding-top: 15px;
+}
+/*-----------------------------------search-box------------------------------------------*/
+.search-box{
+    width: 60%;
+    margin: 20px auto;
+}

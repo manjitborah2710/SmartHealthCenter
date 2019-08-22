@@ -1,0 +1,16 @@
+.login-box{
+    float: left;
+    margin: 20px 65px;
+    
+}
+.btn-custom-style:hover{
+    background-color: rgb(10, 54, 59);  
+}
+.btn{
+    background-color: rgb(25, 132, 146);
+    border: none;
+    width: 100%;
+}
+.std{
+    height:310px;
+}

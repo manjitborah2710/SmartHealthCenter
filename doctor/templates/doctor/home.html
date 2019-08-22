@@ -1,0 +1,11 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+        <p>User shayad login ho geya..balle balle</p>
+        <a class="btn btn-primary">Health Center Staff</a>
+        <a href="{% url 'logout-view'  %}">Logout</a>
+    </body>
+{% endblock content-block %}
+    
