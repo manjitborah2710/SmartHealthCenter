@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth import login,logout,authenticate
 
-from .models import HealthCentreStaff, EmpanelledFirm
+from .models import *
 # Create your views here.
 
 def indexView(request):
@@ -63,7 +63,6 @@ def displayEmpanelledFirms(req):
     if user.is_authenticated:
         if user.has_perm("doctor.view_empanelledfirm"):
             data=EmpanelledFirm.objects.all()
-            print(data)
             l = []
             for i in data:
                 d={
@@ -76,5 +75,29 @@ def displayEmpanelledFirms(req):
                 'data':l
                 }
             return render(req,'doctor/firmtable.html',context=ctx)
+        else:
+            return render(req,'doctor/error.html')
+
+def displayMedicine(req):
+    user = req.user
+    if user.is_authenticated:
+        if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
+            data_stockmeds= StockMedicine.objects.select_related("medicine_id").order_by('medicine_id','expiry_date')
+            l = []
+            for i in data_stockmeds:
+                d = {
+                    'name': i.medicine_id.medicine_name,
+                    'category': i.medicine_id.category,
+                    'batch_no': i.batch_no,
+                    'price': i.medicine_rate,
+                    'quantity': i.quantity,
+                    'expiry_date': i.expiry_date,
+                    'manufacturing_company':i.medicine_id.manufacturing_company
+                    }
+                l.append(d)
+            ctx = {
+                    'data': l
+                  }
+            return render(req,'doctor/medicinestock.html',context=ctx)
         else:
             return render(req,'doctor/error.html')
