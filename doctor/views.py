@@ -96,7 +96,7 @@ def addRequisitionMedicine(request):
         rids=[]
         for i in req_ids:
             rids.append(i["requisition_id"])
-        med_ids = Medicine.objects.all().values("medicine_id","medicine_name")
+        med_ids = Medicine.objects.all().values("medicine_id","medicine_name").order_by("medicine_name")
         meds=[]
         for i in med_ids:
             meds.append(i)
@@ -107,7 +107,19 @@ def addRequisitionMedicine(request):
         return render(request,'doctor/addRequisitionMedicine.html',context=ctx)
 
 def insertIntoRequisitionMedicine(request):
-    pass
+    permcheck=checkForPermission(request,"doctor.add_requisitionmedicine")
+    if permcheck==1 and request.method=="POST":
+        new_entry=RequisitionMedicine()
+        r_id=int(request.POST["req-id"])
+        requisition=Requisition.objects.filter(requisition_id=r_id)[0]
+        m_id=int(request.POST["med-id"])
+        print(requisition)
+        medicine=Medicine.objects.filter(medicine_id=m_id)[0]
+        q_req=request.POST["qty-requested"]
+        q_rec=request.POST["qty-received"]
+        new_entry.add_requisition_medicine(requisition,medicine,q_req,q_rec)
+        return redirect('display-requisitionmedicine-view')
+    return render(request,'doctor/error.html')
 
 def checkForPermission(request,permission):
     user=request.user
