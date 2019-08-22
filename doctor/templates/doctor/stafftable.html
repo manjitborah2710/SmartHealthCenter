@@ -1,0 +1,31 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for i in data  %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.type }}</td>
+                        <td>{{ i.address }}</td>
+                        <td>{{ i.availability }}</td>
+                    </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+        <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+    </body>
+{% endblock content-block %}
+    

@@ -5,5 +5,5 @@ urlpatterns = [
     path('login',views.loginView,name='login-view'),
     path('home',views.homeView,name="doctor-home-view"),
     path('logout',views.log_out,name="logout-view"),
-    # path('viewStaff',views.)
+    path('viewStaff',views.displayHealthCenterStaff,name="display-staff-view")
 ]

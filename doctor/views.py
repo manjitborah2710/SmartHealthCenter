@@ -4,6 +4,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth import login,logout,authenticate
 
+from .models import HealthCentreStaff
 # Create your views here.
 
 def indexView(request):
@@ -36,4 +37,24 @@ def log_out(req):
 
 
 def displayHealthCenterStaff(req):
-    pass
+    user=req.user
+    print(user)
+    if user.is_authenticated:
+        if user.has_perm("doctor.view_healthcentrestaff"):
+            data=HealthCentreStaff.objects.all()
+            l=[]
+            for i in data:
+                d={
+                    'name':i.staff_name,
+                    'type':i.staff_type,
+                    'address':i.staff_address,
+                    'availability':(i.availability_from+" to "+i.availability_to)
+                }
+                l.append(d)
+            ctx={
+                'data':l
+            }
+            return render(req,'doctor/stafftable.html',context=ctx)
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    return redirect('login-view')
+    
