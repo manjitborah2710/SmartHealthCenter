@@ -163,7 +163,7 @@ class Medicine(models.Model):
         self.save()
 
     def __str__(self):
-        return self.medicine_name 
+        return self.medicine_name
 
 
 class MedicineIssue(models.Model):
@@ -279,10 +279,11 @@ class DoctorRequisitionProposal(models.Model):
     medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
-    def add_requisiton_proposal(self, req_id, did, mid):
+    def add_requisiton_proposal(self, req_id, did, mid,qty):
         self.requisition_id = req_id
         self.doctor_id = did
         self.medicine_id = mid
+        self.quantity=qty
         self.save()
 
     def __str__(self):

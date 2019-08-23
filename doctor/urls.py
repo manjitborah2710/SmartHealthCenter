@@ -13,5 +13,8 @@ urlpatterns = [
     path('insertrequisitionmedicine',views.insertIntoRequisitionMedicine,name="insert-into-requisitionmedicine-view"),
     path('viewRequisition',views.displayRequisiton,name="display-requisition-view"),
     path('addRequisition',views.addRequistion,name="add-requisition-view"),
-    path('insertrequisition',views.insertIntoRequisition,name="insert-into-requisition-view")
+    path('insertrequisition',views.insertIntoRequisition,name="insert-into-requisition-view"),
+    path('viewDoctorRequisitionProposal',views.displayRequisitionProposal,name="display-doctorrequisitionproposal-view"),
+    path('addRequisitionProposal',views.addRequisitionProposal,name="add-requisitionproposal-view"),
+    path('insertRequistionProposal',views.insertIntoRequisitionProposal,name="insert-into-requisitionproposal-view")
 ]

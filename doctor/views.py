@@ -210,3 +210,54 @@ def insertIntoRequisition(request):
             return render(request,'doctor/error.html',{'msg':'Requisition with provided ID already exists'})
         return redirect('display-requisition-view')
     return render(request,'doctor/error.html')
+
+
+def displayRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.view_doctorrequisitionproposal")
+    if permcheck==-1:
+        return redirect('login-view')
+    if permcheck==0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        data=DoctorRequisitionProposal.objects.all()
+        l=[]
+        for i in data:
+            print(i.medicine_id)
+            l.append(i)
+        ctx={
+            'data':l
+        }
+        return render(request,'doctor/requisitionproposal.html',context=ctx)
+def addRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        req_ids = Requisition.objects.all().values("requisition_id")
+        rids = []
+        for i in req_ids:
+            rids.append(i["requisition_id"])
+        med_ids = Medicine.objects.all().values("medicine_id", "medicine_name").order_by("medicine_name")
+        meds = []
+        for i in med_ids:
+            meds.append(i)
+        staff=HealthCentreStaff.objects.filter(staff_type="DR").values("staff_id","staff_name").order_by("staff_name")
+        ctx = {
+            'req_ids': rids,
+            'meds': meds,
+            'staff':staff
+        }
+        return render(request,'doctor/addRequisitionProposal.html',context=ctx)
+
+def insertIntoRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
+    if permcheck==1 and request.method=='POST':
+        new_entry=DoctorRequisitionProposal()
+        req=Requisition.objects.filter(requisition_id=request.POST["req-id"])[0]
+        staff=HealthCentreStaff.objects.filter(staff_id=request.POST["staff-id"])[0]
+        med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
+        new_entry.add_requisiton_proposal(req,staff,med,request.POST["qty"])
+        return redirect('display-doctorrequisitionproposal-view')
+    return render(request,'doctor/error.html')
