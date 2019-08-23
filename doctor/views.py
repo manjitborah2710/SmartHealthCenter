@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 from django.contrib.auth import login,logout,authenticate
 from .models import *
-
+from django.db import IntegrityError
 # Create your views here.
 
 def indexView(request):
@@ -170,3 +170,43 @@ def displayMedicine(req):
             return render(req,'doctor/medicinestock.html',context=ctx)
         else:
             return render(req,'doctor/error.html')
+
+def displayRequisiton(request):
+    permcheck=checkForPermission(request,"doctor.view_requisition")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        data=Requisition.objects.all()
+        l=[]
+        for i in data:
+            l.append(i)
+        ctx={
+            'data':l
+        }
+        return render(request,'doctor/requisition.html',context=ctx)
+
+def addRequistion(request):
+    permcheck=checkForPermission(request,"doctor.add_requisition")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        return render(request,'doctor/addRequisition.html')
+
+def insertIntoRequisition(request):
+    permcheck = checkForPermission(request, "doctor.add_requisition")
+    if permcheck == 1 and request.method == "POST":
+        r_id=request.POST["req-id"]
+        doo=request.POST["date-of-order"]
+        amt=request.POST["amt"]
+        doa=request.POST["date-of-approval"]
+        memo=request.POST["memo"]
+        try:
+            Requisition.objects.create(requisition_id=r_id,date_of_order=doo,amount=amt,date_of_approval=doa,memo=memo)
+        except IntegrityError as e:
+            return render(request,'doctor/error.html',{'msg':'Requisition with provided ID already exists'})
+        return redirect('display-requisition-view')
+    return render(request,'doctor/error.html')

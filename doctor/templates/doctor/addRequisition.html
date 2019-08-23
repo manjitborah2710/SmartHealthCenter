@@ -1,0 +1,41 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+{% block content-block %}
+    <body>
+        <form method="post" action="{% url 'insert-into-requisition-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="req-id">Requisition ID</label>
+                <input id="req-id" class="form-control" name="req-id" maxlength=20 type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date-of-order">Date of Order</label>
+                <input id="date-of-order" class="form-control" name="date-of-order" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="amt">Amount (upto 2 decimal places)</label>
+                <input id="amt" class="form-control" name="amt" type="number" step="0.01" min="0" max="99999.99" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date-of-approval">Date of Approval</label>
+                <input id="date-of-approval" class="form-control" name="date-of-approval" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="memo">Memo</label>
+{#                <input id="memo" class="form-control" name="memo" type="textarea" required>#}
+                <textarea id="memo" name="memo" class="form-control" required></textarea>
+            </div>
+
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+    </body>
+
+{% endblock %}
