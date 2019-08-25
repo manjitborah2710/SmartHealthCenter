@@ -5,6 +5,7 @@
 <body class="body">
     {% include 'doctor/header.html' %}
     <h1>Empanelled Firms</h1>
+    <a href="{% url 'add-empanelledfirm-view' %}" class="btn btn-secondary">Add firm</a>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -25,6 +26,7 @@
 
         </tbody>
     </table>
+    <a href="{% url 'add-empanelledfirm-view' %}" class="btn btn-secondary">Add firm</a>
     <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
 </body>
 {% endblock content-block %}

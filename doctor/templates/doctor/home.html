@@ -11,6 +11,7 @@
         <a class="btn btn-primary" href="{% url 'display-requisitionmedicine-view' %}">Requisition Medicine</a>
         <a class="btn btn-primary" href="{% url 'display-requisition-view' %}">Requisitions</a>
         <a class="btn btn-primary" href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
+        <a href="{% url 'add-stock-view' %}" class="btn btn-secondary">Add new Stock</a>
         <a href="{% url 'logout-view'  %}">Logout</a>
     </div>
     {% include 'doctor/footer.html' %}

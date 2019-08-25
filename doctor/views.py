@@ -162,7 +162,7 @@ def displayMedicine(req):
                     'quantity': i.quantity,
                     'expiry_date': i.expiry_date,
                     'manufacturing_company':i.medicine_id.manufacturing_company
-                    }
+                }
                 l.append(d)
             ctx = {
                     'data': l
@@ -261,3 +261,56 @@ def insertIntoRequisitionProposal(request):
         new_entry.add_requisiton_proposal(req,staff,med,request.POST["qty"])
         return redirect('display-doctorrequisitionproposal-view')
     return render(request,'doctor/error.html')
+
+def addEmpanelledFirm(request):
+    permcheck=checkForPermission(request,"doctor.add_empanelledfirm")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        return render(request,'doctor/addEmpanelledFirm.html')
+    pass
+
+def insertIntoEmpanelledFirm(request):
+    permcheck = checkForPermission(request, "doctor.add_empanelledfirm")
+    if permcheck == 1 and request.method == 'POST':
+        f_id=request.POST["firm-id"]
+        f_name=request.POST["firm-name"]
+        f_email=request.POST["firm-email"]
+        f_phone=request.POST["firm-phone"]
+        try:
+            EmpanelledFirm.objects.create(firm_id=f_id,firm_name=f_name,firm_email=f_email,firm_phone=f_phone)
+            return redirect('display-empanelled-firms')
+        except IntegrityError as err:
+            return render(request, 'doctor/error.html',{'msg':'Firm with same key already exists'})
+    return render(request, 'doctor/error.html')
+
+def addStock(request):
+    permcheck=checkForPermission(request,"doctor.add_stock")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        l=[]
+        for i in EmpanelledFirm.objects.all().values("firm_id","firm_name"):
+            l.append(i)
+        ctx={
+            'data':l
+        }
+        return render(request,'doctor/addStock.html',context=ctx)
+
+def insertIntoStock(request):
+    permcheck = checkForPermission(request, "doctor.add_stock")
+    if permcheck == 1 and request.method == 'POST':
+        ba_no=request.POST["batch-number"]
+        bi_no=request.POST["bill-number"]
+        bi_date=request.POST["bill-date"]
+        f_id=EmpanelledFirm.objects.filter(firm_id=request.POST["firm-id"])[0]
+        try:
+            Stock.objects.create(batch_no=ba_no,bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
+            return redirect('doctor-home-view')
+        except IntegrityError as err:
+            return render(request, 'doctor/error.html',{'msg':'Stock with same batch number exists'})
+    return render(request, 'doctor/error.html')

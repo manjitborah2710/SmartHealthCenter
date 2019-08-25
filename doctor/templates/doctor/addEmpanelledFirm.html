@@ -1,0 +1,34 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+{% block content-block %}
+    <body>
+        <form method="post" action="{% url 'insert-into-empanelledfirm-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="firm-id">Firm ID</label>
+                <input id="firm-id" class="form-control" name="firm-id" maxlength=20 type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="firm-name">Firm name</label>
+                <input id="firm-name" class="form-control" name="firm-name" type="text" maxlength="50" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firm-email">Firm email</label>
+                <input id="firm-email" class="form-control" name="firm-email" type="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firm-phone">Firm phone number (+91)</label>
+                <input id="firm-phone" class="form-control" name="firm-phone" type="number" steps="1" max="9999999999" min="100000000" required>
+            </div>
+
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+    </body>
+
+{% endblock %}
