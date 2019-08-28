@@ -11,6 +11,8 @@
                     <th>Amount</th>
                     <th>Date of Approval</th>
                     <th>Memo</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,6 +24,8 @@
                         <td>{{ i.amount }}</td>
                         <td>{{ i.date_of_approval }}</td>
                         <td>{{ i.memo }}</td>
+                        <td> <a href="{% url 'edit-requisition-view' i.requisition_id %}">Edit</a></td>
+                        <td> <a href="{% url 'delete-requisition-view' i.requisition_id %}">Delete</a></td>
                     </tr>
                 {% endfor %}
                     
