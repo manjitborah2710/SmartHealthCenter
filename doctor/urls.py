@@ -20,5 +20,7 @@ urlpatterns = [
     path('addEmpanelledFirm',views.addEmpanelledFirm,name='add-empanelledfirm-view'),
     path('insertEmpanelledFirm',views.insertIntoEmpanelledFirm,name='insert-into-empanelledfirm-view'),
     path('addStock',views.addStock,name='add-stock-view'),
-    path('insertIntoStock',views.insertIntoStock,name='insert-into-stock-view')
+    path('insertIntoStock',views.insertIntoStock,name='insert-into-stock-view'),
+    path('addStockMedicine',views.addStockMedicine,name='add-stockmedicine-view'),
+    path('insertIntoStockMedicine',views.insertIntoStockMedicine,name='insert-into-stockmedicine-view')
 ]

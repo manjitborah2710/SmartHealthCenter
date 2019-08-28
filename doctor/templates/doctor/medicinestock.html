@@ -5,6 +5,7 @@
 <body class="body">
     {% include 'doctor/header.html' %}
     <h1>Current Medicine Stock</h1>
+    <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-secondary">Add medicines into Stock</a>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -33,6 +34,7 @@
 
         </tbody>
     </table>
+    <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-secondary">Add medicines into Stock</a>
     <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
 </body>
 {% endblock content-block %}

@@ -314,3 +314,32 @@ def insertIntoStock(request):
         except IntegrityError as err:
             return render(request, 'doctor/error.html',{'msg':'Stock with same batch number exists'})
     return render(request, 'doctor/error.html')
+
+def addStockMedicine(request):
+    permcheck=checkForPermission(request,"doctor.add_stockmedicine")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        bns=[i for i in Stock.objects.all().values('batch_no')]
+        meds=[i for i in Medicine.objects.all().values('medicine_id','medicine_name').order_by('medicine_name')]
+        ctx={
+            'batch_no':bns,
+            'meds':meds
+        }
+        return render(request,'doctor/addStockMedicine.html',context=ctx)
+def insertIntoStockMedicine(request):
+    permcheck = checkForPermission(request, "doctor.add_stockmedicine")
+    if permcheck == 1 and request.method=='POST':
+        med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
+        batch=Stock.objects.filter(batch_no=request.POST["batch-no"])[0]
+        qty=request.POST["qty"]
+        exp_date=request.POST["expiry-date"]
+        med_rate=request.POST["medicine-rate"]
+        try:
+            StockMedicine.objects.create(batch_no=batch,medicine_id=med,quantity=qty,expiry_date=exp_date,medicine_rate=med_rate)
+            return redirect('display-medicine')
+        except IntegrityError as e:
+            return render(request,'doctor/error.html',{'msg':''})
+    return render(request,'doctor/error.html')
