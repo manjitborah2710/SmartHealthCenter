@@ -9,7 +9,6 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -21,17 +20,35 @@
 
             {% for i in data  %}
             <tr>
-                <td>{{ i.id}}</td>
-                <td>{{ i.name }}</td>
-                <td>{{ i.email }}</td>
-                <td>{{ i.phone }}</td>
-                <td> <a href="{% url 'edit-firm-view' i.id %}">Edit</a></td>
-                <td> <a href="{% url 'add-firm-view' %}">Delete</a></td>
+                <td>{{ i.firm_name }}</td>
+                <td>{{ i.firm_email }}</td>
+                <td>{{ i.firm_phone }}</td>
+                <td> <a href="{% url 'edit-firm-view' i.firm_id %}">Edit</a></td>
+                <td> <a href="{% url 'delete-firm-view' i.firm_id %}">Delete</a></td>
             </tr>
             {% endfor %}
 
         </tbody>
     </table>
+
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if data.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ data.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ data.number }} of {{ data.paginator.num_pages }}.
+            </span>
+
+            {% if data.has_next %}
+                <a href="?page={{ data.next_page_number }}">next</a>
+                <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
     <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
 </body>
 {% endblock content-block %}
