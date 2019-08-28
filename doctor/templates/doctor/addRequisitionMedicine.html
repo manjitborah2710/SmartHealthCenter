@@ -52,6 +52,11 @@
                 {% endif %}
 
             </div>
+            {% if data %}
+                <input value="{{ data.pk }}" name="p-key" hidden readonly>
+            {% else %}
+                <input value="-101" name="p-key" hidden readonly>
+            {% endif %}
             <div class="form-group">
                 <input class="btn btn-success" name="submit" type="submit" value="Submit">
             </div>

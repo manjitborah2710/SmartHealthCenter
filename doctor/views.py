@@ -127,7 +127,7 @@ def displayRequisitionMedicine(request):
     if permcheck==0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
-        data=RequisitionMedicine.objects.all()
+        data=RequisitionMedicine.objects.all().order_by("requisition_id","medicine_id__medicine_name")
         l=[]
         for i in data:
             d={
@@ -168,16 +168,21 @@ def addRequisitionMedicine(request):
 def insertIntoRequisitionMedicine(request):
     permcheck=checkForPermission(request,"doctor.add_requisitionmedicine")
     if permcheck==1 and request.method=="POST":
-        new_entry=RequisitionMedicine()
-        r_id=int(request.POST["req-id"])
-        requisition=Requisition.objects.filter(requisition_id=r_id)[0]
-        m_id=int(request.POST["med-id"])
-        print(requisition)
-        medicine=Medicine.objects.filter(medicine_id=m_id)[0]
-        q_req=request.POST["qty-requested"]
-        q_rec=request.POST["qty-received"]
-        new_entry.add_requisition_medicine(requisition,medicine,q_req,q_rec)
+        r_id = int(request.POST["req-id"])
+        requisition = Requisition.objects.filter(requisition_id=r_id)[0]
+        m_id = int(request.POST["med-id"])
+        # print(requisition)
+        medicine = Medicine.objects.filter(medicine_id=m_id)[0]
+        q_req = request.POST["qty-requested"]
+        q_rec = request.POST["qty-received"]
+        if int(request.POST["p-key"])==-101:
+            new_entry=RequisitionMedicine()
+            new_entry.add_requisition_medicine(requisition,medicine,q_req,q_rec)
+        else:
+            p_key=int(request.POST["p-key"])
+            RequisitionMedicine.objects.filter(pk=p_key).update(requisition_id=requisition,medicine_id=medicine,quantity_requested=q_req,quantity_received=q_rec)
         return redirect('display-requisitionmedicine-view')
+
     return render(request,'doctor/error.html')
 
 def checkForPermission(request,permission):
@@ -491,4 +496,8 @@ def editRequisitionMedicine(request,pk):
     return render(request,"doctor/error.html")
 
 def deleteRequisitionMedicine(request,pk):
-    pass
+    permcheck=checkForPermission(request,"doctor.delete_requisitionmedicine")
+    if permcheck==1:
+        RequisitionMedicine.objects.get(pk=pk).delete()
+        return redirect('display-requisitionmedicine-view')
+    return render(request,'doctor/error.html',{'msg':'Operation not performed..You may not have the required permissions'})
