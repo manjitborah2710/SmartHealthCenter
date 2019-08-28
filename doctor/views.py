@@ -144,7 +144,7 @@ def displayRequisitionMedicine(request):
         return render(request,'doctor/requisitionMedicine.html',context=ctx)
 
 
-def addRequisitionMedicine(request):
+def addRequisitionMedicine(request,**kwargs):
     permcheck=checkForPermission(request,"doctor.add_requisitionmedicine")
     if permcheck==-1:
         return redirect('login-view')
@@ -163,6 +163,8 @@ def addRequisitionMedicine(request):
             'req_ids':rids,
             'meds':meds
         }
+        if "data" in kwargs:
+            ctx["data"]=kwargs["data"]
         return render(request,'doctor/addRequisitionMedicine.html',context=ctx)
 
 def insertIntoRequisitionMedicine(request):
@@ -357,13 +359,13 @@ def displayRequisitionProposal(request):
         data=DoctorRequisitionProposal.objects.all()
         l=[]
         for i in data:
-            print(i.medicine_id)
+            # print(i.medicine_id)
             l.append(i)
         ctx={
             'data':l
         }
         return render(request,'doctor/requisitionproposal.html',context=ctx)
-def addRequisitionProposal(request):
+def addRequisitionProposal(request,**kwargs):
     permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
     if permcheck == -1:
         return redirect('login-view')
@@ -378,22 +380,32 @@ def addRequisitionProposal(request):
         meds = []
         for i in med_ids:
             meds.append(i)
-        staff=HealthCentreStaff.objects.filter(staff_type="DR").values("staff_id","staff_name").order_by("staff_name")
+        staff=HealthCentreStaff.objects.all().values("staff_id","staff_name").order_by("staff_name")
+
         ctx = {
             'req_ids': rids,
             'meds': meds,
             'staff':staff
         }
+
+        if "data" in kwargs:
+            ctx["data"]=kwargs["data"]
+
         return render(request,'doctor/addRequisitionProposal.html',context=ctx)
 
 def insertIntoRequisitionProposal(request):
     permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
     if permcheck==1 and request.method=='POST':
-        new_entry=DoctorRequisitionProposal()
-        req=Requisition.objects.filter(requisition_id=request.POST["req-id"])[0]
-        staff=HealthCentreStaff.objects.filter(staff_id=request.POST["staff-id"])[0]
-        med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
-        new_entry.add_requisiton_proposal(req,staff,med,request.POST["qty"])
+        req = Requisition.objects.filter(requisition_id=request.POST["req-id"])[0]
+        staff = HealthCentreStaff.objects.filter(staff_id=request.POST["staff-id"])[0]
+        med = Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
+        qty=request.POST["qty"]
+        if int(request.POST["p-key"])==-101:
+            new_entry = DoctorRequisitionProposal()
+            new_entry.add_requisiton_proposal(req,staff,med,qty)
+        else:
+            p_key=int(request.POST["p-key"]);
+            DoctorRequisitionProposal.objects.filter(pk=p_key).update(requisition_id=req,doctor_id=staff,medicine_id=med,quantity=qty)
         return redirect('display-doctorrequisitionproposal-view')
     return render(request,'doctor/error.html')
 
@@ -477,22 +489,8 @@ def deleteRequisition(request,pk):
 def editRequisitionMedicine(request,pk):
     permcheck=checkForPermission(request,"doctor.change_requisitionmedicine")
     if permcheck==1:
-        req_ids = Requisition.objects.all().values("requisition_id")
-        rids = []
-        for i in req_ids:
-            rids.append(i["requisition_id"])
-        med_ids = Medicine.objects.all().values("medicine_id", "medicine_name").order_by("medicine_name")
-        meds = []
-        for i in med_ids:
-            meds.append(i)
-
         res = RequisitionMedicine.objects.get(pk=pk)
-        ctx = {
-            'req_ids': rids,
-            'meds': meds,
-            'data':res
-        }
-        return render(request,'doctor/addRequisitionMedicine.html',context=ctx)
+        return addRequisitionMedicine(request,data=res)
     return render(request,"doctor/error.html")
 
 def deleteRequisitionMedicine(request,pk):
@@ -501,3 +499,17 @@ def deleteRequisitionMedicine(request,pk):
         RequisitionMedicine.objects.get(pk=pk).delete()
         return redirect('display-requisitionmedicine-view')
     return render(request,'doctor/error.html',{'msg':'Operation not performed..You may not have the required permissions'})
+
+def editRequisitionProposal(request,pk):
+    permcheck = checkForPermission(request, "doctor.change_doctorrequisitionproposal")
+    if permcheck==1:
+        res=DoctorRequisitionProposal.objects.get(pk=pk)
+        return addRequisitionProposal(request,data=res)
+    return render(request,"doctor/error.html")
+
+def deleteRequisitionProposal(request,pk):
+    permcheck = checkForPermission(request, "doctor.delete_doctorrequisitionproposal")
+    if permcheck == 1:
+        DoctorRequisitionProposal.objects.get(pk=pk).delete()
+        return redirect('display-doctorrequisitionproposal-view')
+    return render(request, "doctor/error.html",{'msg':'Deletion failed...you may not have the required permissions'})

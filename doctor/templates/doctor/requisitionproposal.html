@@ -10,6 +10,9 @@
                     <th>Medicine</th>
                     <th>Requisition ID</th>
                     <th>Quantity</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -20,6 +23,8 @@
                         <td>{{ i.medicine_id }}</td>
                         <td>{{ i.requisition_id }}</td>
                         <td>{{ i.quantity }}</td>
+                        <td> <a href="{% url 'edit-requisitionproposal-view' i.pk %}">Edit</a></td>
+                        <td> <a href="{% url 'delete-requisitionproposal-view' i.pk %}">Delete</a></td>
                     </tr>
                 {% endfor %}
 

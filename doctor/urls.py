@@ -39,5 +39,7 @@ urlpatterns = [
     path('editRequisition/<int:pk>',views.editRequistion,name="edit-requisition-view"),
     path('deleteRequiusition/<int:pk>',views.deleteRequisition,name="delete-requisition-view"),
     path('editRequisitionMedicine/<int:pk>',views.editRequisitionMedicine,name="edit-requisitionmedicine-view"),
-    path('deleteRequisitionMedicine/<int:pk>',views.deleteRequisitionMedicine,name="delete-requisitionmedicine-view")
+    path('deleteRequisitionMedicine/<int:pk>',views.deleteRequisitionMedicine,name="delete-requisitionmedicine-view"),
+    path('editRequisitionProposal/<int:pk>',views.editRequisitionProposal,name="edit-requisitionproposal-view"),
+    path('deleteRequisition/<int:pk>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view")
 ]
