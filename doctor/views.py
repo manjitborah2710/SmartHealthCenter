@@ -71,6 +71,7 @@ def displayRequisitionMedicine(request):
         l=[]
         for i in data:
             d={
+                'pkey':i.pk,
                 'req_id':i.requisition_id,
                 'med_id':i.medicine_id,
                 'qty_requested':i.quantity_requested,
@@ -159,8 +160,8 @@ def editFirm(request, pk):
                 'phone': data.firm_phone
             }
         }
-    return render(request,'doctor/addFirm.html', ctx)
-
+        return render(request,'doctor/addFirm.html', ctx)
+    return render(request,'doctor/error.html')
 def deleteFirm(request, pk):
     permcheck = checkForPermission(request, "doctor.delete_empanelledfirm")
     if permcheck == 1:
@@ -257,8 +258,20 @@ def insertIntoRequisition(request):
         amt=request.POST["amt"]
         doa=request.POST["date-of-approval"]
         memo=request.POST["memo"]
+        create=int(request.POST["create"])
         try:
-            Requisition.objects.create(requisition_id=r_id,date_of_order=doo,amount=amt,date_of_approval=doa,memo=memo)
+            if create==1:
+                Requisition.objects.create(requisition_id=r_id,date_of_order=doo,amount=amt,date_of_approval=doa,memo=memo)
+            else:
+                Requisition.objects.update_or_create(
+                    requisition_id=r_id,
+                    defaults={
+                        'date_of_order':doo,
+                        'amount':amt,
+                        'date_of_approval':doa,
+                        'memo':memo
+                    }
+                )
         except IntegrityError as e:
             return render(request,'doctor/error.html',{'msg':'Requisition with provided ID already exists'})
         return redirect('display-requisition-view')
@@ -372,3 +385,46 @@ def insertIntoStockMedicine(request):
         except IntegrityError as e:
             return render(request,'doctor/error.html',{'msg':''})
     return render(request,'doctor/error.html')
+
+
+def editRequistion(request,pk):
+    permcheck=checkForPermission(request,"doctor.change_requisition")
+    if permcheck==1:
+        res=Requisition.objects.get(requisition_id=pk)
+        ctx={
+            'data':res
+        }
+        return render(request,'doctor/addRequisition.html',context=ctx)
+    return render(request,'doctor/error.html')
+
+def deleteRequisition(request,pk):
+    permcheck=checkForPermission(request,"doctor.delete_requisiton")
+    if permcheck == 1:
+        Requisition.objects.filter(requisition_id=pk).delete()
+        return redirect('display-requisition-view')
+    else:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+
+def editRequisitionMedicine(request,pk):
+    permcheck=checkForPermission(request,"doctor.change_requisitionmedicine")
+    if permcheck==1:
+        req_ids = Requisition.objects.all().values("requisition_id")
+        rids = []
+        for i in req_ids:
+            rids.append(i["requisition_id"])
+        med_ids = Medicine.objects.all().values("medicine_id", "medicine_name").order_by("medicine_name")
+        meds = []
+        for i in med_ids:
+            meds.append(i)
+
+        res = RequisitionMedicine.objects.get(pk=pk)
+        ctx = {
+            'req_ids': rids,
+            'meds': meds,
+            'data':res
+        }
+        return render(request,'doctor/addRequisitionMedicine.html',context=ctx)
+    return render(request,"doctor/error.html")
+
+def deleteRequisitionMedicine(request,pk):
+    pass
