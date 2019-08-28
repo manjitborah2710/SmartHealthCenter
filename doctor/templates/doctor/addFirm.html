@@ -1,0 +1,56 @@
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+{% if data%}
+    <h1>Edit Firm </h1>
+{% else %}
+    <h1>Add Firm</h1>
+{% endif %}
+    <body>
+        <form method="post" action="{% url 'insert-into-firm-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="firm-id">Firm ID</label>
+                {% if data %}
+                 <input id="firm-id" class="form-control" name="firm-id" placeholder={{ data.id }} value = {{ data.id }} maxlength=20 type="text" required readonly>
+                {% else %}
+                 <input id="firm-id" class="form-control" name="firm-id" maxlength=20 type="text" required>
+                {% endif %}
+                
+            </div>
+
+            <div class="form-group">
+                <label for="firm-name">Firm Name</label>
+                {% if data %}
+                 <input id="firm-name" class="form-control" name="firm-name" type="text" required value = "{{ data.name }}">
+                {% else %}
+                <input id="firm-name" class="form-control" name="firm-name" type="text" required>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="firm-email">Firm Email</label>
+                {% if data %}
+                <input id="firm-email" class="form-control" name="firm-email" type="email" value = {{ data.email }}>
+                {% else %}
+                <input id="firm-email" class="form-control" name="firm-email" type="email">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="firm-phone">Firm Phone Number</label>
+                {% if data %}
+                <input id="firm-phone" class="form-control" name="firm-phone" type="text" value = {{ data.phone}}>
+                {% else %}
+                <input id="firm-phone" class="form-control" name="firm-phone" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+    </body>
+
+{% endblock %}

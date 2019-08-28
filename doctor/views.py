@@ -135,6 +135,7 @@ def displayEmpanelledFirms(req):
             l = []
             for i in data:
                 d={
+                    'id' : i.firm_id,
                     'name' : i.firm_name,
                     'email' : i.firm_email,
                     'phone' : i.firm_phone
@@ -146,16 +147,68 @@ def displayEmpanelledFirms(req):
             return render(req,'doctor/firmtable.html',context=ctx)
         else:
             return render(req,'doctor/error.html')
+def editFirm(request, pk):
+    permcheck = checkForPermission(request,"doctor.change_empanelledfirm")
+    if permcheck == 1:
+        data = EmpanelledFirm.objects.get(firm_id = pk)
+        ctx = {
+            'data': {
+                'id': data.firm_id,
+                'name': data.firm_name,
+                'email': data.firm_email,
+                'phone': data.firm_phone
+            }
+        }
+    return render(request,'doctor/addFirm.html', ctx)
+
+def deleteFirm(request, pk):
+    permcheck = checkForPermission(request, "doctor.delete_empanelledfirm")
+    if permcheck == 1:
+        EmpanelledFirm.objects.filter(firm_id=pk).delete()
+        return redirect('display-firm-view')
+    else:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+def addFirm(request):
+    permcheck=checkForPermission(request,"doctor.add_empanelledfirm")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        return render(request,'doctor/addFirm.html')
+        
+def insertIntoFirm(request):
+    permcheck = checkForPermission(request, "doctor.add_empanelledfirm")
+    if permcheck == 1 and request.method == "POST":
+        id=request.POST["firm-id"]
+        name=request.POST["firm-name"]
+        email=request.POST["firm-email"]
+        phone=request.POST["firm-phone"]
+
+        print(id)
+        
+        obj, created = EmpanelledFirm.objects.update_or_create(
+            firm_id = id,
+
+            defaults = {
+                'firm_name' : name,
+                'firm_email': email,
+                'firm_phone': phone,
+            }
+        )
+
+        return redirect('display-firm-view')
+    return redirect(request,'doctor/error.html')
 
 def displayMedicine(req):
     user = req.user
     if user.is_authenticated:
         if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
-            data_stockmeds= StockMedicine.objects.select_related("medicine_id").order_by('medicine_id','expiry_date')
+            data_stockmeds= StockMedicine.objects.order_by('medicine_id','expiry_date')
             l = []
             for i in data_stockmeds:
                 d = {
-                    'name': i.medicine_id.medicine_name,
+                    'name': i.medicine_id,
                     'category': i.medicine_id.category,
                     'batch_no': i.batch_no,
                     'price': i.medicine_rate,
@@ -261,30 +314,6 @@ def insertIntoRequisitionProposal(request):
         new_entry.add_requisiton_proposal(req,staff,med,request.POST["qty"])
         return redirect('display-doctorrequisitionproposal-view')
     return render(request,'doctor/error.html')
-
-def addEmpanelledFirm(request):
-    permcheck=checkForPermission(request,"doctor.add_empanelledfirm")
-    if permcheck == -1:
-        return redirect('login-view')
-    if permcheck == 0:
-        return HttpResponse("<p>You do not have the permissions for this operation</p>")
-    if permcheck==1:
-        return render(request,'doctor/addEmpanelledFirm.html')
-    pass
-
-def insertIntoEmpanelledFirm(request):
-    permcheck = checkForPermission(request, "doctor.add_empanelledfirm")
-    if permcheck == 1 and request.method == 'POST':
-        f_id=request.POST["firm-id"]
-        f_name=request.POST["firm-name"]
-        f_email=request.POST["firm-email"]
-        f_phone=request.POST["firm-phone"]
-        try:
-            EmpanelledFirm.objects.create(firm_id=f_id,firm_name=f_name,firm_email=f_email,firm_phone=f_phone)
-            return redirect('display-empanelled-firms')
-        except IntegrityError as err:
-            return render(request, 'doctor/error.html',{'msg':'Firm with same key already exists'})
-    return render(request, 'doctor/error.html')
 
 def addStock(request):
     permcheck=checkForPermission(request,"doctor.add_stock")
