@@ -5,12 +5,15 @@
 <body class="body">
     {% include 'doctor/header.html' %}
     <h1>Empanelled Firms</h1>
+    <a href="{% url 'add-firm-view' %}" class="btn btn-secondary">Add New Firm</a>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +23,8 @@
                 <td>{{ i.name }}</td>
                 <td>{{ i.email }}</td>
                 <td>{{ i.phone }}</td>
+                <td> <a href="{% url 'edit-firm-view' i.id %}">Edit</a></td>
+                <td> <a href="{% url 'delete-firm-view' i.id %}">Delete</a></td>
             </tr>
             {% endfor %}
 
