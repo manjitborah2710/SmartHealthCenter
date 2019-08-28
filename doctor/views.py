@@ -151,11 +151,11 @@ def displayMedicine(req):
     user = req.user
     if user.is_authenticated:
         if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
-            data_stockmeds= StockMedicine.objects.select_related("medicine_id").order_by('medicine_id','expiry_date')
+            data_stockmeds= StockMedicine.objects.order_by('medicine_id','expiry_date')
             l = []
             for i in data_stockmeds:
                 d = {
-                    'name': i.medicine_id.medicine_name,
+                    'name': i.medicine_id,
                     'category': i.medicine_id.category,
                     'batch_no': i.batch_no,
                     'price': i.medicine_rate,
