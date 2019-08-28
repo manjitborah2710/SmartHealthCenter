@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-
+from django.core.paginator import Paginator
 
 from django.contrib.auth import login,logout,authenticate
 from .models import *
@@ -48,6 +48,7 @@ def displayHealthCenterStaff(req):
         l=[]
         for i in data:
             d={
+                'id':i.staff_id,
                 'name':i.staff_name,
                 'type':i.staff_type,
                 'address':i.staff_address,
@@ -58,6 +59,65 @@ def displayHealthCenterStaff(req):
             'data':l
         }
         return render(req,'doctor/stafftable.html',context=ctx)
+
+def addHealthCenterStaff(request):
+    permcheck=checkForPermission(request,"doctor.add_healthcentrestaff")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        return render(request,'doctor/addStaff.html')
+
+def editHealthCenterStaff(request, pk):
+    permcheck = checkForPermission(request, "doctor.change_healthcentrestaff")
+    if permcheck == 1:
+        data = HealthCentreStaff.objects.get(staff_id=pk)
+        ctx = {
+            'data': {
+                'id': data.staff_id,
+                'name': data.staff_name,
+                'type': data.staff_type,
+                'address': data.staff_address,
+                'availability_from': data.availability_from,
+                'availability_to': data.availability_to,
+            }
+        }
+    return render(request, 'doctor/addStaff.html', ctx)
+
+def deleteHealthCenterStaff(request, pk):
+    permcheck = checkForPermission(request, "doctor.delete_healthcentrestaff")
+    if permcheck == 1:
+        HealthCentreStaff.objects.filter(staff_id=pk).delete()
+        return redirect('display-staff-view')
+    else:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+
+
+def insertIntoHealthCenterStaff(request):
+    permcheck = checkForPermission(request, "doctor.add_healthcentrestaff")
+    if permcheck == 1 and request.method == "POST":
+        id = request.POST["staff-id"]
+        name = request.POST["staff-name"]
+        type = request.POST["staff-type"]
+        address = request.POST["staff-address"]
+        availability_from = request.POST["staff-availability_from"]
+        availability_to = request.POST["staff-availability_to"]
+
+        obj, created = HealthCentreStaff.objects.update_or_create(
+            staff_id=id,
+
+            defaults={
+                'staff_name': name,
+                'staff_type': type,
+                'staff_address': address,
+                'availability_from': availability_from,
+                'availability_to': availability_to,
+            }
+        )
+
+        return redirect('display-staff-view')
+    return redirect(request, 'doctor/error.html')
     
 def displayRequisitionMedicine(request):
     user=request.user
@@ -131,7 +191,10 @@ def displayEmpanelledFirms(req):
     user = req.user
     if user.is_authenticated:
         if user.has_perm("doctor.view_empanelledfirm"):
-            data=EmpanelledFirm.objects.all()
+            data_all=EmpanelledFirm.objects.all()
+            paginator = Paginator(data_all, 10)
+            page = req.GET.get('page')
+            data = paginator.get_page(page)
             l = []
             for i in data:
                 d={
@@ -142,11 +205,12 @@ def displayEmpanelledFirms(req):
                   }
                 l.append(d)
             ctx={
-                'data':l
+                'data':data
                 }
             return render(req,'doctor/firmtable.html',context=ctx)
         else:
             return render(req,'doctor/error.html')
+
 def editFirm(request, pk):
     permcheck = checkForPermission(request,"doctor.change_empanelledfirm")
     if permcheck == 1:
@@ -176,7 +240,7 @@ def addFirm(request):
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
         return render(request,'doctor/addFirm.html')
-        
+
 def insertIntoFirm(request):
     permcheck = checkForPermission(request, "doctor.add_empanelledfirm")
     if permcheck == 1 and request.method == "POST":
