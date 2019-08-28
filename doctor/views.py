@@ -165,7 +165,7 @@ def deleteFirm(request, pk):
     permcheck = checkForPermission(request, "doctor.delete_empanelledfirm")
     if permcheck == 1:
         EmpanelledFirm.objects.filter(firm_id=pk).delete()
-        return redirect('display-empanelled-firms')
+        return redirect('display-firm-view')
     else:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
 def addFirm(request):
@@ -176,6 +176,7 @@ def addFirm(request):
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
         return render(request,'doctor/addFirm.html')
+        
 def insertIntoFirm(request):
     permcheck = checkForPermission(request, "doctor.add_empanelledfirm")
     if permcheck == 1 and request.method == "POST":
@@ -184,6 +185,8 @@ def insertIntoFirm(request):
         email=request.POST["firm-email"]
         phone=request.POST["firm-phone"]
 
+        print(id)
+        
         obj, created = EmpanelledFirm.objects.update_or_create(
             firm_id = id,
 
@@ -194,7 +197,7 @@ def insertIntoFirm(request):
             }
         )
 
-        return redirect('display-empanelled-firms')
+        return redirect('display-firm-view')
     return redirect(request,'doctor/error.html')
 
 def displayMedicine(req):
@@ -212,7 +215,7 @@ def displayMedicine(req):
                     'quantity': i.quantity,
                     'expiry_date': i.expiry_date,
                     'manufacturing_company':i.medicine_id.manufacturing_company
-                    }
+                }
                 l.append(d)
             ctx = {
                     'data': l
@@ -261,3 +264,111 @@ def insertIntoRequisition(request):
         return redirect('display-requisition-view')
     return render(request,'doctor/error.html')
 
+
+def displayRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.view_doctorrequisitionproposal")
+    if permcheck==-1:
+        return redirect('login-view')
+    if permcheck==0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        data=DoctorRequisitionProposal.objects.all()
+        l=[]
+        for i in data:
+            print(i.medicine_id)
+            l.append(i)
+        ctx={
+            'data':l
+        }
+        return render(request,'doctor/requisitionproposal.html',context=ctx)
+def addRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        req_ids = Requisition.objects.all().values("requisition_id")
+        rids = []
+        for i in req_ids:
+            rids.append(i["requisition_id"])
+        med_ids = Medicine.objects.all().values("medicine_id", "medicine_name").order_by("medicine_name")
+        meds = []
+        for i in med_ids:
+            meds.append(i)
+        staff=HealthCentreStaff.objects.filter(staff_type="DR").values("staff_id","staff_name").order_by("staff_name")
+        ctx = {
+            'req_ids': rids,
+            'meds': meds,
+            'staff':staff
+        }
+        return render(request,'doctor/addRequisitionProposal.html',context=ctx)
+
+def insertIntoRequisitionProposal(request):
+    permcheck=checkForPermission(request,"doctor.add_doctorrequisitionproposal")
+    if permcheck==1 and request.method=='POST':
+        new_entry=DoctorRequisitionProposal()
+        req=Requisition.objects.filter(requisition_id=request.POST["req-id"])[0]
+        staff=HealthCentreStaff.objects.filter(staff_id=request.POST["staff-id"])[0]
+        med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
+        new_entry.add_requisiton_proposal(req,staff,med,request.POST["qty"])
+        return redirect('display-doctorrequisitionproposal-view')
+    return render(request,'doctor/error.html')
+
+def addStock(request):
+    permcheck=checkForPermission(request,"doctor.add_stock")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        l=[]
+        for i in EmpanelledFirm.objects.all().values("firm_id","firm_name"):
+            l.append(i)
+        ctx={
+            'data':l
+        }
+        return render(request,'doctor/addStock.html',context=ctx)
+
+def insertIntoStock(request):
+    permcheck = checkForPermission(request, "doctor.add_stock")
+    if permcheck == 1 and request.method == 'POST':
+        ba_no=request.POST["batch-number"]
+        bi_no=request.POST["bill-number"]
+        bi_date=request.POST["bill-date"]
+        f_id=EmpanelledFirm.objects.filter(firm_id=request.POST["firm-id"])[0]
+        try:
+            Stock.objects.create(batch_no=ba_no,bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
+            return redirect('doctor-home-view')
+        except IntegrityError as err:
+            return render(request, 'doctor/error.html',{'msg':'Stock with same batch number exists'})
+    return render(request, 'doctor/error.html')
+
+def addStockMedicine(request):
+    permcheck=checkForPermission(request,"doctor.add_stockmedicine")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck==1:
+        bns=[i for i in Stock.objects.all().values('batch_no')]
+        meds=[i for i in Medicine.objects.all().values('medicine_id','medicine_name').order_by('medicine_name')]
+        ctx={
+            'batch_no':bns,
+            'meds':meds
+        }
+        return render(request,'doctor/addStockMedicine.html',context=ctx)
+def insertIntoStockMedicine(request):
+    permcheck = checkForPermission(request, "doctor.add_stockmedicine")
+    if permcheck == 1 and request.method=='POST':
+        med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
+        batch=Stock.objects.filter(batch_no=request.POST["batch-no"])[0]
+        qty=request.POST["qty"]
+        exp_date=request.POST["expiry-date"]
+        med_rate=request.POST["medicine-rate"]
+        try:
+            StockMedicine.objects.create(batch_no=batch,medicine_id=med,quantity=qty,expiry_date=exp_date,medicine_rate=med_rate)
+            return redirect('display-medicine')
+        except IntegrityError as e:
+            return render(request,'doctor/error.html',{'msg':''})
+    return render(request,'doctor/error.html')

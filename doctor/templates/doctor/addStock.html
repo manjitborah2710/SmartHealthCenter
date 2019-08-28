@@ -1,0 +1,38 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+{% block content-block %}
+    <body>
+        <form method="post" action="{% url 'insert-into-stock-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="batch-number">Batch No.</label>
+                <input id="batch-number" class="form-control" name="batch-number" maxlength=50 type="text" required>
+            </div>
+            <div class="form-group">
+                <label for="bill-number">Bill No.</label>
+                <input id="bill-number" class="form-control" name="bill-number" type="text" maxlength="50" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bill-date">Bill date</label>
+                <input id="bill-date" class="form-control" name="bill-date" type="date" required>
+            </div>
+
+            <div class="form-group">
+                <label for="firm-id">Firm ID</label>
+                <select id="firm-id" class="form-control" name="firm-id" required>
+                    {% for i in data %}
+                        <option value="{{ i.firm_id }}">{{ i.firm_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+    </body>
+
+{% endblock %}

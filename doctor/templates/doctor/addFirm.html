@@ -12,7 +12,7 @@
             <div class="form-group">
                 <label for="firm-id">Firm ID</label>
                 {% if data %}
-                 <input id="firm-id" class="form-control" name="firm-id" placeholder={{ data.id }} value = {{ data.id }} maxlength=20 type="text" required disabled>
+                 <input id="firm-id" class="form-control" name="firm-id" placeholder={{ data.id }} value = {{ data.id }} maxlength=20 type="text" required readonly>
                 {% else %}
                  <input id="firm-id" class="form-control" name="firm-id" maxlength=20 type="text" required>
                 {% endif %}

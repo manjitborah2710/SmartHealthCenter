@@ -2,14 +2,13 @@
 {% load staticfiles %}
 {% block content-block %}
     <body>
-        <form method="post" action="{% url 'insert-into-requisitionmedicine-view' %}" class="form-custom">
+        <form method="post" action="{% url 'insert-into-requisitionproposal-view' %}" class="form-custom">
             {% csrf_token %}
-
             <div class="form-group">
-                <label for="req-id">Requisition ID</label>
-                <select id="req-id" name="req-id" class="form-control" required>
-                    {% for i in req_ids %}
-                        <option value={{ i }}>{{ i }}</option>
+                <label for="staff-id">Staff</label>
+                <select id="staff-id" name="staff-id" class="form-control">
+                    {% for i in staff %}
+                        <option value={{ i.staff_id }}>{{ i.staff_name }} --- {{ i.staff_id }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -23,14 +22,19 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="req-id">Requisition ID</label>
+                <select id="req-id" name="req-id" class="form-control" required>
+                    {% for i in req_ids %}
+                        <option value={{ i }}>{{ i }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
 
             <div class="form-group">
-                <label for="qty-requested">Quantity Requested</label>
-                <input id="qty-requested" class="form-control" name="qty-requested" placeholder="Enter quantity requested" type="number" step="1" required>
-            </div>
-            <div class="form-group">
-                <label for="qty-received">Quantity Received</label>
-                <input id="qty-received" class="form-control" name="qty-received" placeholder="Enter quantity received" type="number" step="1" required>
+                <label for="qty">Quantity</label>
+                <input id="qty" class="form-control" name="qty" type="number" step="1" min="1" max="99999999999" required>
             </div>
             <div class="form-group">
                 <input class="btn btn-success" name="submit" type="submit" value="Submit">

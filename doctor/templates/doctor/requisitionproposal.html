@@ -1,0 +1,31 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Staff</th>
+                    <th>Medicine</th>
+                    <th>Requisition ID</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for i in data  %}
+                    <tr>
+                        <td>{{ i.doctor_id }}</td>
+                        <td>{{ i.medicine_id }}</td>
+                        <td>{{ i.requisition_id }}</td>
+                        <td>{{ i.quantity }}</td>
+                    </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        <a href="{% url 'add-requisitionproposal-view' %}" class="btn btn-secondary">Add Requisition Proposal</a>
+        <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+    </body>
+{% endblock content-block %}

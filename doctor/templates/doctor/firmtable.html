@@ -9,6 +9,7 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
+                <th>Id</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
@@ -20,11 +21,12 @@
 
             {% for i in data  %}
             <tr>
+                <td>{{ i.id}}</td>
                 <td>{{ i.name }}</td>
                 <td>{{ i.email }}</td>
                 <td>{{ i.phone }}</td>
                 <td> <a href="{% url 'edit-firm-view' i.id %}">Edit</a></td>
-                <td> <a href="{% url 'delete-firm-view' i.id %}">Delete</a></td>
+                <td> <a href="{% url 'add-firm-view' %}">Delete</a></td>
             </tr>
             {% endfor %}
 
