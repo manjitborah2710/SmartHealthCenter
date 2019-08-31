@@ -80,8 +80,9 @@ ul {
     color: aliceblue;
     background-color: rgb(25, 132, 146);
 }
-.btn:hover{
-    background-color: rgb(10, 54, 59);  
+.btn-custom:hover{
+    background-color: rgb(10, 54, 59);
+    color: white;
 }
 .form-h2{
 

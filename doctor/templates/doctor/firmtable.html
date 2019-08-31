@@ -5,7 +5,7 @@
 <body class="body">
     {% include 'doctor/header.html' %}
     <h1>Empanelled Firms</h1>
-    <a href="{% url 'add-firm-view' %}" class="btn btn-secondary">Add New Firm</a>
+    <a href="{% url 'add-firm-view' %}" class="btn btn-custom">Add New Firm</a>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -49,6 +49,6 @@
             {% endif %}
         </span>
     </div>
-    <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
 </body>
 {% endblock content-block %}
