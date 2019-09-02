@@ -113,3 +113,8 @@ ul {
     width: 60%;
     margin: 20px auto;
 }
+
+a{
+    padding: 3px;
+    margin: 3px;
+}

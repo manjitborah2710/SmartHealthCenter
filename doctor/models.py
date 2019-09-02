@@ -81,7 +81,7 @@ class HealthCentreStaff(models.Model):
     staff_address = models.TextField()
     availability_from = models.CharField(max_length=4)
     availability_to = models.CharField(max_length=4)
-    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE,default=6)
 
     def add_staff(self, staff_id, name, stype, address, a_from, a_to, user_id):
         self.staff_id = staff_id
@@ -100,7 +100,6 @@ class Prescription(models.Model):
     """
         Holds details about every prescription. The medicine details can be found in the MedicineIssue model
     """
-
     prescription_serial_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
     patient_id = models.ForeignKey(StudentRecord, db_column='person_id' , on_delete=models.CASCADE)
     date_of_issue = models.DateTimeField(auto_now_add=True)
@@ -171,7 +170,7 @@ class MedicineIssue(models.Model):
     """
         Holds details about the medicines issued in a given prescription
     """
-    prescription_serial_no = models.ForeignKey(Prescription, on_delete=models.CASCADE)
+    prescription_serial_no = models.ForeignKey(Prescription,on_delete=models.CASCADE)
     medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     medicine_quantity_prescribed = models.IntegerField()
     medicine_quantity_issued = models.IntegerField(blank=True, default=0)
@@ -294,7 +293,7 @@ class DoctorRequisitionProposal(models.Model):
 class PatientRecord(models.Model):
     prescription_serial_no= models.ForeignKey(Prescription, default=None, null=True, blank=True, on_delete=models.CASCADE)
     doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
-    patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE) #TODO what to give patient id if it is dependant 
+    patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE,default='16-1-5-009')
     complaint = models.TextField()
     daignosis = models.TextField()
     test_result = models.TextField()
@@ -430,7 +429,7 @@ class RequisitionMedicine(models.Model):
     def __str__(self):
         return str(self.quantity_received)
 
-class StaffUsernameRelationship(models.Model):
-    username=models.ForeignKey(User,to_field='username',on_delete=models.CASCADE,primary_key=True)
-    staff_id=models.ForeignKey(HealthCentreStaff,to_field='staff_id',on_delete=models.CASCADE,unique=True)
+# class StaffUsernameRelationship(models.Model):
+#     username=models.ForeignKey(User,to_field='username',on_delete=models.CASCADE,primary_key=True)
+#     staff_id=models.ForeignKey(HealthCentreStaff,to_field='staff_id',on_delete=models.CASCADE,unique=True)
 
