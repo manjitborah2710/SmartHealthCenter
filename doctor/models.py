@@ -77,7 +77,7 @@ class HealthCentreStaff(models.Model):
     )
     staff_id = models.CharField(max_length=MAX_LENGTH, primary_key=True)
     staff_name = models.CharField(max_length=200)
-    staff_type = models.CharField( max_length=2,choices = CATEGORY_CHOICES,default = DOCTOR)  
+    staff_type = models.CharField( max_length=2,choices = CATEGORY_CHOICES,default = DOCTOR)
     staff_address = models.TextField()
     availability_from = models.CharField(max_length=4)
     availability_to = models.CharField(max_length=4)
@@ -93,7 +93,6 @@ class HealthCentreStaff(models.Model):
 
     def __str__(self):
         return self.staff_name
-
 
 class Prescription(models.Model):
     """
@@ -428,3 +427,8 @@ class RequisitionMedicine(models.Model):
 
     def __str__(self):
         return str(self.quantity_received)
+
+class StaffUsernameRelationship(models.Model):
+    username=models.ForeignKey(User,to_field='username',on_delete=models.CASCADE,primary_key=True)
+    staff_id=models.ForeignKey(HealthCentreStaff,to_field='staff_id',on_delete=models.CASCADE,unique=True)
+
