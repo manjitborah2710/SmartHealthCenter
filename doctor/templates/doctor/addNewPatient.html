@@ -1,10 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+{% if data%}
+    <h1>Edit Patient Record </h1>
+{% else %}
+    <h1>Add Patient</h1>
+{% endif %}
+    <body>
+        <form method="post" action="{% url 'insert-into-patientrecord-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                {% if data %}
+                 <input id="person-id" class="form-control" name="person-id" placeholder={{ data.person_id }} value= {{ data.person_id }} maxlength=20 type="text" required>
+                {% else %}
+                 <label for="person-id">Patient ID</label>
+                  <select id="person-id" class="form-control" name="person-id" required>
+                    {% for i in patId %}
+                        <option value="{{ i.person_id }}">{{ i.person_id }}</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+
+            </div>
+
+            <div class="form-group">
+                <label for="complaint">Complaint</label>
+                {% if data %}
+                 <input id="complaint" class="form-control" name="complaint" type="text" required value = "{{ data.complaint }}">
+                {% else %}
+                <input id="complaint" class="form-control" name="complaint" type="text" required>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="diagnosis">Diagnosis</label>
+                {% if data %}
+                <input id="diagnosis" class="form-control" name="diagnosis" type="text" value = {{ data.daignosis }}>
+                {% else %}
+                <input id="diagnosis" class="form-control" name="diagnosis" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="dependent">Dependent</label>
+                {% if data %}
+                <input id="dependent" class="form-control" name="dependent" type="text" value = {{ data.isDependent}}>
+                {% else %}
+                <input id="dependent" class="form-control" name="dependent" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="recommended-test">Recommended Test</label>
+                {% if data %}
+                <input id="recommended-test" class="form-control" name="recommended-test" type="text" value = {{ data.testRecommended}}>
+                {% else %}
+                <input id="recommended-test" class="form-control" name="recommended-test" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="test-result">Test Results</label>
+                {% if data %}
+                <input id="test-result" class="form-control" name="test-result" type="text" value = {{ data.test_result}}>
+                {% else %}
+                <input id="test-result" class="form-control" name="test-result" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="fup-date">Follow-up Date</label>
+                {% if data %}
+                <input id="fup-date" class="form-control" name="fup-date" type="date" value = {{ data.follow_up_date}}>
+                {% else %}
+                <input id="fup-date" class="form-control" name="fup-date" type="date">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+    </body>
+
+{% endblock %}

@@ -1,11 +1,15 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.core.paginator import Paginator
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 # Create your views here.
+
+def getUserId(request):
+    user = User.objects.get(username = request.user).id
+    return user
 
 def indexView(request):
     return render(request,'doctor/index.html')
@@ -18,6 +22,13 @@ def loginView(request):
         user=authenticate(username=user_name,password=pwd)
         if user is not None:
             login(request,user)
+            if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
+                id = User.objects.get(username = user).id
+                try:
+                    HealthCentreStaff.objects.get(user_id = id)
+                except ObjectDoesNotExist:
+                    return redirect('add-staff-view')
+
             return redirect('doctor-home-view')
     user=request.user
     if not user.is_authenticated:
@@ -103,11 +114,13 @@ def insertIntoHealthCenterStaff(request):
         address = request.POST["staff-address"]
         availability_from = request.POST["staff-availability_from"]
         availability_to = request.POST["staff-availability_to"]
+        u_id = User.objects.get(username = request.user)
 
         obj, created = HealthCentreStaff.objects.update_or_create(
-            staff_id=id,
+            user_id=u_id,
 
             defaults={
+                'staff_id': id,
                 'staff_name': name,
                 'staff_type': type,
                 'staff_address': address,
@@ -513,3 +526,60 @@ def deleteRequisitionProposal(request,pk):
         DoctorRequisitionProposal.objects.get(pk=pk).delete()
         return redirect('display-doctorrequisitionproposal-view')
     return render(request, "doctor/error.html",{'msg':'Deletion failed...you may not have the required permissions'})
+
+def viewMyPatients(request):
+    permcheck = checkForPermission(request, "doctor.view_patientrecord")
+    isDoc = False
+    if permcheck == 1:
+        print (getUserId(request))
+        try:
+            staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
+        except ObjectDoesNotExist:
+            return render(request, 'doctor/error.html')
+        try:
+            data = PatientRecord.objects.filter(doctor_id = staff_id)
+            print(data)
+        except ObjectDoesNotExist:
+            data = []
+        isDoc = True
+        return render(request, 'doctor/myPatients.html', {'data': data, 'isDoc': isDoc})
+    return render(request,'doctor/error.html')
+
+def addPatientRecord(request):
+    permcheck = checkForPermission(request, "doctor.add_patientrecord")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+        patId = [i for i in StudentRecord.objects.all().values('person_id')]
+        return render(request, 'doctor/addNewPatient.html',{'patId':patId})
+
+def insertIntoPatientRecord(request):
+    permcheck = checkForPermission(request, "doctor.add_patientrecord")
+    if permcheck == 1 and request.method == "POST":
+        person_id = request.POST["person-id"]
+        complaint = request.POST["complaint"]
+        diagnosis = request.POST["diagnosis"]
+        isDependant = request.POST["dependent"]
+        testRecommended = request.POST["recommended-test"]
+        test_result = request.POST["test-result"]
+        fup_date = request.POST["fup-date"]
+        u_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
+        obj, created = PatientRecord.objects.update_or_create(
+            doctor_id=u_id,
+            patient_id_id = person_id,
+
+            defaults={
+                'complaint': complaint,
+                'daignosis': diagnosis,
+                'isDependant': isDependant,
+                'testRecommended': testRecommended,
+                'test_result': test_result,
+                'follow_up_date': fup_date
+            }
+        )
+
+        return redirect('display-mypatients-view')
+    return redirect(request, 'doctor/error.html')
+

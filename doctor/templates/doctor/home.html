@@ -14,6 +14,7 @@
             Userid : {{ request.user }}
 
         </p>
+        <a class="btn btn-custom" href="{% url 'display-mypatients-view' %}">View My Patients</a>
         <a class="btn btn-custom" href="{% url 'display-staff-view' %}">Health Center Staff</a>
         <a class="btn btn-custom" href="{% url 'display-firm-view' %}">Empanelled Firms</a>
         <a class="btn btn-custom" href="{% url 'display-medicine' %}">Medicine Stock</a>
