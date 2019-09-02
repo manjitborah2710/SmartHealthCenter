@@ -36,10 +36,17 @@ urlpatterns = [
     
     path('addStockMedicine',views.addStockMedicine,name='add-stockmedicine-view'),
     path('insertIntoStockMedicine',views.insertIntoStockMedicine,name='insert-into-stockmedicine-view'),
+
     path('editRequisition/<int:pk>',views.editRequistion,name="edit-requisition-view"),
     path('deleteRequiusition/<int:pk>',views.deleteRequisition,name="delete-requisition-view"),
+
     path('editRequisitionMedicine/<int:pk>',views.editRequisitionMedicine,name="edit-requisitionmedicine-view"),
     path('deleteRequisitionMedicine/<int:pk>',views.deleteRequisitionMedicine,name="delete-requisitionmedicine-view"),
+
     path('editRequisitionProposal/<int:pk>',views.editRequisitionProposal,name="edit-requisitionproposal-view"),
-    path('deleteRequisition/<int:pk>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view")
+    path('deleteRequisition/<int:pk>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view"),
+
+    path('viewMyPatients',views.viewMyPatients,name="display-mypatients-view"),
+    path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
+    path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
 ]

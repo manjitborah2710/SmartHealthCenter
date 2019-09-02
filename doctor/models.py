@@ -60,7 +60,7 @@ class StudentRecord(models.Model):
 
 
     def __str__(self):
-        return self.person_id
+        return self.name
 
         
 
@@ -81,14 +81,16 @@ class HealthCentreStaff(models.Model):
     staff_address = models.TextField()
     availability_from = models.CharField(max_length=4)
     availability_to = models.CharField(max_length=4)
+    user_id = models.ForeignKey(User, on_delete = models.CASCADE)
 
-    def add_staff(self, staff_id, name, stype, address, a_from, a_to):
+    def add_staff(self, staff_id, name, stype, address, a_from, a_to, user_id):
         self.staff_id = staff_id
         self.staff_name = name
         self.staff_type = stype
         self.staff_address = address
         self.availability_from = a_from
         self.availability_to = a_to
+        self.user_id - user_id
         self.save()
 
     def __str__(self):
@@ -290,7 +292,7 @@ class DoctorRequisitionProposal(models.Model):
 
 
 class PatientRecord(models.Model):
-    prescription_serial_no= models.ForeignKey(Prescription, on_delete=models.CASCADE)
+    prescription_serial_no= models.ForeignKey(Prescription, default=None, null=True, blank=True, on_delete=models.CASCADE)
     doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
     patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE) #TODO what to give patient id if it is dependant 
     complaint = models.TextField()
