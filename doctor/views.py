@@ -1,10 +1,11 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,reverse
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
+from django.contrib.auth.models import User,Group
 # Create your views here.
 
 def getUserId(request):
@@ -583,3 +584,103 @@ def insertIntoPatientRecord(request):
         return redirect('display-mypatients-view')
     return redirect(request, 'doctor/error.html')
 
+def displayPrescription(request):
+    permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+        user_type=None
+        data=None
+        if request.user.groups.filter(name="doctor").exists():
+            user_type="doctor"
+            dr=HealthCentreStaff.objects.get(user_id=request.user.id).staff_id
+            data=Prescription.objects.all().filter(doctor_id=dr).values('prescription_serial_no').order_by('prescription_serial_no')
+        else:
+            user_type="patient"
+        ctx={
+            'data':data
+        }
+        if request.method=='GET' and 'prescription-no' in request.GET:
+            ctx['presc_data']=MedicineIssue.objects.all().filter(prescription_serial_no=request.GET["prescription-no"])
+            ctx['selected']=request.GET["prescription-no"]
+            ctx['get_acc']=True
+        return render(request, 'doctor/prescription.html', context=ctx)
+
+def addPrescription(request):
+    permcheck=checkForPermission(request,'doctor.add_prescription')
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck ==1:
+        dr = HealthCentreStaff.objects.get(user_id=request.user.id).staff_id
+        people=[i for i in StudentRecord.objects.all().values("person_id")];
+        ctx={
+            'staff_id':dr,
+            'people':people
+        }
+        return render(request,'doctor/addPrescription.html',context=ctx)
+
+def insertIntoPrescription(request):
+    permcheck = checkForPermission(request, 'doctor.add_prescription')
+    if permcheck==1 and request.method=='POST':
+        psn=request.POST["presc-serial-no"]
+        doi=request.POST["date-of-issue"]
+        si=HealthCentreStaff.objects.get(staff_id=request.POST["staff-id"])
+        pi=StudentRecord.objects.get(person_id=request.POST["person-id"])
+
+        i=request.POST["issued"]
+        try:
+            Prescription.objects.create(prescription_serial_no=psn,date_of_issue=doi,doctor_id=si,patient_id=pi,issued=i)
+            return redirect('display-prescription-view')
+        except IntegrityError as e:
+            return render(request, 'doctor/error.html', {'msg': 'Prescription with same ID exists'})
+    return render(request, 'doctor/error.html')
+
+
+def addMedicineIssue(req,presc_no):
+    permcheck = checkForPermission(req, 'doctor.add_medicineissue')
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+        meds = [i for i in Medicine.objects.all().values('medicine_id', 'medicine_name').order_by('medicine_name')]
+        ctx={
+            'p_no':Prescription.objects.get(prescription_serial_no=presc_no),
+            'meds':meds
+        }
+        print(ctx['p_no'])
+        return render(req,'doctor/addMedicineIssue.html',context=ctx)
+
+def insertIntoMedicineIssue(request):
+    permcheck = checkForPermission(request, 'doctor.add_medicineissue')
+    if permcheck==1 and request.method=='POST':
+        p=Prescription.objects.get(prescription_serial_no=request.POST['presc-serial-no'])
+        doi=request.POST['date-of-issue']
+        m=Medicine.objects.filter(medicine_id=request.POST['med-id'])[0]
+        qty=request.POST['med-qty']
+        i=request.POST['med-issued']
+        nii=request.POST['nii']
+        MedicineIssue.objects.create(prescription_serial_no=p,medicine_id=m,medicine_quantity=qty,issue_status=i,non_issue_reason=nii)
+        return redirect(reverse('display-prescription-view')+"?prescription-no="+p.prescription_serial_no)
+    return render(request, 'doctor/error.html')
+
+def checkForPermissions(request,*args):
+    user=request.user
+    if user.is_authenticated:
+        for i in args:
+            if not user.has_perm(i):
+                return 0
+        return 1
+    return -1
+
+def deleteMedicineIssue(request,pk):
+    permcheck = checkForPermission(request, "doctor.delete_medicineissue")
+    if permcheck == 1:
+        p_no=MedicineIssue.objects.get(pk=pk).prescription_serial_no_id
+        MedicineIssue.objects.get(pk=pk).delete()
+        return redirect(reverse('display-prescription-view')+"?prescription-no="+p_no)
+    return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})

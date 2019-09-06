@@ -1,0 +1,60 @@
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+{% if data%}
+    <h1>Edit Medicine </h1>
+{% else %}
+    <h1>Add Medicine </h1>
+{% endif %}
+    <body>
+        <form method="post" action="{% url 'insert-into-medicineissue-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="presc-serial-no">Prescription Serial No.</label>
+                <input id="presc-serial-no" class="form-control" name="presc-serial-no" maxlength=50 type="text" value="{{ p_no.prescription_serial_no }}" readonly required>
+            </div>
+
+            <div class="form-group">
+                <label for="date-of-issue">Date of Issue</label>
+                <input id="date-of-issue" class="form-control" name="date-of-issue" type="date" value="{{ p_no.date_of_issue|date:'Y-m-d' }}" required readonly>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="med-id">Medicine ID</label>
+                <select id="med-id" name="med-id" class="form-control">
+                    {% for i in meds %}
+                        <option value="{{ i.medicine_id }}">{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="med-qty">Quantity</label>
+                <input class="form-control" id="med-qty" name="med-qty" required>
+            </div>
+
+            <div class="form-group">
+                <label for="med-issued">Issue Status</label>
+                <select id="med-issued" name="med-issued" class="form-control">
+                    <option value="1">Yes</option>
+                    <option value="0" selected>No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="nii">Non issue reason</label>
+                <input class="form-control" id="nii" name="nii">
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+                <a class="btn btn-danger" href="{% url 'display-prescription-view' %}">Cancel</a>
+            </div>
+
+        </form>
+
+    </body>
+
+{% endblock %}

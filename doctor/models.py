@@ -172,20 +172,16 @@ class MedicineIssue(models.Model):
     """
     prescription_serial_no = models.ForeignKey(Prescription,on_delete=models.CASCADE)
     medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
-    medicine_quantity_prescribed = models.IntegerField()
-    medicine_quantity_issued = models.IntegerField(blank=True, default=0)
-    dosage = models.TextField(blank=True)
+    medicine_quantity= models.IntegerField(blank=True, default=0)
     issue_status = models.BooleanField()
     non_issue_reason = models.CharField(blank=True, max_length=MAX_LENGTH)
 
-    def add_prescribed_medicine(self, sl_no, medicine_id, medicine_quantity_prescribed, medicine_quantity_issued, issue_status, non_issue_reason, dosage):
+    def add_prescribed_medicine(self, sl_no, medicine_id, medicine_quantity, issue_status, non_issue_reason, dosage):
         self.presciption_serial_no = sl_no
         self.medicine_id = medicine_id
-        self.medicine_quantity_prescribed = medicine_quantity_prescribed
-        self.medicine_quantity_issued = medicine_quantity_issued
+        self.medicine_quantity = medicine_quantity
         self.issue_status = issue_status
         self.non_issue_reason = non_issue_reason
-        self.dosage = dosage
         self.save()
 
     def __str__(self):
