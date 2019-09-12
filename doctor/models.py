@@ -429,3 +429,9 @@ class RequisitionMedicine(models.Model):
 #     username=models.ForeignKey(User,to_field='username',on_delete=models.CASCADE,primary_key=True)
 #     staff_id=models.ForeignKey(HealthCentreStaff,to_field='staff_id',on_delete=models.CASCADE,unique=True)
 
+class Feedback(models.Model):
+    user=models.CharField(max_length=254)
+    feedback=models.TextField()
+
+    def __str__(self):
+        return str(self.feedback)

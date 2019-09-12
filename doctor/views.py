@@ -684,3 +684,12 @@ def deleteMedicineIssue(request,pk):
         MedicineIssue.objects.get(pk=pk).delete()
         return redirect(reverse('display-prescription-view')+"?prescription-no="+p_no)
     return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})
+
+
+def submitFeedback(request):
+    if request.method=='POST':
+        fb=request.POST["feedback"]
+        username=request.user.username
+        Feedback.objects.create(user=username,feedback=fb)
+        return redirect('doctor-home-view')
+    return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})
