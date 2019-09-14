@@ -37,15 +37,27 @@
 
             <div class="form-group">
                 <label for="med-issued">Issue Status</label>
-                <select id="med-issued" name="med-issued" class="form-control">
-                    <option value="1">Yes</option>
-                    <option value="0" selected>No</option>
-                </select>
+                {% if type == 'doctor' %}
+                    <input class="form-control" value="No" type="text" readonly>
+                    <input id="med-issued" name="med-issued" class="form-control" value="0" type="text" readonly hidden>
+                {% else %}
+                    <select id="med-issued" name="med-issued" class="form-control">
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                    </select>
+                {% endif %}
+
+
             </div>
 
             <div class="form-group">
                 <label for="nii">Non issue reason</label>
-                <input class="form-control" id="nii" name="nii">
+                {% if type == 'doctor' %}
+                    <input class="form-control" id="nii" name="nii" readonly>
+                {% else %}
+                    <input class="form-control" id="nii" name="nii">
+                {% endif %}
+
             </div>
 
             <div class="form-group">

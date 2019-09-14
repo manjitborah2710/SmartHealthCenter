@@ -650,7 +650,8 @@ def addMedicineIssue(req,presc_no):
         meds = [i for i in Medicine.objects.all().values('medicine_id', 'medicine_name').order_by('medicine_name')]
         ctx={
             'p_no':Prescription.objects.get(prescription_serial_no=presc_no),
-            'meds':meds
+            'meds':meds,
+            'type':'doctor'
         }
         print(ctx['p_no'])
         return render(req,'doctor/addMedicineIssue.html',context=ctx)
