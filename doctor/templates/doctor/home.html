@@ -27,7 +27,7 @@
         <br>
         <br>
         <a class="btn btn-danger" href="{% url 'logout-view'  %}">Logout</a>
-
+        
         <form method="post" action="{% url 'submit-feedback' %}">
             {% csrf_token %}
             <div class="form-group" style="margin-left: auto;margin-right:auto;width: 40%">

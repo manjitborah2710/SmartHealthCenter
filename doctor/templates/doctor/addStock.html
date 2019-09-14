@@ -2,6 +2,12 @@
 {% load staticfiles %}
 {% block content-block %}
     <body>
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
         <form method="post" action="{% url 'insert-into-stock-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -33,6 +39,7 @@
             </div>
 
         </form>
+        {% include 'doctor/footer.html' %}
     </body>
 
 {% endblock %}
