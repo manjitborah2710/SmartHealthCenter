@@ -1,0 +1,43 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Address</th>
+                    <th>Availability</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for i in data  %}
+                    <tr>
+                        <td>{{ i.name }}</td>
+                        <td>{{ i.type }}</td>
+                        <td>{{ i.address }}</td>
+                        <td>{{ i.availability }}</td>
+                        <td> <a href="{% url 'edit-staff-view' i.id %}">Edit</a></td>
+                        <td> <a href="{% url 'delete-staff-view' i.id %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+        <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        {% include 'doctor/footer.html' %}
+    </body>
+{% endblock content-block %}
+    

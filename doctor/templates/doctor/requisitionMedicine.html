@@ -1,0 +1,43 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Requisition ID</th>
+                    <th>Medicine ID</th>
+                    <th>Requested Quantity</th>
+                    <th>Received Quantity</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for i in data  %}
+                    <tr>
+                        <td>{{ i.req_id }}</td>
+                        <td>{{ i.med_id }}</td>
+                        <td>{{ i.qty_requested }}</td>
+                        <td>{{ i.qty_received }}</td>
+                        <td> <a href="{% url 'edit-requisitionmedicine-view' i.pkey %}">Edit</a></td>
+                        <td> <a href="{% url 'delete-requisitionmedicine-view' i.pkey %}">Delete</a></td>
+                    </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+        <a class="btn btn-primary" href="{% url 'add-requisitionmedicine-view' %}">Add Requisition Medicine</a>
+        <a href="{% url 'doctor-home-view' %}" class="btn btn-secondary">Home</a>
+        {% include 'doctor/footer.html' %}
+    </body>
+{% endblock content-block %}
+    

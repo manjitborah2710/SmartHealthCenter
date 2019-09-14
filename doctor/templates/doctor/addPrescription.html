@@ -1,0 +1,62 @@
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+
+{% include 'doctor/header.html' %}
+<div class="div-1">
+       
+                {% include 'doctor/test.html' %}
+
+      </div>
+{% if data%}
+    <h1>Edit Prescription </h1>
+{% else %}
+    <h1>Add Prescription</h1>
+{% endif %}
+    <body>
+        <form method="post" action="{% url 'insert-into-prescription-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="presc-serial-no">Prescription Serial No.</label>
+                <input id="presc-serial-no" class="form-control" name="presc-serial-no" maxlength=50 type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date-of-issue">Date of Issue</label>
+                <input id="date-of-issue" class="form-control" name="date-of-issue" type="date" required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="staff-id">Staff ID</label>
+                <input id="staff-id" class="form-control" name="staff-id" value="{{ staff_id }}" readonly required>
+            </div>
+
+
+            <div class="form-group">
+                <label for="person-id">Person ID</label>
+                <select id="person-id" name="person-id" class="form-control">
+                    {% for i in people %}
+                        <option value="{{ i.person_id }}">{{ i.person_id }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="issued">Issued</label>
+                <select id="issued" name="issued" class="form-control">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

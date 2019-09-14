@@ -1,0 +1,39 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+<body class="body">
+   <!-----------------------------------header Section---------------------------------------->
+    {% include 'doctor/header.html' %}
+    <!-------------------------------- Main section------------------------------------------->
+    <main>
+        <div class="card login-box" style="width: 18rem;">
+            <img src="{% static 'doctor/images/staff.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title" style="text-align: center;">Login as Health center staff</h5>
+              <a href="{% url 'login-view' %}" class="btn btn-custom btn-full">Login</a>
+            </div>
+          </div>
+          <div class="card login-box" style="width: 18rem;">
+            <img src="{% static 'doctor/images/doctor.jpg' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"style="text-align: center;">Login as Doctor</h5>
+              <a href="{% url 'login-view' %}" class="btn btn-custom btn-full">Login</a>
+            </div>
+          </div>
+          <div class="card login-box std" style="width: 18rem;">
+            <img src="{% static 'doctor/images/student.png' %}" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"style="text-align: center;">Login as Student</h5>
+              <div style="margin-bottom: 70px;"></div>
+              <a href="{% url 'login-view' %}" class="btn btn-custom btn-full">Login</a>
+            </div>
+          </div>
+    </main>
+    <div style="clear: both;"></div>
+    <!---------------------------------Footer Section----------------------------------------->
+    {% include 'doctor/footer.html' %}
+          
+</body>
+<!-- </html> -->
+{% endblock %}

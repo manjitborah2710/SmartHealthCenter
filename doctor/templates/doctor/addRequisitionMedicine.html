@@ -1,0 +1,73 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+{% block content-block %}
+    <body>
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
+        <form method="post" action="{% url 'insert-into-requisitionmedicine-view' %}" class="form-custom">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="req-id">Requisition ID</label>
+                <select id="req-id" name="req-id" class="form-control" required>
+                    {% for i in req_ids %}
+                        {% if data and data.requisition_id_id == i %}
+                            <option selected value={{ i }}>{{ i }}</option>
+                        {% else %}
+                            <option value={{ i }}>{{ i }}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="med-id">Medicine ID</label>
+                <select id="med-id" name="med-id" class="form-control">
+
+                    {% for i in meds %}
+                        {% if data and data.medicine_id_id == i.medicine_id %}
+                            <option selected value={{ i.medicine_id }}>{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                        {% else %}
+                            <option value={{ i.medicine_id }}>{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="qty-requested">Quantity Requested</label>
+                {% if data %}
+                    <input id="qty-requested" value="{{ data.quantity_requested }}" class="form-control" name="qty-requested" placeholder="Enter quantity requested" type="number" step="1" required>
+                {% else %}
+                    <input id="qty-requested" class="form-control" name="qty-requested" placeholder="Enter quantity requested" type="number" step="1" required>
+                {% endif %}
+
+            </div>
+            <div class="form-group">
+                <label for="qty-received">Quantity Received</label>
+                {% if data %}
+                    <input id="qty-received" value="{{ data.quantity_received }}" class="form-control" name="qty-received" placeholder="Enter quantity received" type="number" step="1" required>
+                {% else %}
+                    <input id="qty-received" class="form-control" name="qty-received" placeholder="Enter quantity received" type="number" step="1" required>
+                {% endif %}
+
+            </div>
+            {% if data %}
+                <input value="{{ data.pk }}" name="p-key" hidden readonly>
+            {% else %}
+                <input value="-101" name="p-key" hidden readonly>
+            {% endif %}
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+        </form>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

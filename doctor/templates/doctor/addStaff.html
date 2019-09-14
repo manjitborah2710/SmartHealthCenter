@@ -1,0 +1,82 @@
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+{% include 'doctor/header.html' %}
+<div class="div-1">
+       
+                {% include 'doctor/test.html' %}
+
+      </div>
+{% if data%}
+    <h1 style="text-align: center;">Edit Staff </h1>
+{% else %}
+    <h1 style="text-align: center;">Add Staff</h1>
+{% endif %}
+    <body>
+           
+        <form method="post" action="{% url 'insert-into-staff-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                {% if data %}
+                 <input id="staff-id" class="form-control" name="staff-id" placeholder={{ data.id }} value= {{ data.id }} maxlength=20 type="text" required  hidden>
+                {% else %}
+                 <label for="staff-id">Staff ID</label>
+                 <input id="staff-id" class="form-control" name="staff-id" maxlength=20 type="text" required>
+                {% endif %}
+
+            </div>
+
+            <div class="form-group">
+                <label for="staff-name">Staff Name</label>
+                {% if data %}
+                 <input id="staff-name" class="form-control" name="staff-name" type="text" required value = "{{ data.name }}">
+                {% else %}
+                <input id="staff-name" class="form-control" name="staff-name" type="text" required>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="staff-type">Staff Type</label>
+                {% if data %}
+                <input id="staff-type" class="form-control" name="staff-type" type="text" value = {{ data.type }}>
+                {% else %}
+                <input id="staff-type" class="form-control" name="staff-type" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="staff-address">Staff Address</label>
+                {% if data %}
+                <input id="staff-address" class="form-control" name="staff-address" type="text" value = {{ data.address}}>
+                {% else %}
+                <input id="staff-address" class="form-control" name="staff-address" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="staff-availability_from">Available From</label>
+                {% if data %}
+                <input id="staff-availability_from" class="form-control" name="staff-availability_from" type="text" value = {{ data.availability_from}}>
+                {% else %}
+                <input id="staff-availability_from" class="form-control" name="staff-availability_from" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="staff-availability_to">Available Till</label>
+                {% if data %}
+                <input id="staff-availability_to" class="form-control" name="staff-availability_to" type="text" value = {{ data.availability_to}}>
+                {% else %}
+                <input id="staff-availability_to" class="form-control" name="staff-availability_to" type="text">
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+
+        </form>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

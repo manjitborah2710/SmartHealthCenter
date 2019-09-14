@@ -1,0 +1,12 @@
+.user-data{
+display: inline-block;
+background-color: aliceblue;
+height: 300px;
+width: 20%;
+margin: 0 30px;
+
+}
+.user{
+    padding-top: 35px;
+    height: 100px;
+}

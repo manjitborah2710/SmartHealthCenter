@@ -1,0 +1,75 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+{% block content-block %}
+    <body>
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
+        <form method="post" action="{% url 'insert-into-requisitionproposal-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="staff-id">Staff</label>
+                <select id="staff-id" name="staff-id" class="form-control">
+                    {% for i in staff %}
+                        {% if data and data.doctor_id_id == i.staff_id %}
+                            <option selected value={{ i.staff_id }}>{{ i.staff_name }} --- {{ i.staff_id }}</option>
+                        {% else %}
+                            <option value={{ i.staff_id }}>{{ i.staff_name }} --- {{ i.staff_id }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="med-id">Medicine ID</label>
+                <select id="med-id" name="med-id" class="form-control">
+                    {% for i in meds %}
+                        {% if data and data.medicine_id_id == i.medicine_id %}
+                            <option selected value={{ i.medicine_id }}>{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                        {% else %}
+                            <option value={{ i.medicine_id }}>{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                        {% endif %}
+
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="req-id">Requisition ID</label>
+                <select id="req-id" name="req-id" class="form-control" required>
+                    {% for i in req_ids %}
+                        {% if data and data.requisition_id_id == i %}
+                            <option selected value={{ i }}>{{ i }}</option>
+                        {% else %}
+                            <option value={{ i }}>{{ i }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <label for="qty">Quantity</label>
+                {% if data %}
+                    <input id="qty" class="form-control" name="qty" type="number" step="1" min="1" max="99999999999" value="{{ data.quantity }}" required>
+                {% else %}
+                    <input id="qty" class="form-control" name="qty" type="number" step="1" min="1" max="99999999999" required>
+                {% endif %}
+
+            </div>
+            {% if data %}
+                <input value="{{ data.pk }}" name="p-key" hidden readonly>
+            {% else %}
+                <input value="-101" name="p-key" hidden readonly>
+            {% endif %}
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+            </div>
+        </form>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

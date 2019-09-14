@@ -1,0 +1,24 @@
+{% load staticfiles %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HealthCare</title>
+
+
+    <link rel="stylesheet" href="{% static 'doctor/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'doctor/custom_css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'doctor/custom_css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'doctor/js/bootstrap.min.js' %}">
+    <link rel="stylesheet" href="{% static 'doctor/custom_css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+    {% block style-block %}
+    {% endblock %}
+</head>
+
+{% block content-block %}
+{% endblock %}
+</html>

@@ -1,0 +1,63 @@
+{% extends 'doctor/base.html' %}
+{% load staticfiles %}
+
+{% block content-block %}
+    <body class="body">
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
+        <form method="get" class="form form-inline">
+            <label style="padding: 10px">Prescription ID:</label>
+            <select name="prescription-no" class="form-control" style="margin: 10px">
+                {% for i in data %}
+                    {% if i.prescription_serial_no == selected %}
+                        <option value="{{ i.prescription_serial_no }}" selected>{{ i.prescription_serial_no }}</option>
+                    {% else %}
+                        <option value="{{ i.prescription_serial_no }}">{{ i.prescription_serial_no }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <input type="submit" value="Ok" class="btn btn-primary">
+        </form>
+
+        {% if presc_data or get_acc %}
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Prescription No</th>
+                        <th>Medicine</th>
+                        <th>Non issue reason</th>
+                        <th>Issue Status</th>
+                        <th>Quantity</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for i in presc_data  %}
+    {#                    <tr class="thead-dark">#}
+    {#                        <th colspan="4"><u>Prescription No</u>: {{ i.prescription_serial_no }} &nbsp;&nbsp;&nbsp;&nbsp;  <u>Issue Date</u> : {{ i.prescription_serial_no.date_of_issue }}<br><u>Staff</u> : {{ i.prescription_serial_no.doctor_id }} &nbsp;&nbsp;&nbsp;&nbsp; <u>Person</u> : {{ i.prescription_serial_no.patient_id }}#}
+    {#                        </th>#}
+    {#                    </tr>#}
+                        <tr>
+                            <td>{{ i.prescription_serial_no }}</td>
+                            <td>{{ i.medicine_id }}</td>
+                            <td>{{ i.non_issue_reason }}</td>
+                            <td>{{ i.issue_status }}</td>
+                            <td>{{ i.medicine_quantity }}</td>
+                            <td><a href={% url 'delete-medicineissue-view' i.pk %}>Delete</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            <a href="{% url 'add-medicineissue-view' selected %}" class="btn btn-custom">Insert medicines</a>
+        {% endif %}
+        <a href="{% url 'add-prescription-view' %}" class="btn btn-custom">Add prescription</a>
+        <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        {% include 'doctor/footer.html' %}
+    </body>
+{% endblock content-block %}
