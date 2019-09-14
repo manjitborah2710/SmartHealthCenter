@@ -474,11 +474,17 @@ def insertIntoStockMedicine(request):
         qty=request.POST["qty"]
         exp_date=request.POST["expiry-date"]
         med_rate=request.POST["medicine-rate"]
-        try:
-            StockMedicine.objects.create(batch_no=batch,medicine_id=med,quantity=qty,expiry_date=exp_date,medicine_rate=med_rate)
-            return redirect('display-medicine')
-        except IntegrityError as e:
-            return render(request,'doctor/error.html',{'msg':''})
+
+        obj, created = StockMedicine.objects.update_or_create(
+            batch_no = batch,
+            medicine_id=med,
+            defaults = {
+            'quantity': qty,
+            'expiry_date': exp_date,
+            'medicine_rate': med_rate,
+            }
+        )
+        return redirect('display-medicine')
     return render(request,'doctor/error.html')
 
 
