@@ -54,6 +54,8 @@ urlpatterns = [
     path('addPrescription',views.addPrescription,name="add-prescription-view"),
     path('insertPrescription',views.insertIntoPrescription,name="insert-into-prescription-view"),
 
+    path('individualRecord/<str:patient_id>', views.displayIndividualRecord, name="display-individualrecord-view"),
+
     path('addMedicineIssue/<int:presc_no>',views.addMedicineIssue,name='add-medicineissue-view'),
     path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
     path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),

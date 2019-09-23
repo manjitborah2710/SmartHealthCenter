@@ -534,13 +534,22 @@ def deleteRequisitionProposal(request,pk):
         return redirect('display-doctorrequisitionproposal-view')
     return render(request, "doctor/error.html",{'msg':'Deletion failed...you may not have the required permissions'})
 
+
+def submitFeedback(request):
+    if request.method=='POST':
+        fb=request.POST["feedback"]
+        username=request.user.username
+        Feedback.objects.create(user=username,feedback=fb)
+        return redirect('doctor-home-view')
+    return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})
+
 def viewMyPatients(request):
     permcheck = checkForPermission(request, "doctor.view_patientrecord")
     isDoc = False
     if permcheck == 1:
         print (getUserId(request))
         try:
-            staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
+            staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request)).order_by('-date_created')
         except ObjectDoesNotExist:
             return render(request, 'doctor/error.html')
         try:
@@ -551,6 +560,7 @@ def viewMyPatients(request):
         isDoc = True
         return render(request, 'doctor/myPatients.html', {'data': data, 'isDoc': isDoc})
     return render(request,'doctor/error.html')
+
 
 def addPatientRecord(request):
     permcheck = checkForPermission(request, "doctor.add_patientrecord")
@@ -566,29 +576,37 @@ def insertIntoPatientRecord(request):
     permcheck = checkForPermission(request, "doctor.add_patientrecord")
     if permcheck == 1 and request.method == "POST":
         person_id = request.POST["person-id"]
-        complaint = request.POST["complaint"]
-        diagnosis = request.POST["diagnosis"]
+        today_date = request.POST["today-date"]
+        height = reuqest.POST["height"]
+        weight = request.POST["weight"]
         isDependant = request.POST["dependent"]
-        testRecommended = request.POST["recommended-test"]
-        test_result = request.POST["test-result"]
-        fup_date = request.POST["fup-date"]
         u_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
         obj, created = PatientRecord.objects.update_or_create(
-            doctor_id=u_id,
-            patient_id_id = person_id,
+            doctor_id = u_id,
+            patient_id = person_id,
 
             defaults={
-                'complaint': complaint,
-                'daignosis': diagnosis,
-                'isDependant': isDependant,
-                'testRecommended': testRecommended,
-                'test_result': test_result,
-                'follow_up_date': fup_date
+                'date_created': today_date,
+                'height': height,
+                'weight': weight,
+                'isDependant': isDependant
             }
         )
-
         return redirect('display-mypatients-view')
     return redirect(request, 'doctor/error.html')
+
+
+def displayIndividualRecord(request,patient_id):
+    permcheck = checkForPermission(request, "doctor.view_patientrecord")
+    if permcheck == 1:
+        data = PatientRecord.object.filter(patient_id = patient_id)
+        presData = Prescription.object.filter(patient_id=patient_id)
+        ctx = {
+            'data': data,
+            'presData': presData,
+        }
+        return render(request, 'doctor/individualRecord.html', ctx)
+    return render(request, 'doctor/error.html')
 
 def displayPrescription(request):
     permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
@@ -691,12 +709,3 @@ def deleteMedicineIssue(request,pk):
         MedicineIssue.objects.get(pk=pk).delete()
         return redirect(reverse('display-prescription-view')+"?prescription-no="+p_no)
     return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})
-
-
-def submitFeedback(request):
-    if request.method=='POST':
-        fb=request.POST["feedback"]
-        username=request.user.username
-        Feedback.objects.create(user=username,feedback=fb)
-        return redirect('doctor-home-view')
-    return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})

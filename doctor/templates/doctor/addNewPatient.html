@@ -24,20 +24,20 @@
             </div>
 
             <div class="form-group">
-                <label for="complaint">Complaint</label>
+                <label for="height">Height (in cm)</label>
                 {% if data %}
-                 <input id="complaint" class="form-control" name="complaint" type="text" required value = "{{ data.complaint }}">
+                <input id="height" class="form-control" name="height" placeholder={{ data.height }} value={{ data.height }} type="number" min=0>
                 {% else %}
-                <input id="complaint" class="form-control" name="complaint" type="text" required>
+                <input id="height" class="form-control" name="height" type="number" min=0>
                 {% endif %}
             </div>
 
             <div class="form-group">
-                <label for="diagnosis">Diagnosis</label>
+                <label for="weight">Weight (in kg)</label>
                 {% if data %}
-                <input id="diagnosis" class="form-control" name="diagnosis" type="text" value = {{ data.daignosis }}>
+                <input id="weight" class="form-control" name="weight" placeholder={{ data.weight }} value={{ data.weight }} type="number" min=0>
                 {% else %}
-                <input id="diagnosis" class="form-control" name="diagnosis" type="text">
+                <input id="weight" class="form-control" name="weight" type="number" min=0>
                 {% endif %}
             </div>
 
@@ -60,41 +60,13 @@
                     </select>
                 {% endif %}
             </div>
-            <div class="form-group">
-                <label for="recommended-test">Recommended Test</label>
-                {% if data %}
-                    <select id="recommended-test" class="form-control" name="recommended-test">
-                        {% if data.testRecommended %}
-                            <option value="1" selected>Yes</option>
-                            <option value="0">No</option>
-                        {% else %}
-                            <option value="1">Yes</option>
-                            <option value="0" selected>No</option>
-                        {% endif %}
-                    </select>
-                {% else %}
-                    <select id="recommended-test" class="form-control" name="recommended-test">
-                            <option value="1">Yes</option>
-                            <option value="0" selected>No</option>
-                    </select>
-                {% endif %}
-            </div>
 
             <div class="form-group">
-                <label for="test-result">Test Results</label>
+                <label for="today-date">Date</label>
                 {% if data %}
-                <input id="test-result" class="form-control" name="test-result" type="text" value = {{ data.test_result}}>
+                <input id="today-date" class="form-control" name="today-date" type="date" value = {{ data.date}}>
                 {% else %}
-                <input id="test-result" class="form-control" name="test-result" type="text">
-                {% endif %}
-            </div>
-
-            <div class="form-group">
-                <label for="fup-date">Follow-up Date</label>
-                {% if data %}
-                <input id="fup-date" class="form-control" name="fup-date" type="date" value = {{ data.follow_up_date}}>
-                {% else %}
-                <input id="fup-date" class="form-control" name="fup-date" type="date">
+                <input id="today-date" class="form-control" name="today-date" type="date">
                 {% endif %}
             </div>
 
