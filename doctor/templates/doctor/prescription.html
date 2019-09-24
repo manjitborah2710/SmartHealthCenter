@@ -3,6 +3,12 @@
 
 {% block content-block %}
     <body class="body">
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
         <form method="get" class="form form-inline">
             <label style="padding: 10px">Prescription ID:</label>
             <select name="prescription-no" class="form-control" style="margin: 10px">
@@ -52,5 +58,6 @@
         {% endif %}
         <a href="{% url 'add-prescription-view' %}" class="btn btn-custom">Add prescription</a>
         <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        {% include 'doctor/footer.html' %}
     </body>
 {% endblock content-block %}

@@ -3,6 +3,12 @@
 
 {% block content-block %}
     <body class="body">
+            {% include 'doctor/header.html' %}
+            <div class="div-1">
+                   
+                            {% include 'doctor/test.html' %}
+        
+                  </div>
         <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -32,5 +38,6 @@
         </table>
         <a href="{% url 'add-requisitionproposal-view' %}" class="btn btn-custom">Add Requisition Proposal</a>
         <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        {% include 'doctor/footer.html' %}
     </body>
 {% endblock content-block %}

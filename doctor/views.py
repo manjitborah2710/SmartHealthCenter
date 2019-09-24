@@ -23,13 +23,12 @@ def loginView(request):
         user=authenticate(username=user_name,password=pwd)
         if user is not None:
             login(request,user)
-            if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
-                id = User.objects.get(username = user).id
-                try:
-                    HealthCentreStaff.objects.get(user_id = id)
-                except ObjectDoesNotExist:
-                    return redirect('add-staff-view')
-
+            # if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
+            #     id = User.objects.get(username = user).id
+            #     try:
+            #         HealthCentreStaff.objects.get(user_id = id)
+            #     except ObjectDoesNotExist:
+            #         return redirect('add-staff-view')
             return redirect('doctor-home-view')
     user=request.user
     if not user.is_authenticated:
@@ -474,11 +473,17 @@ def insertIntoStockMedicine(request):
         qty=request.POST["qty"]
         exp_date=request.POST["expiry-date"]
         med_rate=request.POST["medicine-rate"]
-        try:
-            StockMedicine.objects.create(batch_no=batch,medicine_id=med,quantity=qty,expiry_date=exp_date,medicine_rate=med_rate)
-            return redirect('display-medicine')
-        except IntegrityError as e:
-            return render(request,'doctor/error.html',{'msg':''})
+
+        obj, created = StockMedicine.objects.update_or_create(
+            batch_no = batch,
+            medicine_id=med,
+            defaults = {
+            'quantity': qty,
+            'expiry_date': exp_date,
+            'medicine_rate': med_rate,
+            }
+        )
+        return redirect('display-medicine')
     return render(request,'doctor/error.html')
 
 

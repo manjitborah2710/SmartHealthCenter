@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('viewStaff',views.displayHealthCenterStaff,name="display-staff-view"),
     path('addStaff',views.addHealthCenterStaff,name="add-staff-view"),
+
     path('editStaff/<int:pk>',views.editHealthCenterStaff,name="edit-staff-view"),
     path('deleteStaff/<int:pk>',views.deleteHealthCenterStaff,name="delete-staff-view"),
     path('insertIntoStaff',views.insertIntoHealthCenterStaff,name="insert-into-staff-view"),

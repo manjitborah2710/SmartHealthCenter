@@ -1,0 +1,35 @@
+/*.login-box{
+    display: inline-block;
+    margin: 30px 50px;   
+}
+.logins{
+ width:70%;
+ margin-left:15%;
+ margin:auto;
+}*/
+.login-box{
+    display: inline-block;
+    margin: 30px auto;   
+}
+.logins{
+ display: flex;
+ justify-content: center;
+ width:70%;
+ margin-left:15%;
+ margin:auto;
+}
+.btn-custom-style:hover{
+    background-color: rgb(10, 54, 59);  
+}
+.btn-custom{
+    background-color: rgb(25, 132, 146);
+    color: white;
+    border: none;
+}
+.btn-full{
+    width: 100%;
+}
+.std{
+    height:310px;
+}
+

@@ -1,12 +1,19 @@
 {% extends 'doctor/base.html' %}id
 {% load staticfiles %}
 {% block content-block %}
+{% include 'doctor/header.html' %}
+<div class="div-1">
+       
+                {% include 'doctor/test.html' %}
+
+      </div>
 {% if data%}
-    <h1>Edit Medicine </h1>
+    <h1 style="text-align: center;">Edit Medicine </h1>
 {% else %}
-    <h1>Add Medicine </h1>
+    <h1 style="text-align: center;">Add Medicine </h1>
 {% endif %}
     <body>
+           
         <form method="post" action="{% url 'insert-into-medicineissue-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -37,27 +44,15 @@
 
             <div class="form-group">
                 <label for="med-issued">Issue Status</label>
-                {% if type == 'doctor' %}
-                    <input class="form-control" value="No" type="text" readonly>
-                    <input id="med-issued" name="med-issued" class="form-control" value="0" type="text" readonly hidden>
-                {% else %}
-                    <select id="med-issued" name="med-issued" class="form-control">
-                        <option value="1">Yes</option>
-                        <option value="0" selected>No</option>
-                    </select>
-                {% endif %}
-
-
+                <select id="med-issued" name="med-issued" class="form-control">
+                    <option value="1">Yes</option>
+                    <option value="0" selected>No</option>
+                </select>
             </div>
 
             <div class="form-group">
                 <label for="nii">Non issue reason</label>
-                {% if type == 'doctor' %}
-                    <input class="form-control" id="nii" name="nii" readonly>
-                {% else %}
-                    <input class="form-control" id="nii" name="nii">
-                {% endif %}
-
+                <input class="form-control" id="nii" name="nii">
             </div>
 
             <div class="form-group">
@@ -66,7 +61,7 @@
             </div>
 
         </form>
-
+        {% include 'doctor/footer.html' %}
     </body>
 
 {% endblock %}

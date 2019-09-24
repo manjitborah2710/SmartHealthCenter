@@ -64,7 +64,7 @@ ul {
     height: 100px;
 }
 .form-data{
-    height: 90%;
+    /*height: 90%;*/
     width: 90%;
     margin: 10% auto;
 }
@@ -75,6 +75,7 @@ ul {
     margin-right: 15%;
 }
 .btn-custom-style{
+    margin-bottom:20px;
     position: relative;
     width: 100%;
     color: aliceblue;
@@ -98,7 +99,9 @@ ul {
 .footer{
     height: 50px;
     background-color: rgb(7, 71, 80);
+    position: relative;
     margin-top: auto;
+    
     
 }
 .copyright{

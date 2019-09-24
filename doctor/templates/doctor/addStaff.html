@@ -1,12 +1,19 @@
 {% extends 'doctor/base.html' %}id
 {% load staticfiles %}
 {% block content-block %}
+{% include 'doctor/header.html' %}
+<div class="div-1">
+       
+                {% include 'doctor/test.html' %}
+
+      </div>
 {% if data%}
-    <h1>Edit Staff </h1>
+    <h1 style="text-align: center;">Edit Staff </h1>
 {% else %}
-    <h1>Add Staff</h1>
+    <h1 style="text-align: center;">Add Staff</h1>
 {% endif %}
     <body>
+           
         <form method="post" action="{% url 'insert-into-staff-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -69,6 +76,7 @@
             </div>
 
         </form>
+        {% include 'doctor/footer.html' %}
     </body>
 
 {% endblock %}
