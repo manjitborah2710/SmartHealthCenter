@@ -7,7 +7,8 @@
     {% include 'doctor/header.html' %}
     <!-------------------------------- Main section------------------------------------------->
     <main>
-        <div class="card login-box" style="width: 18rem;">
+        <div class="logins">
+            <div class="card login-box" style="width: 18rem;">
             <img src="{% static 'doctor/images/staff.jpg' %}" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title" style="text-align: center;">Login as Health center staff</h5>
@@ -29,6 +30,7 @@
               <a href="{% url 'login-view' %}" class="btn btn-custom btn-full">Login</a>
             </div>
           </div>
+        </div>
     </main>
     <div style="clear: both;"></div>
     <!---------------------------------Footer Section----------------------------------------->
