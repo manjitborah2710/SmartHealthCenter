@@ -59,5 +59,7 @@ urlpatterns = [
     path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
     path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),
 
-    path('submitfeedback',views.submitFeedback,name='submit-feedback')
+    path('submitfeedback',views.submitFeedback,name='submit-feedback'),
+    path('addMedicine',views.addMedicine,name='add-medicine-view'),
+    path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view')
 ]

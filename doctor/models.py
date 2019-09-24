@@ -150,7 +150,7 @@ class Medicine(models.Model):
     manufacturing_company = models.CharField(max_length = MAX_LENGTH, default='XX')
     quantity = models.IntegerField(default=0)
     category = models.CharField(
-        max_length=3,
+        max_length=100,
         choices=CATEGORY_CHOICES,
         default=TABLET) #syrup,tablet
 

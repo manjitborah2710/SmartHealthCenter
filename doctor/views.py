@@ -699,3 +699,31 @@ def submitFeedback(request):
         Feedback.objects.create(user=username,feedback=fb)
         return redirect('doctor-home-view')
     return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})
+
+
+def addMedicine(request):
+    permcheck = checkForPermission(request, 'doctor.add_medicine')
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+
+        return render(request, 'doctor/addMedicine.html')
+
+def insertIntoMedicine(request):
+    permcheck = checkForPermission(request, 'doctor.add_medicine')
+    if permcheck==1 and request.method=='POST':
+        med_id=request.POST["med-id"]
+        med_name=request.POST["med-name"]
+        company=request.POST["company"]
+        qty=request.POST["med-qty"]
+        cat=request.POST["med-cat"]
+        Medicine.objects.update_or_create(medicine_id=med_id,defaults={
+            'medicine_name':med_name,
+            'manufacturing_company':company,
+            'quantity':qty,
+            'category':cat
+        })
+        return redirect('doctor-home-view')
+    return render(request, 'doctor/error.html')
