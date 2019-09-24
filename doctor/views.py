@@ -23,13 +23,12 @@ def loginView(request):
         user=authenticate(username=user_name,password=pwd)
         if user is not None:
             login(request,user)
-            if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
-                id = User.objects.get(username = user).id
-                try:
-                    HealthCentreStaff.objects.get(user_id = id)
-                except ObjectDoesNotExist:
-                    return redirect('add-staff-view')
-
+            # if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
+            #     id = User.objects.get(username = user).id
+            #     try:
+            #         HealthCentreStaff.objects.get(user_id = id)
+            #     except ObjectDoesNotExist:
+            #         return redirect('add-staff-view')
             return redirect('doctor-home-view')
     user=request.user
     if not user.is_authenticated:
