@@ -99,7 +99,7 @@ ul {
 .footer{
     height: 50px;
     background-color: rgb(7, 71, 80);
-   
+    position: relative;
     margin-top: auto;
     
     

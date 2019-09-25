@@ -1,0 +1,69 @@
+{% extends 'doctor/base.html' %}id
+{% load staticfiles %}
+{% block content-block %}
+{% include 'doctor/header.html' %}
+<div class="div-1">
+       
+                {% include 'doctor/nav.html' %}
+
+</div>
+{% if data%}
+    <h1 style="text-align: center;"><u>Edit Medicine</u> </h1>
+{% else %}
+    <h1 style="text-align: center;"><u>Add Medicine</u> </h1>
+{% endif %}
+    <body>
+           
+        <form method="post" action="{% url 'insert-into-medicine-view' %}" class="form-custom">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="med-id">Medicine ID</label>
+                <input id="med-id" class="form-control" name="med-id" maxlength=20 type="text" required>
+            </div>
+
+            <div class="form-group">
+                <label for="med-name">Medicine Name</label>
+                <input id="med-name" class="form-control" name="med-name" type="text" maxlength=50 required>
+            </div>
+
+
+
+            <div class="form-group">
+                <label for="company">Manufacturing Company</label>
+                <input id="company" name="company" class="form-control" type="text" maxlength=50>
+            </div>
+
+            <div class="form-group">
+                <label for="med-qty">Quantity</label>
+                <input class="form-control" id="med-qty" name="med-qty" type="number" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label for="med-cat">Category</label>
+                <select id="med-cat" name="med-cat" class="form-control">
+                    <option value="Syrup">Syrup</option>
+                    <option value="Tablet" selected>Tablet</option>
+                    <option value="Ointment">Ointment</option>
+                    <option value="Injection">Injection</option>
+                    <option value="Solution">Solution</option>
+                    <option value="Equipment">Equipment</option>
+                    <option value="Dental">Dental</option>
+                    <option value="Capsule">Capsule</option>
+                    <option value="Oil">Oil</option>
+                    <option value="Powder">Powder</option>
+                    <option value="Gargle">Gargle</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+
+
+            <div class="form-group">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit">
+                <a class="btn btn-danger" href="{% url 'doctor-home-view' %}">Cancel</a>
+            </div>
+
+        </form>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

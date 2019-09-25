@@ -4,13 +4,13 @@
 {% include 'doctor/header.html' %}
 <div class="div-1">
        
-                {% include 'doctor/test.html' %}
+                {% include 'doctor/nav.html' %}
 
       </div>
 {% if data%}
-    <h1 style="text-align: center;">Edit Medicine </h1>
+    <h1 style="text-align: center;">Edit Medicine Issue</h1>
 {% else %}
-    <h1 style="text-align: center;">Add Medicine </h1>
+    <h1 style="text-align: center;">Add Medicine Issue</h1>
 {% endif %}
     <body>
            
@@ -39,7 +39,7 @@
 
             <div class="form-group">
                 <label for="med-qty">Quantity</label>
-                <input class="form-control" id="med-qty" name="med-qty" required>
+                <input class="form-control" id="med-qty" name="med-qty" type="number" min="0" required>
             </div>
 
             <div class="form-group">

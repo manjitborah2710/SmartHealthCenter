@@ -23,13 +23,12 @@ def loginView(request):
         user=authenticate(username=user_name,password=pwd)
         if user is not None:
             login(request,user)
-            if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
-                id = User.objects.get(username = user).id
-                try:
-                    HealthCentreStaff.objects.get(user_id = id)
-                except ObjectDoesNotExist:
-                    return redirect('add-staff-view')
-
+            # if request.user.groups.filter(name__in=['doctor', 'pharmacist']).exists():
+            #     id = User.objects.get(username = user).id
+            #     try:
+            #         HealthCentreStaff.objects.get(user_id = id)
+            #     except ObjectDoesNotExist:
+            #         return redirect('add-staff-view')
             return redirect('doctor-home-view')
     user=request.user
     if not user.is_authenticated:
@@ -737,3 +736,38 @@ def checkForPermissions(request,*args):
                 return 0
         return 1
     return -1
+def submitFeedback(request):
+    if request.method=='POST':
+        fb=request.POST["feedback"]
+        username=request.user.username
+        Feedback.objects.create(user=username,feedback=fb)
+        return redirect('doctor-home-view')
+    return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})
+
+
+def addMedicine(request):
+    permcheck = checkForPermission(request, 'doctor.add_medicine')
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+
+        return render(request, 'doctor/addMedicine.html')
+
+def insertIntoMedicine(request):
+    permcheck = checkForPermission(request, 'doctor.add_medicine')
+    if permcheck==1 and request.method=='POST':
+        med_id=request.POST["med-id"]
+        med_name=request.POST["med-name"]
+        company=request.POST["company"]
+        qty=request.POST["med-qty"]
+        cat=request.POST["med-cat"]
+        Medicine.objects.update_or_create(medicine_id=med_id,defaults={
+            'medicine_name':med_name,
+            'manufacturing_company':company,
+            'quantity':qty,
+            'category':cat
+        })
+        return redirect('doctor-home-view')
+    return render(request, 'doctor/error.html')

@@ -1,8 +1,19 @@
-.login-box{
-    float: left;
-    margin: 30px 30px;   
+/*.login-box{
+    display: inline-block;
+    margin: 30px 50px;   
 }
 .logins{
+ width:70%;
+ margin-left:15%;
+ margin:auto;
+}*/
+.login-box{
+    display: inline-block;
+    margin: 30px auto;   
+}
+.logins{
+ display: flex;
+ justify-content: center;
  width:70%;
  margin-left:15%;
  margin:auto;
@@ -21,3 +32,4 @@
 .std{
     height:310px;
 }
+

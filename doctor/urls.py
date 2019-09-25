@@ -8,6 +8,7 @@ urlpatterns = [
 
     path('viewStaff',views.displayHealthCenterStaff,name="display-staff-view"),
     path('addStaff',views.addHealthCenterStaff,name="add-staff-view"),
+
     path('editStaff/<int:pk>',views.editHealthCenterStaff,name="edit-staff-view"),
     path('deleteStaff/<int:pk>',views.deleteHealthCenterStaff,name="delete-staff-view"),
     path('insertIntoStaff',views.insertIntoHealthCenterStaff,name="insert-into-staff-view"),
@@ -60,5 +61,7 @@ urlpatterns = [
     path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
     path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),
 
-    path('submitfeedback',views.submitFeedback,name='submit-feedback')
+    path('submitfeedback',views.submitFeedback,name='submit-feedback'),
+    path('addMedicine',views.addMedicine,name='add-medicine-view'),
+    path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view')
 ]

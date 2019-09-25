@@ -2,12 +2,13 @@
 {% load staticfiles %}
 {% block content-block %}
     <body>
-            {% include 'doctor/header.html' %}
-            <div class="div-1">
-                   
-                            {% include 'doctor/test.html' %}
-        
-                  </div>
+        {% include 'doctor/header.html' %}
+        <div class="div-1">
+
+                        {% include 'doctor/nav.html' %}
+
+        </div>
+        <h1 style="text-align: center;"><u>Add New Stock</u> </h1>
         <form method="post" action="{% url 'insert-into-stock-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -36,6 +37,7 @@
 
             <div class="form-group">
                 <input class="btn btn-success" name="submit" type="submit" value="Submit">
+                <a class="btn btn-danger" href="{% url 'doctor-home-view' %}">Cancel</a>
             </div>
 
         </form>
