@@ -1,4 +1,4 @@
-{% extends 'doctoor/base.html' %}
+{% extends 'doctor/base.html' %}
 {%  load staticfiles %}
 
 {% block content-block %}
@@ -13,19 +13,56 @@
                 {% endif %}
                 Userid : {{ request.user }}
             </p>
-            <a class="btn btn-custom" href="{% url 'add-prescription-view' %}">Add New Prescription</a>
+            <a class="btn btn-custom" href="{% url 'add-prescription-view' id %}">Add New Prescription</a>
         </div>
 
         <div>
-            Name: {{ data.patient_id }}
-            Height: {{ data.height }}
-            Weight: {{ data.weight }}
-            Dependent Status: {{ data.isDependant }}
-            Date of Registration: {{ data.date_created }}
+            {% for i in data %}
+            Name: {{ i.patient_id }}
+            <br>
+            Height: {{ i.height }}
+            <br>
+            Weight: {{ i.weight }}
+            <br>
+            Dependent Status: {{ i.isDependant }}
+            <br>
+            Date of Registration: {{ i.date_created }}
+            <br><br>
+            {% endfor %}
         </div>
         <div>
-{#                code that lists all prescriptions etc #}
+            <h3>Prescriptions</h3>
+            <div>
+                <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date of Issue</th>
+                        <th>Complaint</th>
+                        <th>Diagnosis</th>
+                        <th>Follow-up Date</th>
+                        <th>Medicines Prescribed</th>
+                        <th>Tests Recommended</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in presData  %}
+                            <tr>
+                            <td>{{ i.date_of_issue }}</td>
+                            <td>{{ i.complaint }}</td>
+                            <td>{{ i.diagnosis }}</td>
+                            <td>{{ i.followup_date }}</td>
+                            <td>{{ i.medicine_prescribed }}</td>
+                            <td>{{ i.tests_recommended }}</td>
+                            <td>View</td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            </div>
         </div>
+
     </body>
 
 {% endblock %}

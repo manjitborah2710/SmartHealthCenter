@@ -10,14 +10,16 @@
                     {{ request.user.first_name }} {{ request.user.last_name }}
                     <br>
                 {% endif %}
-                Userid : {{ request.user }}
             </p>
-            <a class="btn btn-custom" href="{% url 'add-newpatient-view' %}">Add New Patient</a>
         </div>
 
         <div class="div-1">
             {% include 'doctor/test.html' %}
         </div>
+
+        <a class="btn btn-custom" href="{% url 'add-newpatient-view' %}">Add New Patient</a>
+
+
         <div class="div2">
             <table class="table table-striped">
                 <thead class="thead-dark">
@@ -34,11 +36,11 @@
                     {% for i in data  %}
                         <tr>
                             <td>{{ i.patient_id }}</td>
-                            <td>{{ i.height }}</td>
-                            <td>{{ i.weight }}</td>
+                            <td>{{ i.height }} cm</td>
+                            <td>{{ i.weight }} kg</td>
                             <td>{{ i.isDependant }}</td>
                             <td>{{ i.date_created }}</td>
-                            <td> <a href="{% url 'display-individualrecord-view' i.patient_id %}">View</a></td>
+                            <td> <a href="{% url 'display-individualrecord-view' i.id %}">View</a></td>
                         </tr>
                     {% endfor %}
                 </tbody>

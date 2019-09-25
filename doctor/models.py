@@ -242,7 +242,7 @@ class PatientRecord(models.Model):
     doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
     patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE, default='16-1-5-009')
     date_created = models.DateField()
-    height = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+    height = models.DecimalField(max_digits=5, decimal_places=2, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=2, default=0)
     isDependant = models.BooleanField()
 
@@ -256,7 +256,7 @@ class PatientRecord(models.Model):
         self.save()
 
     def __str__(self):
-        return self.patient_id
+        return self.patient_id_id
 
 
 class Prescription(models.Model):
@@ -265,10 +265,10 @@ class Prescription(models.Model):
     """
     prescription_serial_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
     patient_record_id = models.ForeignKey(PatientRecord, on_delete=models.CASCADE)
-    date_of_issue = models.DateTimeField(auto_now_add=True)
+    date_of_issue = models.DateField()
     complaint = models.CharField(max_length=MAX_LENGTH, default="Unspecified")
     diagnosis = models.CharField(max_length=MAX_LENGTH, default="Yet to be announced")
-    followup_date = models.DateField(blank=True)
+    followup_date = models.DateField(blank=True, default=None, null=True)
     medicine_prescribed = models.BooleanField(default=False)
     tests_recommended = models.BooleanField(default=False)
 
