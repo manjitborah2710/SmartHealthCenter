@@ -36,6 +36,7 @@
                 <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
+                        <th>Prescription Id</th>
                         <th>Date of Issue</th>
                         <th>Complaint</th>
                         <th>Diagnosis</th>
@@ -48,13 +49,14 @@
                 <tbody>
                     {% for i in presData  %}
                             <tr>
+                            <td>{{ i.prescription_serial_no }}</td>
                             <td>{{ i.date_of_issue }}</td>
                             <td>{{ i.complaint }}</td>
                             <td>{{ i.diagnosis }}</td>
                             <td>{{ i.followup_date }}</td>
                             <td>{{ i.medicine_prescribed }}</td>
                             <td>{{ i.tests_recommended }}</td>
-                            <td>View</td>
+                            <td><a href="{% url "display-prescription-view" i.prescription_serial_no %}">View</a></td>
                         </tr>
                     {% endfor %}
 
