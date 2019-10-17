@@ -3,15 +3,17 @@
 {% block content-block %}
 
 {% include 'doctor/header.html' %}
-<div class="div-1">
-    {% include 'doctor/nav.html' %}
-</div>
-{% if data%}
-    <h1>Edit Prescription </h1>
-{% else %}
-    <h1>Add Prescription</h1>
-{% endif %}
+
     <body>
+        <div class="div-1">
+            {% include 'doctor/nav.html' %}
+        </div>
+        <div class="main-content">
+        {% if data%}
+            <h1>Edit Prescription </h1>
+        {% else %}
+            <h1>Add Prescription</h1>
+        {% endif %}
         <form method="post" action="{% url 'insert-into-prescription-view' %}" class="form-custom">
             {% csrf_token %}
 
@@ -63,6 +65,7 @@
             </div>
 
         </form>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 

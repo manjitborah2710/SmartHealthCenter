@@ -2,18 +2,20 @@
 {% load staticfiles %}
 {% block content-block %}
 {% include 'doctor/header.html' %}
-<div class="div-1">
-       
+
+    <body>
+        <div class="div-1">
+
                 {% include 'doctor/nav.html' %}
 
-      </div>
-{% if data%}
-    <h1 style="text-align: center;">Edit Medicine Issue</h1>
-{% else %}
-    <h1 style="text-align: center;">Add Medicine Issue</h1>
-{% endif %}
-    <body>
-           
+        </div>
+        <div class="main-content">
+        {% if data%}
+            <h1 style="text-align: center;">Edit Medicine Issue</h1>
+        {% else %}
+            <h1 style="text-align: center;">Add Medicine Issue</h1>
+        {% endif %}
+
         <form method="post" action="{% url 'insert-into-medicineissue-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -62,6 +64,7 @@
             </div>
 
         </form>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 

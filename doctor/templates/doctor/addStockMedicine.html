@@ -8,6 +8,7 @@
                         {% include 'doctor/nav.html' %}
 
         </div>
+        <div class="main-content">
         <h1 style="text-align: center;"><u>Add Medicines into Stock</u> </h1>
         <form method="post" action="{% url 'insert-into-stockmedicine-view' %}" class="form-custom">
             {% csrf_token %}
@@ -49,6 +50,7 @@
             </div>
 
         </form>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 

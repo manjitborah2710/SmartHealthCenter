@@ -1,36 +1,26 @@
-
-{% load staticfiles %}
-
-{% block content-block %}
-<link rel="stylesheet" href="{% static 'doctor/custom_css/list.css' %}">
-<body class="body">
-    
-        <div class="text text-center">
-                <p class="alert alert-success">
-                    {% if request.user.first_name or request.user.last_name %}
-                        {{ request.user.first_name }} {{ request.user.last_name }}
-                        <br>
-                    {% endif %}
-        
-                    Userid : {{ request.user }}
-        
-                </p>
-                <a class="btn btn-custom" href="{% url 'display-mypatients-view' %}">View My Patients</a>
-                <a class="btn btn-custom" href="{% url 'display-staff-view' %}">Health Center Staff</a>
-                <a class="btn btn-custom" href="{% url 'display-firm-view' %}">Empanelled Firms</a>
-                <a class="btn btn-custom" href="{% url 'display-medicine' %}">Medicine Stock</a>
-                <a class="btn btn-custom" href="{% url 'display-requisitionmedicine-view' %}">Requisition Medicine</a>
-                <a class="btn btn-custom" href="{% url 'display-requisition-view' %}">Requisitions</a>
-                <a class="btn btn-custom" href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
-                <a class="btn btn-custom" href="{% url 'add-stock-view' %}" >Add new Stock</a>
-                <a class="btn btn-custom" href="{% url 'add-stockmedicine-view' %}" >Add medicines into Stock</a>
-                <a class="btn btn-custom" href="{% url 'add-medicine-view' %}" >Add medicine</a>
-                <a class="btn btn-custom" href="{% url 'display-prescription-view' 1001 %}">Issue Medicines</a>
+<div class="sidebar">
+        <p class="alert alert-success">
+            {% if request.user.first_name or request.user.last_name %}
+                {{ request.user.first_name }} {{ request.user.last_name }}
                 <br>
-                <br>
+            {% endif %}
+
+            Userid : {{ request.user }}
+        </p>
+        
+        <div class="link-ps">
+            <a href="{% url 'display-mypatients-view' %}">View My Patients</a>
+            <a href="{% url 'display-staff-view' %}">Health Center Staff</a>
+            <a href="{% url 'display-firm-view' %}">Empanelled Firms</a>
+            <a href="{% url 'display-medicine' %}">Medicine Stock</a>
+            <a href="{% url 'display-requisitionmedicine-view' %}">Requisition Medicine</a>
+            <a href="{% url 'display-requisition-view' %}">Requisitions</a>
+            <a href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
+            <a href="{% url 'add-stock-view' %}" >Add new Stock</a>
+            <a href="{% url 'add-stockmedicine-view' %}" >Add medicines into Stock</a>
+            <a href="{% url 'add-medicine-view' %}" >Add medicine</a>
+            <a href="{% url 'display-prescription-view' 1001 %}">Issue Medicines</a>
         </div>
-  
-      
-    
-</body>
-{% endblock %}
+
+</div>
+

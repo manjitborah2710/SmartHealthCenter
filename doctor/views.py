@@ -581,7 +581,7 @@ def viewMyPatients(request):
         try:
             staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
         except ObjectDoesNotExist:
-            return render(request, 'doctor/error.html')
+            return render(request, 'doctor/error.html',{'msg':'No data found'})
         try:
             data = PatientRecord.objects.filter(doctor_id = staff_id).order_by('-date_created')
             print(data)

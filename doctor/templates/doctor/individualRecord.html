@@ -5,14 +5,9 @@
 
     <body class="body">
         {% include 'doctor/header.html' %}
+        <div>{% include 'doctor/nav.html' %}</div>
+        <div class="main-content">
          <div class="text text-center">
-            <p class="alert alert-success">
-                {% if request.user.first_name or request.user.last_name %}
-                    {{ request.user.first_name }} {{ request.user.last_name }}
-                    <br>
-                {% endif %}
-                Userid : {{ request.user }}
-            </p>
             <a class="btn btn-custom" href="{% url 'add-prescription-view' id %}">Add New Prescription</a>
         </div>
 
@@ -64,7 +59,8 @@
             </table>
             </div>
         </div>
-
+        </div>
+        {% include 'doctor/footer.html' %}
     </body>
 
 {% endblock %}

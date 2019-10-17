@@ -4,18 +4,10 @@
 {% block content-block %}
     <body class="body">
         {% include 'doctor/header.html' %}
-        <div class="text text-center">
-            <p class="alert alert-success">
-                {% if request.user.first_name or request.user.last_name %}
-                    {{ request.user.first_name }} {{ request.user.last_name }}
-                    <br>
-                {% endif %}
-            </p>
-        </div>
-
         <div class="div-1">
             {% include 'doctor/nav.html' %}
         </div>
+        <div class="main-content">
 
         <a class="btn btn-custom" href="{% url 'add-newpatient-view' %}">Add New Patient</a>
 
@@ -45,6 +37,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
         </div>
         {%  include 'doctor/footer.html' %}
     </body>

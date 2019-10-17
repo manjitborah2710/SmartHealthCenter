@@ -9,6 +9,8 @@
                         {% include 'doctor/nav.html' %}
 
         </div>
+        <div class="main-content">
+
         <h1 style="text-align: center;"><u>Requisition Proposals</u> </h1>
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -39,6 +41,7 @@
         </table>
         <a href="{% url 'add-requisitionproposal-view' %}" class="btn btn-custom">Add Requisition Proposal</a>
         <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 {% endblock content-block %}
