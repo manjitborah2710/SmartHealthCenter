@@ -1,0 +1,66 @@
+{% extends 'doctor/base.html' %}
+{%  load staticfiles %}
+
+{% block content-block %}
+
+    <body class="body">
+        {% include 'doctor/header.html' %}
+        <div>{% include 'doctor/nav.html' %}</div>
+        <div class="main-content">
+         <div class="text text-center">
+            <a class="btn btn-custom" href="{% url 'add-prescription-view' id %}">Add New Prescription</a>
+        </div>
+
+        <div>
+            {% for i in data %}
+            Name: {{ i.patient_id }}
+            <br>
+            Height: {{ i.height }}
+            <br>
+            Weight: {{ i.weight }}
+            <br>
+            Dependent Status: {{ i.isDependant }}
+            <br>
+            Date of Registration: {{ i.date_created }}
+            <br><br>
+            {% endfor %}
+        </div>
+        <div>
+            <h3>Prescriptions</h3>
+            <div>
+                <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Prescription Id</th>
+                        <th>Date of Issue</th>
+                        <th>Complaint</th>
+                        <th>Diagnosis</th>
+                        <th>Follow-up Date</th>
+                        <th>Medicines Prescribed</th>
+                        <th>Tests Recommended</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in presData  %}
+                            <tr>
+                            <td>{{ i.prescription_serial_no }}</td>
+                            <td>{{ i.date_of_issue }}</td>
+                            <td>{{ i.complaint }}</td>
+                            <td>{{ i.diagnosis }}</td>
+                            <td>{{ i.followup_date }}</td>
+                            <td>{{ i.medicine_prescribed }}</td>
+                            <td>{{ i.tests_recommended }}</td>
+                            <td><a href="{% url "display-prescription-view" i.prescription_serial_no %}">View</a></td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+            </div>
+        </div>
+        </div>
+        {% include 'doctor/footer.html' %}
+    </body>
+
+{% endblock %}

@@ -24,8 +24,8 @@ class MedicineIssueInline(admin.TabularInline):
 
 
 class PrescriptionIssueAdmin(admin.ModelAdmin):
-    inlines = [MedicineIssueInline] 
-    list_display = ['prescription_serial_no', 'patient_id', 'date_of_issue', 'doctor_id']
+    inlines = [MedicineIssueInline]
+    list_display = ['prescription_serial_no', 'patient_record_id', 'date_of_issue']
     list_filter = ['date_of_issue']
     search_fields = ['prescription_serial_no']
 
@@ -84,7 +84,7 @@ class RecommendedTestInline(admin.TabularInline):
 
 class PatientRecordAdmin(admin.ModelAdmin):
     inlines = [RecommendedTestInline, FollowUpReportInline]
-    list_display = ['patient_id', 'doctor_id', 'prescription_serial_no']
+    list_display = ['patient_id', 'doctor_id']
     search_fields = ['patient_id']
     list_filter = ['isDependant']
 

@@ -5,3 +5,39 @@
 .form-group{
     padding: 1% 2% 0% 2%;
 }
+
+.sidebar{
+    width: 20%;
+    /*border-right: 4px solid #888888;*/
+    display: inline-block;
+    position: absolute;
+    height: 75vh;
+    overflow-y: auto;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+
+.sidebar .link-ps a{
+    display: block;
+    text-decoration: none;
+    padding: 7.5px;
+    /*border: 1px solid crimson;*/
+    margin:0px 0px 2px 0px;
+    color: rgb(25, 132, 146);
+}
+.sidebar .link-ps a:hover{
+    color: white;
+    background: rgb(25, 132, 146);
+    transition: 200ms;
+}
+
+.main-content{
+    width: 79.5%;
+    /*border: 1px solid red;*/
+    display: inline-block;
+    position: relative;
+    left: 20.5%;
+    height: 75vh;
+    overflow-y: auto;
+
+}

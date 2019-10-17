@@ -9,6 +9,7 @@
             {% include 'doctor/nav.html' %}
 
   </div>
+    <div class="main-content">
     <h1 style="text-align: center;"><u>Medicine Stock</u> </h1>
     <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
     <table class="table table-striped">
@@ -41,6 +42,7 @@
     </table>
     <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
     <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+    </div>
     {% include 'doctor/footer.html' %}
 </body>
 {% endblock content-block %}

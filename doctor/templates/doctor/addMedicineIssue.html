@@ -2,18 +2,20 @@
 {% load staticfiles %}
 {% block content-block %}
 {% include 'doctor/header.html' %}
-<div class="div-1">
-       
+
+    <body>
+        <div class="div-1">
+
                 {% include 'doctor/nav.html' %}
 
-      </div>
-{% if data%}
-    <h1 style="text-align: center;">Edit Medicine Issue</h1>
-{% else %}
-    <h1 style="text-align: center;">Add Medicine Issue</h1>
-{% endif %}
-    <body>
-           
+        </div>
+        <div class="main-content">
+        {% if data%}
+            <h1 style="text-align: center;">Edit Medicine Issue</h1>
+        {% else %}
+            <h1 style="text-align: center;">Add Medicine Issue</h1>
+        {% endif %}
+
         <form method="post" action="{% url 'insert-into-medicineissue-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
@@ -56,11 +58,13 @@
             </div>
 
             <div class="form-group">
-                <input class="btn btn-success" name="submit" type="submit" value="Submit">
-                <a class="btn btn-danger" href="{% url 'display-prescription-view' %}">Cancel</a>
+                <input class="btn btn-success" name="submit&cont" type="submit" value="Add Another">
+                <input class="btn btn-success" name="submit" type="submit" value="Submit and Exit">
+                <a class="btn btn-danger" href="{% url 'display-individualrecord-view'  p_no.patient_record_id_id  %}">Cancel</a>
             </div>
 
         </form>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 

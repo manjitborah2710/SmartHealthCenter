@@ -2,12 +2,13 @@
 {% load staticfiles %}
 {% block content-block %}
     <body>
-            {% include 'doctor/header.html' %}
-            <div class="div-1">
-                   
-                            {% include 'doctor/nav.html' %}
-        
-                  </div>
+        {% include 'doctor/header.html' %}
+        <div class="div-1">
+
+                        {% include 'doctor/nav.html' %}
+
+        </div>
+        <div class="main-content">
         <form method="post" action="{% url 'insert-into-requisitionmedicine-view' %}" class="form-custom">
             {% csrf_token %}
 
@@ -67,6 +68,7 @@
                 <input class="btn btn-success" name="submit" type="submit" value="Submit">
             </div>
         </form>
+        </div>
         {% include 'doctor/footer.html' %}
     </body>
 

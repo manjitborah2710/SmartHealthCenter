@@ -33,12 +33,12 @@
     color: white;
    
 }
-ul {
+.header-content-right ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
   }
-  li{
+ .header-content-right li{
       display: inline-block;
       padding-left: 20px;
   }
@@ -99,8 +99,10 @@ ul {
 .footer{
     height: 50px;
     background-color: rgb(7, 71, 80);
-    position: relative;
-    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /*margin-top: auto;*/
     
     
 }
