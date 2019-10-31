@@ -5,13 +5,20 @@
 <body class="body">
     {% include 'doctor/header.html' %}
     <div>{% include 'doctor/nav.html' %}</div>
-    <div class="text text-center main-content">
+    <div class="main-content">
+        <h3  style="padding: 10px">Welcome to NITS Intelligent Health Management System. You are logged in. Navigate through the website using the panel on the left. Please submit your valuable feedback :)</h3>
+        <div>
+            <ul>
+                <li><a href="http://www.nits.ac.in/campuslife/healthcentre.php">Know more about NITS Health center here</a></li>
+                <li><a href="http://www.nits.ac.in/campuslife/Health_Centre_Docs/Health_Centre_Duty_Schedule_20062018.pdf">View Health Center duty scheule</a></li>
+                <li><a>Ambulance Phone Number : +91 96787 80002</a></li>
+            </ul>
 
-        <a class="btn btn-danger" href="{% url 'logout-view'  %}">Logout</a>
-        <form method="post" action="{% url 'submit-feedback' %}">
+        </div>
+        <form method="post" action="{% url 'submit-feedback' %}" class="text-center">
             {% csrf_token %}
-            <div class="form-group" style="margin-left: auto;margin-right:auto;width: 40%">
-                <textarea class="form-control" name="feedback" placeholder="Submit your feedback" minlength="2" required></textarea>
+            <div class="form-group text-center" style="margin-left: auto;margin-right:auto;width: 40%">
+                <textarea id="fb-form" class="form-control" name="feedback" placeholder="Submit your feedback" minlength="2" required></textarea>
             </div>
             <input class="btn btn-primary" type="submit" value="Submit">
         </form>

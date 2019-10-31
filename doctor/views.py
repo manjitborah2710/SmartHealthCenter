@@ -30,6 +30,8 @@ def checkIfPharmacist(request):
 
 #view the index page (the landing page of the website)
 def indexView(request):
+    if request.user.is_authenticated:
+        return loginView(request)
     return render(request,'doctor/index.html')
 
 

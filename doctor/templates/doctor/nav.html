@@ -1,11 +1,13 @@
 <div class="sidebar">
-        <p class="alert alert-success">
+        <p class="alert alert-success text-center">
             {% if request.user.first_name or request.user.last_name %}
                 {{ request.user.first_name }} {{ request.user.last_name }}
                 <br>
             {% endif %}
 
             Userid : {{ request.user }}
+            <br>
+            <a class="btn btn-danger" href="{% url 'logout-view'  %}">Logout</a>
         </p>
         
         <div class="link-ps">
