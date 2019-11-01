@@ -729,7 +729,7 @@ def addMedicineIssue(req, presc_no):
     if permcheck == 0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck == 1:
-        meds = [i for i in Medicine.objects.all().values('medicine_id', 'medicine_name').order_by('medicine_name')]
+        meds = [i for i in StockMedicine.objects.all().values('medicine_id', 'medicine_id__medicine_name', 'id', 'batch_no').order_by('medicine_id__medicine_name')]
         ctx={
             'p_no':Prescription.objects.get(prescription_serial_no=presc_no),
             'meds':meds,
@@ -746,7 +746,7 @@ def insertIntoMedicineIssue(request):
         p=Prescription.objects.get(prescription_serial_no=pres_id)
         record_id = p.patient_record_id_id
         doi=request.POST['date-of-issue']
-        m=Medicine.objects.filter(medicine_id=request.POST['med-id'])[0]
+        m=StockMedicine.objects.get(id=request.POST['med-id'])
         qty=request.POST['med-qty']
         i=request.POST['med-issued']
         nii=request.POST['nii']
@@ -764,18 +764,21 @@ def deleteMedicineIssue(request,pk):
     permcheck = checkForPermission(request, "doctor.delete_medicineissue")
     if permcheck == 1:
         p_no=MedicineIssue.objects.get(pk=pk).prescription_serial_no_id
+        print(p_no)
         MedicineIssue.objects.get(pk=pk).delete()
-        return redirect(reverse('display-prescription-view')+"?prescription-no="+p_no)
+        return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_no}))
     return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})
 
 #a pharmacist can issue medicines that are prescribed by a doctor using this
 #this is currently not working properly as medicine_id_id returns a multivalued set
 #update function updates every tuple's quantity value
-def issueMedicine(request, presc_no, med_id):
+def issueMedicine(request, med_id):
     if checkIfPharmacist(request):
-        med = MedicineIssue.objects.filter(medicine_id_id=med_id)
+        med = MedicineIssue.objects.filter(id=med_id)
+        presc_no = med[0].prescription_serial_no_id
         issue_quantity = med[0].medicine_quantity
-        stock_med = StockMedicine.objects.filter(medicine_id_id=med_id)
+        med_id = med[0].medicine_id_id
+        stock_med = StockMedicine.objects.filter(id=med_id)
         if stock_med.exists():
             stock_quantity = stock_med[0].quantity
         else:
