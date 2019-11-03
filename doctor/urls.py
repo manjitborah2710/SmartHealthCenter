@@ -61,7 +61,7 @@ urlpatterns = [
     path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
     path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),
 
-    path('issueMedicine/<str:presc_no>/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
+    path('issueMedicine/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
 
     path('submitfeedback',views.submitFeedback,name='submit-feedback'),
     path('addMedicine',views.addMedicine,name='add-medicine-view'),

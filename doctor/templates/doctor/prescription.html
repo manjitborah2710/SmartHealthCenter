@@ -15,6 +15,13 @@
             Complaint: {{ data.complaint }}<br>
             Diagnosis: {{ data.diagnosis }}<br>
             Follow-up Date: {{ data.followup_date }}<br>
+            <hr>
+            {% if not isPharm %}
+                <div class="text text-center">
+                    <a class="btn btn-custom" href="{% url 'add-medicineissue-view' data.prescription_serial_no %}">Add New Medicine</a>
+                </div>
+            {% endif %}
+
             {% if data.medicine_prescribed %}<br>
                 <h3>Medicines Prescribed</h3><br>
                 <div>
@@ -41,12 +48,12 @@
 {#                            <td>{{ i.non_issue_reason }}</td>#}
                             {% if isPharm %}
                                 {% if i.issue_status == 0 %}
-                                    <td><a href="{% url 'issue-medicine-view' data.prescription_serial_no i.medicine_id_id %}">Issue</a></td>
+                                    <td><a href="{% url 'issue-medicine-view' i.id %}">Issue</a></td>
                                 {% else %}
                                     <td>Issued</td>
                                 {% endif %}
                             {% elif i.issue_status == 0 %}
-                                <td><a href=""{% url 'delete-medicineissue-view' i.medicine_id_id %}>Delete</a></td>
+                                <td><a href="{% url 'delete-medicineissue-view' i.id %}">Delete</a></td>
                             {% else %}
                                 <td>Issued</td>
                             {% endif %}

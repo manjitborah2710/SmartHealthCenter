@@ -292,7 +292,7 @@ class MedicineIssue(models.Model):
         Holds details about the medicines issued in a given prescription
     """
     prescription_serial_no = models.ForeignKey(Prescription, on_delete=models.CASCADE)
-    medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    medicine_id = models.ForeignKey(StockMedicine, on_delete=models.CASCADE)
     medicine_quantity = models.IntegerField(blank=True, default=0)
     issue_status = models.BooleanField()
     non_issue_reason = models.CharField(blank=True, max_length=MAX_LENGTH)

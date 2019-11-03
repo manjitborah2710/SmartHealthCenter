@@ -34,7 +34,7 @@
                 <label for="med-id">Medicine ID</label>
                 <select id="med-id" name="med-id" class="form-control">
                     {% for i in meds %}
-                        <option value="{{ i.medicine_id }}">{{ i.medicine_id }} | {{ i.medicine_name }}</option>
+                        <option value="{{ i.id }}">{{ i.batch_no }} | {{ i.medicine_id__medicine_name }}</option>
                     {% endfor %}
                 </select>
             </div>
