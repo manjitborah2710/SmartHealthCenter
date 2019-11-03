@@ -10,7 +10,7 @@ jdcal==1.4.1
 MarkupPy==1.14
 mysqlclient==1.4.4
 odfpy==1.4.0
-openpyxl==3.0.0
+openpyxl==2.6.4
 pytz==2019.3
 PyYAML==5.1.2
 screen==1.0.1
