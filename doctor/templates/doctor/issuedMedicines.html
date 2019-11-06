@@ -1,0 +1,21 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+
+{% block content-block %}
+    <body class="body">
+        {% include 'doctor/header.html' %}
+
+        <div class="div-1">
+            {% include 'doctor/nav.html' %}
+        </div>
+
+        <div class="main-content">
+
+        </div>
+
+            <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+        </div>
+
+        {% include 'doctor/footer.html' %}
+    </body>
+{% endblock content-block %}

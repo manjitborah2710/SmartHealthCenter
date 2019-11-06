@@ -668,6 +668,10 @@ def displayPrescription(request,pres_id=1001):
                'tests_recom': tests_recom,
                'isPharm': isPharm,
                }
+        if isPharm:
+            prescriptions=[i['prescription_serial_no'] for i in Prescription.objects.all().values('prescription_serial_no')]
+            print(prescriptions)
+            ctx['p_nos']=prescriptions
         return render(request, 'doctor/prescription.html', context=ctx)
     return render(request, 'doctor/error.html')
 
@@ -831,3 +835,12 @@ def insertIntoMedicine(request):
         })
         return redirect('doctor-home-view')
     return render(request, 'doctor/error.html')
+
+def viewAllPrescriptions(request):
+    pass
+
+def getReq(request):
+    if request.method=='GET':
+        p_id=request.GET['p_no']
+        return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_id}))
+    return HttpResponse("Bad Request")

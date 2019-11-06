@@ -16,11 +16,22 @@
             Diagnosis: {{ data.diagnosis }}<br>
             Follow-up Date: {{ data.followup_date }}<br>
             <hr>
-            {% if not isPharm %}
-                <div class="text text-center">
+
+            <div class="text text-center">
+                {% if isPharm %}
+                    <form method="get" action="{% url 'get-req' %}">
+                        <select name="p_no">
+                            {% for i in p_nos %}
+                            <option name="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="View" class="btn btn-primary">
+                    </form>
+
+                {% else %}
                     <a class="btn btn-custom" href="{% url 'add-medicineissue-view' data.prescription_serial_no %}">Add New Medicine</a>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
 
             {% if data.medicine_prescribed %}<br>
                 <h3>Medicines Prescribed</h3><br>
