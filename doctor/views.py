@@ -247,7 +247,7 @@ def displayMedicine(req):
     user = req.user
     if user.is_authenticated:
         if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
-            data_stockmeds= StockMedicine.objects.order_by('medicine_id','expiry_date')
+            data_stockmeds= StockMedicine.objects.order_by('medicine_id__medicine_name','expiry_date')
             l = []
             for i in data_stockmeds:
                 d = {
@@ -660,6 +660,7 @@ def displayPrescription(request,pres_id=1001):
         isPharm=checkIfPharmacist(request)
         if data[0].medicine_prescribed:
             meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
+            print("manjit",meds_pres)
         if data[0].tests_recommended:
             tests_recom = RecommendedTest.objects.filter(prescription_serial_no=pres_id)
         ctx = {'data' : data[0],
@@ -748,6 +749,9 @@ def insertIntoMedicineIssue(request):
     if permcheck==1 and request.method=='POST':
         pres_id = request.POST['presc-serial-no']
         p=Prescription.objects.get(prescription_serial_no=pres_id)
+        if not p.medicine_prescribed:
+            p.medicine_prescribed=True
+            p.save()
         record_id = p.patient_record_id_id
         doi=request.POST['date-of-issue']
         m=StockMedicine.objects.get(id=request.POST['med-id'])
@@ -783,10 +787,11 @@ def issueMedicine(request, med_id):
         issue_quantity = med[0].medicine_quantity
         med_id = med[0].medicine_id_id
         stock_med = StockMedicine.objects.filter(id=med_id)
+        stock_quantity=0
         if stock_med.exists():
             stock_quantity = stock_med[0].quantity
-        else:
-            stock_quantity = 0
+        # else:
+        #     stock_quantity = 0
         if stock_quantity>issue_quantity:
             new = stock_quantity - issue_quantity
             print (new)
