@@ -64,8 +64,13 @@ urlpatterns = [
     path('issueMedicine/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
 
     path('submitfeedback',views.submitFeedback,name='submit-feedback'),
+
     path('addMedicine',views.addMedicine,name='add-medicine-view'),
     path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view'),
-    path('viewAllPrescriptions',views.viewAllPrescriptions,name='display-allprescriptions-view'),
-    path('getReq',views.getReq,name='get-req')
+
+    path('viewAllMedicinesIssued',views.viewAllMedicinesIssued,name='display-allmedicinesissued-view'),
+
+    path('getReq',views.getReq,name='get-req'),
+
+
 ]

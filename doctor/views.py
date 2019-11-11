@@ -28,6 +28,7 @@ def checkIfPharmacist(request):
         return True
     return False
 
+
 #view the index page (the landing page of the website)
 def indexView(request):
     if request.user.is_authenticated:
@@ -841,11 +842,20 @@ def insertIntoMedicine(request):
         return redirect('doctor-home-view')
     return render(request, 'doctor/error.html')
 
-def viewAllPrescriptions(request):
-    pass
+def viewAllMedicinesIssued(request):
+    isAdmin=request.user.is_superuser
+    if isAdmin:
+        allIssuedMeds=[i for i in MedicineIssue.objects.all().values('prescription_serial_no','prescription_serial_no__date_of_issue','medicine_id__batch_no','medicine_id__medicine_id__medicine_name','medicine_quantity','medicine_id__quantity').order_by('prescription_serial_no__date_of_issue')]
+        print(allIssuedMeds[0])
+        ctx={
+            'data':allIssuedMeds
+        }
+        return render(request,'doctor/allIssuedMedicines.html',context=ctx)
+    return HttpResponse('You need to have admin privileges for this operation')
 
 def getReq(request):
     if request.method=='GET':
         p_id=request.GET['p_no']
         return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_id}))
     return HttpResponse("Bad Request")
+

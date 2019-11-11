@@ -1,0 +1,44 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+
+{% block content-block %}
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <div class="div-1">
+                   
+            {% include 'doctor/nav.html' %}
+
+  </div>
+    <div class="main-content">
+    <h1 style="text-align: center;"><u>Issued Medicines</u></h1>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Prescription Serial No.</th>
+                <th>Date</th>
+                <th>Batch No.</th>
+                <th>Medicine</th>
+                <th>Quantity Issued</th>
+                <th>Quantity Available</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in data  %}
+            <tr>
+                <td>{{ i.prescription_serial_no }}</td>
+                <td>{{ i.prescription_serial_no__date_of_issue }}</td>
+                <td>{{ i.medicine_id__batch_no }}</td>
+                <td>{{ i.medicine_id__medicine_id__medicine_name }}</td>
+                <td>{{ i.medicine_quantity }}</td>
+                <td>{{ i.medicine_id__quantity }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+    </div>
+    {% include 'doctor/footer.html' %}
+</body>
+{% endblock content-block %}
