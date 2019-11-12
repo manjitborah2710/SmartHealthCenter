@@ -19,21 +19,40 @@
                     <th>Medicine</th>
                     <th>Requisition ID</th>
                     <th>Quantity</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-
+                    <th class="text-center">Edit</th>
+                    <th class="text-center">Delete</th>
+                    {% if isCommittee %}
+                    <th class="text-center">Add to Requisition List</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
 
                 {% for i in data  %}
                     <tr>
-                        <td>{{ i.doctor_id }}</td>
-                        <td>{{ i.medicine_id }}</td>
+                        <td>{{ i.doctor_id }} </td>
+                        <td>{{ i.medicine_id }}  </td>
                         <td>{{ i.requisition_id }}</td>
                         <td>{{ i.quantity }}</td>
-                        <td> <a href="{% url 'edit-requisitionproposal-view' i.pk %}">Edit</a></td>
-                        <td> <a href="{% url 'delete-requisitionproposal-view' i.pk %}">Delete</a></td>
+                        {% if i.doctor_id.user_id_id == user_id %}
+                            <td class="text-center"><a href="{% url 'edit-requisitionproposal-view' i.pk i.doctor_id.user_id_id %}">Edit</a></td>
+                            <td class="text-center"><a href="{% url 'delete-requisitionproposal-view' i.pk i.doctor_id.user_id_id %}">Delete</a></td>
+                        {% else %}
+                            <td class="text-center"> Edit </td>
+                            <td class="text-center"> Delete </td>
+                        {% endif %}
+                        {% if isCommittee %}
+                            <td class="text-center">
+                                <form method="post" action="{% url 'confirm-addition-into-requisition' %}">
+                                    {% csrf_token %}
+                                    <input type="text" name="id" value="{{ i.pk }}" hidden>
+                                    <input type="text" name="med-id" value="{{ i.medicine_id_id }}" hidden>
+                                    <input type="text" name="req-id" value="{{ i.requisition_id }}" hidden>
+                                    <input type="number" name="qty" value="{{ i.quantity }}" hidden>
+                                    <input class="btn btn-secondary" type="submit" value="Add">
+                                </form>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
 
