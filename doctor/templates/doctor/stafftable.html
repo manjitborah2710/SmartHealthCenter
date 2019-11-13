@@ -1,5 +1,6 @@
 {% extends 'doctor/base.html' %}
 {% load static %}
+{% load extra_tag %}
 
 {% block content-block %}
     <body class="body">
@@ -19,8 +20,10 @@
                     <th>Type</th>
                     <th>Address</th>
                     <th>Availability</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    {% if request.user|inGroup:'admin' %}
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -31,8 +34,10 @@
                         <td>{{ i.type }}</td>
                         <td>{{ i.address }}</td>
                         <td>{{ i.availability }}</td>
-                        <td> <a href="{% url 'edit-staff-view' i.id %}">Edit</a></td>
-                        <td> <a href="{% url 'delete-staff-view' i.id %}">Delete</a></td>
+                        {% if request.user|inGroup:'admin' %}
+                            <td> <a href="{% url 'edit-staff-view' i.id %}">Edit</a></td>
+                            <td> <a href="{% url 'delete-staff-view' i.id %}">Delete</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                     

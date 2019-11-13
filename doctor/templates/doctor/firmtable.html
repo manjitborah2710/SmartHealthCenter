@@ -1,5 +1,6 @@
 {% extends 'doctor/base.html' %}
 {% load static %}
+{% load extra_tag %}
 
 {% block content-block %}
 <body class="body">
@@ -11,15 +12,19 @@
     </div>
     <div class="main-content">
     <h1 style="text-align: center;"><u>Empanelled Firms</u> </h1>
-    <a href="{% url 'add-firm-view' %}" class="btn btn-custom">Add New Firm</a>
+    {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
+        <a href="{% url 'add-firm-view' %}" class="btn btn-custom">Add New Firm</a>
+    {% endif %}
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Phone</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
+                    <th>Edit</th>
+                    <th>Delete</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -29,8 +34,10 @@
                 <td>{{ i.firm_name }}</td>
                 <td>{{ i.firm_email }}</td>
                 <td>{{ i.firm_phone }}</td>
-                <td> <a href="{% url 'edit-firm-view' i.firm_id %}">Edit</a></td>
-                <td> <a href="{% url 'delete-firm-view' i.firm_id %}">Delete</a></td>
+                {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
+                    <td> <a href="{% url 'edit-firm-view' i.firm_id %}">Edit</a></td>
+                    <td> <a href="{% url 'delete-firm-view' i.firm_id %}">Delete</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
 
