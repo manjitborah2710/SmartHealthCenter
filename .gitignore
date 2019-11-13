@@ -2,7 +2,6 @@
 .vscode
 .idea
 **/__pycache__/
-**/migrations
 env
 venv
 **/settings.py/

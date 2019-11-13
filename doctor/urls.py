@@ -17,7 +17,7 @@ urlpatterns = [
     path('addStock',views.addStock,name='add-stock-view'),
     path('insertIntoStock',views.insertIntoStock,name='insert-into-stock-view'),
 
-    path('viewRequisitionMedicine',views.displayRequisitionMedicine,name="display-requisitionmedicine-view"),
+    path('viewRequisitionMedicine/<str:pk>',views.displayRequisitionMedicine,name="display-requisitionmedicine-view"),
     path('addRequisitionMedicine',views.addRequisitionMedicine,name="add-requisitionmedicine-view"),
     path('insertrequisitionmedicine',views.insertIntoRequisitionMedicine,name="insert-into-requisitionmedicine-view"),
 
@@ -38,14 +38,14 @@ urlpatterns = [
     path('addStockMedicine',views.addStockMedicine,name='add-stockmedicine-view'),
     path('insertIntoStockMedicine',views.insertIntoStockMedicine,name='insert-into-stockmedicine-view'),
 
-    path('editRequisition/<int:pk>',views.editRequistion,name="edit-requisition-view"),
-    path('deleteRequiusition/<int:pk>',views.deleteRequisition,name="delete-requisition-view"),
+    path('editRequisition/<str:pk>',views.editRequistion,name="edit-requisition-view"),
+    path('deleteRequiusition/<str:pk>',views.deleteRequisition,name="delete-requisition-view"),
 
     path('editRequisitionMedicine/<int:pk>',views.editRequisitionMedicine,name="edit-requisitionmedicine-view"),
     path('deleteRequisitionMedicine/<int:pk>',views.deleteRequisitionMedicine,name="delete-requisitionmedicine-view"),
 
-    path('editRequisitionProposal/<int:pk>',views.editRequisitionProposal,name="edit-requisitionproposal-view"),
-    path('deleteRequisition/<int:pk>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view"),
+    path('editRequisitionProposal/<int:pk>/<int:user_id>',views.editRequisitionProposal,name="edit-requisitionproposal-view"),
+    path('deleteRequisition/<int:pk>/<int:user_id>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view"),
 
     path('viewMyPatients',views.viewMyPatients,name="display-mypatients-view"),
     path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
@@ -64,8 +64,15 @@ urlpatterns = [
     path('issueMedicine/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
 
     path('submitfeedback',views.submitFeedback,name='submit-feedback'),
+
     path('addMedicine',views.addMedicine,name='add-medicine-view'),
     path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view'),
-    path('viewAllPrescriptions',views.viewAllPrescriptions,name='display-allprescriptions-view'),
-    path('getReq',views.getReq,name='get-req')
+
+    path('viewAllMedicinesIssued',views.viewAllMedicinesIssued,name='display-allmedicinesissued-view'),
+
+    path('getReq',views.getReq,name='get-req'),
+    path('confirm',views.confirmAdditionIntoRequisition,name='confirm-addition-into-requisition'),
+    path('closeReq',views.closeRequisition,name='close-req')
+
+
 ]

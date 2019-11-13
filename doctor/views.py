@@ -28,6 +28,12 @@ def checkIfPharmacist(request):
         return True
     return False
 
+
+def checkIfCommitteeMember(request):
+    if request.user.groups.filter(name__in=['approval_committee']).exists():
+        return True
+    return False
+
 #view the index page (the landing page of the website)
 def indexView(request):
     if request.user.is_authenticated:
@@ -118,7 +124,8 @@ def editHealthCenterStaff(request, pk):
                 'availability_to': data.availability_to,
             }
         }
-    return render(request, 'doctor/addStaff.html', ctx)
+        return render(request, 'doctor/addStaff.html', ctx)
+    return HttpResponse("You do not have permissions for this operation")
 
 #delete the record of a health centre staff
 def deleteHealthCenterStaff(request, pk):
@@ -372,7 +379,9 @@ def displayRequisitionProposal(request):
             # print(i.medicine_id)
             l.append(i)
         ctx={
-            'data':l
+            'data':l,
+            'user_id':request.user.id,
+            'isCommittee':checkIfCommitteeMember(request)
         }
         return render(request,'doctor/requisitionproposal.html',context=ctx)
 
@@ -383,7 +392,7 @@ def addRequisitionProposal(request,**kwargs):
     if permcheck == 0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
-        req_ids = Requisition.objects.all().values("requisition_id")
+        req_ids = Requisition.objects.filter(closed=False).values("requisition_id")
         rids = []
         for i in req_ids:
             rids.append(i["requisition_id"])
@@ -391,7 +400,7 @@ def addRequisitionProposal(request,**kwargs):
         meds = []
         for i in med_ids:
             meds.append(i)
-        staff=HealthCentreStaff.objects.all().values("staff_id","staff_name").order_by("staff_name")
+        staff=HealthCentreStaff.objects.filter(user_id_id=request.user.id).values("staff_id","staff_name")
 
         ctx = {
             'req_ids': rids,
@@ -421,7 +430,7 @@ def insertIntoRequisitionProposal(request):
     return render(request,'doctor/error.html')
 
 
-def displayRequisitionMedicine(request):
+def displayRequisitionMedicine(request,pk):
     user=request.user
     permcheck=checkForPermission(request,"doctor.view_requisitionmedicine")
     if permcheck==-1:
@@ -429,7 +438,7 @@ def displayRequisitionMedicine(request):
     if permcheck==0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
-        data=RequisitionMedicine.objects.all().order_by("requisition_id","medicine_id__medicine_name")
+        data=RequisitionMedicine.objects.filter(requisition_id=pk).order_by("requisition_id","medicine_id__medicine_name")
         l=[]
         for i in data:
             d={
@@ -437,11 +446,14 @@ def displayRequisitionMedicine(request):
                 'req_id':i.requisition_id,
                 'med_id':i.medicine_id,
                 'qty_requested':i.quantity_requested,
-                'qty_received':i.quantity_received
+                'qty_received':i.quantity_received,
             }
             l.append(d)
+        closed_status=Requisition.objects.get(requisition_id=pk).closed
         ctx={
-            'data':l
+            'data':l,
+            'req':pk,
+            'isClosed':closed_status
         }
         return render(request,'doctor/requisitionMedicine.html',context=ctx)
 
@@ -475,6 +487,9 @@ def insertIntoRequisitionMedicine(request):
     if permcheck==1 and request.method=="POST":
         r_id = int(request.POST["req-id"])
         requisition = Requisition.objects.filter(requisition_id=r_id)[0]
+        isClosed=requisition.closed
+        if isClosed:
+            return render(request,'doctor/error.html',context={'msg':'This list has been closed and you cannot enter any more medicines here'})
         m_id = int(request.POST["med-id"])
         # print(requisition)
         medicine = Medicine.objects.filter(medicine_id=m_id)[0]
@@ -486,7 +501,7 @@ def insertIntoRequisitionMedicine(request):
         else:
             p_key=int(request.POST["p-key"])
             RequisitionMedicine.objects.filter(pk=p_key).update(requisition_id=requisition,medicine_id=medicine,quantity_requested=q_req,quantity_received=q_rec)
-        return redirect('display-requisitionmedicine-view')
+        return redirect(reverse('display-requisitionmedicine-view',kwargs={'pk':r_id}))
 
     return render(request,'doctor/error.html')
 
@@ -527,10 +542,10 @@ def editRequistion(request,pk):
             'data':res
         }
         return render(request,'doctor/addRequisition.html',context=ctx)
-    return render(request,'doctor/error.html')
+    return HttpResponse("<p>You do not have the permissions for this operation</p>")
 
 def deleteRequisition(request,pk):
-    permcheck=checkForPermission(request,"doctor.delete_requisiton")
+    permcheck=checkForPermission(request,"doctor.delete_requisition")
     if permcheck == 1:
         Requisition.objects.filter(requisition_id=pk).delete()
         return redirect('display-requisition-view')
@@ -542,23 +557,26 @@ def editRequisitionMedicine(request,pk):
     if permcheck==1:
         res = RequisitionMedicine.objects.get(pk=pk)
         return addRequisitionMedicine(request,data=res)
-    return render(request,"doctor/error.html")
+    return HttpResponse("<p>You do not have the permissions for this operation</p>")
 
 def deleteRequisitionMedicine(request,pk):
     permcheck=checkForPermission(request,"doctor.delete_requisitionmedicine")
     if permcheck==1:
+        r_id=RequisitionMedicine.objects.get(pk=pk).requisition_id
         RequisitionMedicine.objects.get(pk=pk).delete()
-        return redirect('display-requisitionmedicine-view')
-    return render(request,'doctor/error.html',{'msg':'Operation not performed..You may not have the required permissions'})
+        return redirect(reverse('display-requisitionmedicine-view',kwargs={'pk':r_id}))
+    return HttpResponse("<p>You do not have the permissions for this operation</p>")
 
-def editRequisitionProposal(request,pk):
-    permcheck = checkForPermission(request, "doctor.change_doctorrequisitionproposal")
-    if permcheck==1:
-        res=DoctorRequisitionProposal.objects.get(pk=pk)
-        return addRequisitionProposal(request,data=res)
-    return render(request,"doctor/error.html")
+def editRequisitionProposal(request,pk,user_id):
+    if (user_id==request.user.id):
+        permcheck = checkForPermission(request, "doctor.change_doctorrequisitionproposal")
+        if permcheck==1:
+            res=DoctorRequisitionProposal.objects.get(pk=pk)
+            return addRequisitionProposal(request,data=res)
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    return HttpResponse("<h1 style='color:red'>YOU ARE TRYING TO EDIT DATA YOU HAVE NOT ADDED</h1>")
 
-def deleteRequisitionProposal(request,pk):
+def deleteRequisitionProposal(request,pk,user_id):
     permcheck = checkForPermission(request, "doctor.delete_doctorrequisitionproposal")
     if permcheck == 1:
         DoctorRequisitionProposal.objects.get(pk=pk).delete()
@@ -841,11 +859,41 @@ def insertIntoMedicine(request):
         return redirect('doctor-home-view')
     return render(request, 'doctor/error.html')
 
-def viewAllPrescriptions(request):
-    pass
+def viewAllMedicinesIssued(request):
+    isAdmin=request.user.is_superuser
+    if isAdmin:
+        allIssuedMeds=[i for i in MedicineIssue.objects.all().values('prescription_serial_no','prescription_serial_no__date_of_issue','medicine_id__batch_no','medicine_id__medicine_id__medicine_name','medicine_quantity','medicine_id__quantity').order_by('prescription_serial_no__date_of_issue')]
+        print(allIssuedMeds[0])
+        ctx={
+            'data':allIssuedMeds
+        }
+        return render(request,'doctor/allIssuedMedicines.html',context=ctx)
+    return HttpResponse('You need to have admin privileges for this operation')
 
 def getReq(request):
     if request.method=='GET':
         p_id=request.GET['p_no']
         return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_id}))
     return HttpResponse("Bad Request")
+
+def confirmAdditionIntoRequisition(request):
+    if request.method=='POST' and checkForPermission(request,'doctor.add_requisitionmedicine')==1:
+        med_id=Medicine.objects.get(medicine_id=request.POST["med-id"])
+        req_id=Requisition.objects.get(requisition_id=request.POST["req-id"])
+        qty=request.POST["qty"]
+        pk=request.POST['id']
+        DoctorRequisitionProposal.objects.filter(pk=pk).delete()
+        RequisitionMedicine.objects.create(requisition_id=req_id,medicine_id=med_id,quantity_requested=qty,quantity_received=0)
+        return redirect('display-doctorrequisitionproposal-view')
+    return HttpResponse("Bad Request")
+
+def closeRequisition(request):
+    isCommittee=checkIfCommitteeMember(request)
+    if request.method=='POST' and isCommittee:
+        req_id=request.POST["req-id-for-closing"]
+        if request.POST['submit']=='Close':
+            Requisition.objects.filter(requisition_id=req_id).update(closed=True)
+        else:
+            Requisition.objects.filter(requisition_id=req_id).update(closed=False)
+        return redirect('display-requisition-view')
+    return HttpResponse("You don't have the permissions for this operation")

@@ -8,7 +8,7 @@
 
             Userid : {{ request.user }}
             <br>
-            <a class="btn btn-danger" href="{% url 'logout-view'  %}">Logout</a>
+            <a class="btn btn-danger" href="{% url 'logout-view'%}">Logout</a>
         </p>
         
         <div class="link-ps">
@@ -16,13 +16,13 @@
             <a href="{% url 'display-staff-view' %}">Health Center Staff</a>
             <a href="{% url 'display-firm-view' %}">Empanelled Firms</a>
             <a href="{% url 'display-medicine' %}">Medicine Stock</a>
-            <a href="{% url 'display-requisitionmedicine-view' %}">Requisition Medicine</a>
             <a href="{% url 'display-requisition-view' %}">Requisitions</a>
             <a href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
-            <a href="{% url 'add-stock-view' %}" >Add new Stock</a>
-            <a href="{% url 'add-stockmedicine-view' %}" >Add medicines into Stock</a>
-            <a href="{% url 'add-medicine-view' %}" >Add medicine</a>
+            <a href="{% url 'add-stock-view' %}">Add new Stock</a>
+            <a href="{% url 'add-stockmedicine-view' %}">Add medicines into Stock</a>
+            <a href="{% url 'add-medicine-view' %}">Add medicine</a>
             <a href="{% url 'display-prescription-view' 1001 %}">Issue Medicines</a>
+            <a href="{% url 'display-allmedicinesissued-view'%}">View medicines issued</a>
         </div>
 
 </div>
