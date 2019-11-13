@@ -207,6 +207,7 @@ class Requisition(models.Model):
     amount = models.DecimalField(max_digits=7, decimal_places=2)
     date_of_approval = models.DateField()
     memo = models.TextField()
+    closed=models.BooleanField(default=False)
 
     def add_requisition(self, req_id, quantity, odate, amount, adate, memo):
         self.requisition_id = req_id
