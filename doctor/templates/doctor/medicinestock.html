@@ -1,5 +1,6 @@
 {% extends 'doctor/base.html' %}
 {% load static %}
+{% load extra_tag %}
 
 {% block content-block %}
 <body class="body">
@@ -11,20 +12,22 @@
   </div>
     <div class="main-content">
     <h1 style="text-align: center;"><u>Medicine Stock</u> </h1>
-    <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Batch Number</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Manufacturing Company</th>
-                <th>Expiry Date</th>
-            </tr>
-        </thead>
-        <tbody>
+        {% if request.user|inGroup:'pharmacist' %}
+            <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
+        {% endif %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Batch Number</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Manufacturing Company</th>
+                    <th>Expiry Date</th>
+                </tr>
+            </thead>
+            <tbody>
 
             {% for i in data  %}
             <tr>
@@ -40,7 +43,6 @@
 
         </tbody>
     </table>
-    <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
     <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
     </div>
     {% include 'doctor/footer.html' %}

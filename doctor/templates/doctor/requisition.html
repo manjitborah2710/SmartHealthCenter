@@ -1,13 +1,12 @@
 {% extends 'doctor/base.html' %}
 {% load static %}
+{% load extra_tag %}
 
 {% block content-block %}
     <body class="body">
         {% include 'doctor/header.html' %}
         <div class="div-1">
-
-                        {% include 'doctor/nav.html' %}
-
+            {% include 'doctor/nav.html' %}
         </div>
         <div class="main-content">
         <h1 style="text-align: center;"><u>Requisitions</u> </h1>
@@ -20,8 +19,10 @@
                     <th>Date of Approval</th>
                     <th>Memo</th>
                     <th>View</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'approval_committee' %}
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -34,15 +35,21 @@
                         <td>{{ i.date_of_approval }}</td>
                         <td>{{ i.memo }}</td>
                         <td><a href="{% url 'display-requisitionmedicine-view' i.requisition_id %}">View</a> </td>
-                        <td> <a href="{% url 'edit-requisition-view' i.requisition_id %}">Edit</a></td>
-                        <td> <a href="{% url 'delete-requisition-view' i.requisition_id %}">Delete</a></td>
+                        {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'approval_committee' %}
+                            <td> <a href="{% url 'edit-requisition-view' i.requisition_id %}">Edit</a></td>
+                            <td> <a href="{% url 'delete-requisition-view' i.requisition_id %}">Delete</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                     
             </tbody>
         </table>
-        <a href="{% url 'add-requisition-view' %}" class="btn btn-custom">Add requisition</a>
+        {% if request.user|inGroup:'pharmacist' %}
+            <a href="{% url 'add-requisition-view' %}" class="btn btn-custom">Add requisition</a>
+        {% endif %}
+        {% if request.user|inGroup:'approval_committee' %}
             <a class="btn btn-custom" href="{% url 'add-requisitionmedicine-view' %}">Add Requisition Medicine</a>
+        {% endif %}
         <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
         </div>
         {% include 'doctor/footer.html' %}

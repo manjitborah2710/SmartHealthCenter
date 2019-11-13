@@ -19,7 +19,11 @@
               </li>
               <li>
                   <i class="material-icons">account_box</i>
-                  <a href="{% url 'login-view' %}" class="link-style">Login</a>
+                  {% if user.is_authenticated %}
+                    <a href="{%  url 'logout-view' %}" class="link-style">Logout</a>
+                  {% else %}
+                    <a href="{% url 'login-view' %}" class="link-style">Login</a>
+                  {% endif %}
               </li>
 
               
