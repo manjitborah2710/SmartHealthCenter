@@ -38,7 +38,7 @@ def checkIfCommitteeMember(request):
 def indexView(request):
     if request.user.is_authenticated:
         return loginView(request)
-    return render(request,'doctor/login.html')
+    return redirect('login-view')
 
 
 #view the login page
