@@ -38,7 +38,7 @@ def checkIfCommitteeMember(request):
 def indexView(request):
     if request.user.is_authenticated:
         return loginView(request)
-    return render(request,'doctor/index.html')
+    return render(request,'doctor/login.html')
 
 
 #view the login page
@@ -724,7 +724,7 @@ def insertIntoPrescription(request):
         if followup_date=="":
             followup_date=None
         med_pres = request.POST["med-pres"]
-        test_recom = request.POST.get("test-recom")
+        test_recom = 0
         try:
             Prescription.objects.create(
                 prescription_serial_no =id,
