@@ -25,7 +25,7 @@ SECRET_KEY = '3asce3_yn2ka=wl-!7%bck&_y)8#=dzoc(!is0s@vev*pm_a!x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.135.238','127.0.0.1','localhost','192.168.133.189','192.168.132.82']
+ALLOWED_HOSTS = ['192.168.135.238','127.0.0.1','localhost','192.168.133.189','192.168.132.82','192.168.198.3']
 #'192.168.135.238'
 
 # Application definition
@@ -124,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT='/home/manjit/staticfiles'
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR,'static')
 ]
