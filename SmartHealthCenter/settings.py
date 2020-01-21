@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'SmartHealthCenter.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'finalproj_atm',
+        'NAME': 'finalproj_new',
         'USER':'root',
         'PASSWORD':'password',
         'HOST':'localhost',
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
