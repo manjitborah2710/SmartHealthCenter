@@ -177,9 +177,10 @@ def displayEmpanelledFirms(req):
             l = []
             for i in data:
                 d={
-                    'id' : i.firm_id,
+                    'id': i.id,
                     'name' : i.firm_name,
-                    'email' : i.firm_email,
+                    'dil_no' : i.firm_dilno,
+                    'gst_no' : i.firm_gstno,
                     'phone' : i.firm_phone
                   }
                 l.append(d)
@@ -194,12 +195,13 @@ def displayEmpanelledFirms(req):
 def editFirm(request, pk):
     permcheck = checkForPermission(request,"doctor.change_empanelledfirm")
     if permcheck == 1:
-        data = EmpanelledFirm.objects.get(firm_id = pk)
+        data = EmpanelledFirm.objects.get(id = pk)
         ctx = {
             'data': {
-                'id': data.firm_id,
+                'id': data.id,
                 'name': data.firm_name,
-                'email': data.firm_email,
+                'dil_no': data.firm_dilno,
+                'gst_no': data.firm_gstno,
                 'phone': data.firm_phone
             }
         }
@@ -210,7 +212,7 @@ def editFirm(request, pk):
 def deleteFirm(request, pk):
     permcheck = checkForPermission(request, "doctor.delete_empanelledfirm")
     if permcheck == 1:
-        EmpanelledFirm.objects.filter(firm_id=pk).delete()
+        EmpanelledFirm.objects.filter(id=pk).delete()
         return redirect('display-firm-view')
     else:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
@@ -231,19 +233,29 @@ def insertIntoFirm(request):
     if permcheck == 1 and request.method == "POST":
         id=request.POST["firm-id"]
         name=request.POST["firm-name"]
-        email=request.POST["firm-email"]
+        dil_no=request.POST["firm-dilno"]
+        gst_no=request.POST["firm-gstno"]
         phone=request.POST["firm-phone"]
 
-        print(id)
+        print(request.POST["edit_or_add"])
         
-        obj, created = EmpanelledFirm.objects.update_or_create(
-            firm_id = id,
-
-            defaults = {
-                'firm_name' : name,
-                'firm_email': email,
-                'firm_phone': phone,
-            }
+        
+        #edit
+        if request.POST["edit_or_add"]=='0':
+            EmpanelledFirm.objects.filter(id=id).update(
+                firm_name = name,
+                firm_dilno= dil_no,
+                firm_gstno= gst_no,
+                firm_phone= phone,
+        )
+        #add
+        elif request.POST["edit_or_add"]=='1':
+            print("Here\n\n\n\n")
+            EmpanelledFirm.objects.create(
+                firm_name = name,
+                firm_dilno= dil_no,
+                firm_gstno= gst_no,
+                firm_phone= phone,
         )
 
         return redirect('display-firm-view')
