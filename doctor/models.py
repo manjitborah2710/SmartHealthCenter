@@ -15,43 +15,6 @@ import datetime
 MAX_ID_LENGTH = 20
 MAX_LENGTH = 50
 
-
-class IndividualRecord(models.Model):
-    STUDENT = 'Student'
-    FACULTY = 'Faculty'
-    STAFF = 'Staff'
-    CATEGORY_CHOICES = (
-        (STUDENT, 'Student'),
-        (FACULTY, 'Faculty'),
-        (STAFF, 'Staff'),
-    )
-    person_id = models.CharField(max_length=MAX_ID_LENGTH, primary_key=True)
-    name = models.CharField(max_length=MAX_LENGTH)
-    category = models.CharField(
-        max_length=10,
-        choices=CATEGORY_CHOICES,
-        default=STUDENT,
-    )
-    # https://docs.djangoproject.com/en/2.1/topics/auth/passwords/#module-django.contrib.auth.hashers
-    password = models.CharField(max_length=MAX_ID_LENGTH)
-    date_of_birth = models.DateField()
-    date_of_joining = models.DateField()
-    date_of_leaving = models.DateField(blank=True)
-
-    def add_record(self, id, name, category, password, dob, doj, dol):
-        self.person_id = id
-        self.name = name
-        self.category = category
-        self.password = password
-        self.date_of_birth = dob
-        self.date_of_joining = doj
-        self.date_of_leaving = dol
-        self.save()
-
-    def __str__(self):
-        return self.person_id
-
-
 class StudentRecord(models.Model):
     person_id = models.CharField(max_length=MAX_ID_LENGTH, primary_key=True)
     name = models.CharField(max_length=MAX_LENGTH)
@@ -60,6 +23,11 @@ class StudentRecord(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class RegularStaff(models.Model):
+    staff_name = models.CharField(max_length=MAX_LENGTH)
+
 
 
 class HealthCentreStaff(models.Model):
@@ -144,48 +112,46 @@ class Medicine(models.Model):
 
 
 class EmpanelledFirm(models.Model):
-    firm_id = models.CharField(max_length=MAX_ID_LENGTH, primary_key=True)
     firm_name = models.CharField(max_length=MAX_LENGTH)
-    firm_email = models.EmailField(blank=True)
-    firm_phone = models.CharField(max_length=10, default='0')  # TODO:to be updated with PhoneNumberField
+    firm_dilno = models.CharField(max_length=MAX_LENGTH, blank=True)
+    firm_phone = models.CharField(max_length=10, default='0')  
+    firm_gstno = models.CharField(max_length=MAX_LENGTH,blank=True)
 
-    def add_firm(self, firm_id, name, email, phone):
-        self.firm_id = firm_id
+    def add_firm(self, name, dil_no, gst_no, phone):
+        self.firm_dilno = dil_no
         self.firm_name = name
-        self.firm_email = email
+        self.firm_gstno = gst_no
         self.firm_phone = phone
         self.save()
 
     def __str__(self):
-        return self.firm_id
+        return self.firm_name
 
 
-class Stock(models.Model):
-    batch_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
-    bill_no = models.CharField(max_length=MAX_LENGTH)
+class Bill(models.Model):
+    bill_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
     firm_id = models.ForeignKey(EmpanelledFirm, on_delete=models.CASCADE)
     bill_date = models.DateField()
 
-    def add_stock(self, batch, bill, firm, bill_date):
-        self.batch_no = batch
+    def add_stock(self, bill, firm, bill_date):
         self.bill_no = bill
         self.firm_id = firm
         self.bill_date = bill_date
         self.save()
 
     def __str__(self):
-        return self.batch_no
+        return self.bill_no
 
 
 class StockMedicine(models.Model):
-    batch_no = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    bill_no = models.ForeignKey(Bill, on_delete=models.CASCADE)
     medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     medicine_rate = models.DecimalField(max_digits=7, decimal_places=2)
     expiry_date = models.DateField()
 
-    def add_stock_medicine(self, batch_no, medicine_id, quantity, expiry_date, rate):
-        self.batch_no = batch_no
+    def add_stock_medicine(self, bill_no, medicine_id, quantity, expiry_date, rate):
+        self.bill_no = bill_no
         self.medicine_id = medicine_id
         self.quantity = quantity
         self.expiry_date = expiry_date
@@ -357,22 +323,6 @@ class Composition(models.Model):
 
     def __str__(self):
         return self.primary_ingredient
-
-
-class Dependant(models.Model):
-    person_id = models.ForeignKey(IndividualRecord, on_delete=models.CASCADE)
-    name = models.CharField(max_length=MAX_LENGTH)
-    date_of_birth = models.DateField()
-    relation_with_person = models.CharField(max_length=MAX_ID_LENGTH)
-
-    def add_dependant(self, dependee_id, name, dob, relation_with_person):
-        self.person_id = dependee_id
-        self.name = name
-        self.date_of_birth = dob
-        self.relation_with_person = relation_with_person
-
-    def __str__(self):
-        return self.name
 
 
 class HealthCentreStaffContact(models.Model):

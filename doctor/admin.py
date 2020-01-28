@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
-from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Stock, Requisition, DoctorRequisitionProposal, PatientRecord, FollowUpReport, RecommendedTest, Composition, IndividualRecord, Dependant, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback
+from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, PatientRecord, FollowUpReport, RecommendedTest, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback
 # Register your models here.
 
 class CompositionInline(admin.TabularInline):
@@ -43,8 +43,8 @@ class HealthCentreStaffAdmin(ImportExportModelAdmin):
 
 @admin.register(EmpanelledFirm)
 class EmpanelledFirmListAdmin(ImportExportModelAdmin):
-    list_display = ['firm_id', 'firm_name', 'firm_email', 'firm_phone']
-    search_fields = ['firm_id', 'firm_name']
+    list_display = ['firm_name', 'firm_dilno', 'firm_gstno', 'firm_phone']
+    search_fields = ['firm_gstno', 'firm_name']
 
 
 class DependantAdmin(admin.ModelAdmin):
@@ -57,9 +57,9 @@ class StockInline(admin.TabularInline):
     model = StockMedicine
     extra = 1
 
-@admin.register(Stock)
-class StockAdmin(ImportExportModelAdmin):
-    list_display = ['batch_no', 'bill_no', 'firm_id', 'bill_date']
+@admin.register(Bill)
+class BillAdmin(ImportExportModelAdmin):
+    list_display = ['bill_no', 'firm_id', 'bill_date']
     inlines = [StockInline]
     list_filter = ['firm_id', 'bill_date']
     search_fields = ['batch_no', 'bill_no']
@@ -96,10 +96,6 @@ class DisposedMedicineAdmin(ImportExportModelAdmin):
     search_fields = ['medicine_id', 'batch_no']
     list_filter = ['date']
 
-class IndividualRecordAdmin(admin.ModelAdmin):
-    list_display = ['person_id', 'name', 'category', 'date_of_joining', 'date_of_leaving']
-    search_fields = ['person_id', 'name']
-    list_filter = ['date_of_joining', 'date_of_leaving']
 
 # class RequisitionAdmin(admin.ModelAdmin):
 #    list_display = []
@@ -107,9 +103,8 @@ class IndividualRecordAdmin(admin.ModelAdmin):
 # admin.site.register(HealthCentreStaff, HealthCentreStaffAdmin)
 # admin.site.register(Medicine, MedicineAdmin)
 #admin.site.register(EmpanelledFirm, EmpanelledFirmListAdmin)
-# admin.site.register(Stock, StockAdmin)
+# admin.site.register(Bill, BillAdmin)
 # admin.site.register(PatientRecord, PatientRecordAdmin)
-# admin.site.register(IndividualRecord, IndividualRecordAdmin)
 #admin.site.register(Dependant, DependantAdmin)
 # admin.site.register(DisposedMedicine, DisposedMedicineAdmin)
 # admin.site.register(Prescription, PrescriptionIssueAdmin)
