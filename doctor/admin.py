@@ -12,9 +12,9 @@ class CompositionInline(admin.TabularInline):
 
 @admin.register(Medicine)
 class MedicineAdmin(ImportExportModelAdmin):
-    fields = ['medicine_id', 'medicine_name', 'manufacturing_company','quantity', 'category']
+    fields = ['medicine_name', 'manufacturing_company','quantity', 'category']
     inlines = [CompositionInline]
-    list_display = ['medicine_id', 'medicine_name', 'manufacturing_company', 'quantity', 'category']
+    list_display = ['medicine_name', 'manufacturing_company', 'quantity', 'category']
     search_fields = ['medicine_name']
 
 

@@ -839,6 +839,23 @@ def checkForPermissions(request,*args):
         return 1
     return -1
 
+#display all the medicine information in the database
+def displayMedicineNames(request):
+    permcheck = checkForPermission(request, 'doctor.view_medicine')
+    if permcheck == -1:
+        return redirect('login-view')
+    elif permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    elif permcheck == 1:
+        meds = Medicine.objects.all()
+        l = []
+        for i in meds:
+            l.append(i)
+        ctx={
+            'data':l,
+        }
+        return render(request,'doctor/medicine.html',context=ctx)
+
 #this is used for adding a new medicine into the database.
 #this differs from stock medicine as stock medicine gives us an idea about
 # the medicines currently in stock while this just add a new kind of medicine into the database
@@ -861,12 +878,14 @@ def insertIntoMedicine(request):
         company=request.POST["company"]
         qty=request.POST["med-qty"]
         cat=request.POST["med-cat"]
-        Medicine.objects.update_or_create(medicine_id=med_id,defaults={
-            'medicine_name':med_name,
-            'manufacturing_company':company,
-            'quantity':qty,
-            'category':cat
-        })
+        #add
+        if med_id=="-1":
+            Medicine.objects.create(
+                medicine_name = med_name,
+                manufacturing_company =company,
+                quantity = qty,
+                category = cat
+            )
         return redirect('doctor-home-view')
     return render(request, 'doctor/error.html')
 
