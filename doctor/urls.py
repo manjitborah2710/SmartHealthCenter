@@ -14,8 +14,8 @@ urlpatterns = [
     path('insertIntoStaff',views.insertIntoHealthCenterStaff,name="insert-into-staff-view"),
 
     path('medicinestock',views.displayMedicine,name="display-medicine"),
-    path('addStock',views.addStock,name='add-stock-view'),
-    path('insertIntoStock',views.insertIntoStock,name='insert-into-stock-view'),
+    path('addBill',views.addBill,name='add-bill-view'),
+    path('insertBill',views.insertBill,name='insert-into-bill-view'),
 
     path('viewRequisitionMedicine/<str:pk>',views.displayRequisitionMedicine,name="display-requisitionmedicine-view"),
     path('addRequisitionMedicine',views.addRequisitionMedicine,name="add-requisitionmedicine-view"),

@@ -18,8 +18,8 @@
             <form method="post" action="{% url 'insert-into-medicine-view' %}" class="form-custom">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="med-id">Medicine ID</label>
-                    <input id="med-id" class="form-control" name="med-id" maxlength=20 type="text" required>
+                    {% comment %} <label for="med-id">Medicine ID</label> {% endcomment %}
+                    <input hidden id="med-id" class="form-control" name="med-id" maxlength=20 type="text" value="-1" required>
                 </div>
 
                 <div class="form-group">
