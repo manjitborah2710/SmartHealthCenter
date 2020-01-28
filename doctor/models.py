@@ -128,32 +128,30 @@ class EmpanelledFirm(models.Model):
         return self.firm_name
 
 
-class Stock(models.Model):
-    batch_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
-    bill_no = models.CharField(max_length=MAX_LENGTH)
+class Bill(models.Model):
+    bill_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
     firm_id = models.ForeignKey(EmpanelledFirm, on_delete=models.CASCADE)
     bill_date = models.DateField()
 
-    def add_stock(self, batch, bill, firm, bill_date):
-        self.batch_no = batch
+    def add_stock(self, bill, firm, bill_date):
         self.bill_no = bill
         self.firm_id = firm
         self.bill_date = bill_date
         self.save()
 
     def __str__(self):
-        return self.batch_no
+        return self.bill_no
 
 
 class StockMedicine(models.Model):
-    batch_no = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    bill_no = models.ForeignKey(Bill, on_delete=models.CASCADE)
     medicine_id = models.ForeignKey(Medicine, on_delete=models.CASCADE)
     quantity = models.IntegerField()
     medicine_rate = models.DecimalField(max_digits=7, decimal_places=2)
     expiry_date = models.DateField()
 
-    def add_stock_medicine(self, batch_no, medicine_id, quantity, expiry_date, rate):
-        self.batch_no = batch_no
+    def add_stock_medicine(self, bill_no, medicine_id, quantity, expiry_date, rate):
+        self.bill_no = bill_no
         self.medicine_id = medicine_id
         self.quantity = quantity
         self.expiry_date = expiry_date

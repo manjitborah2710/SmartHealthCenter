@@ -272,7 +272,7 @@ def displayMedicine(req):
                 d = {
                     'name': i.medicine_id,
                     'category': i.medicine_id.category,
-                    'batch_no': i.batch_no,
+                    'bill_no': i.bill_no,
                     'price': i.medicine_rate,
                     'quantity': i.quantity,
                     'expiry_date': i.expiry_date,
@@ -294,10 +294,10 @@ def addStockMedicine(request):
     if permcheck == 0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
-        bns=[i for i in Stock.objects.all().values('batch_no')]
+        bns=[i for i in Bill.objects.all().values('bill_no')]
         meds=[i for i in Medicine.objects.all().values('medicine_id','medicine_name').order_by('medicine_name')]
         ctx={
-            'batch_no':bns,
+            'bill_no':bns,
             'meds':meds
         }
         return render(request,'doctor/addStockMedicine.html',context=ctx)
@@ -307,13 +307,13 @@ def insertIntoStockMedicine(request):
     permcheck = checkForPermission(request, "doctor.add_stockmedicine")
     if permcheck == 1 and request.method=='POST':
         med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
-        batch=Stock.objects.filter(batch_no=request.POST["batch-no"])[0]
+        bill=Bill.objects.filter(bill_no=request.POST["bill-no"])[0]
         qty=request.POST["qty"]
         exp_date=request.POST["expiry-date"]
         med_rate=request.POST["medicine-rate"]
 
         obj, created = StockMedicine.objects.update_or_create(
-            batch_no = batch,
+            bill_no = bill,
             medicine_id=med,
             defaults = {
             'quantity': qty,
@@ -517,7 +517,7 @@ def insertIntoRequisitionMedicine(request):
 
     return render(request,'doctor/error.html')
 
-def addStock(request):
+def addBill(request):
     permcheck=checkForPermission(request,"doctor.add_stock")
     if permcheck == -1:
         return redirect('login-view')
@@ -525,25 +525,24 @@ def addStock(request):
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
         l=[]
-        for i in EmpanelledFirm.objects.all().values("firm_id","firm_name"):
+        for i in EmpanelledFirm.objects.all().values("id","firm_name"):
             l.append(i)
         ctx={
             'data':l
         }
-        return render(request,'doctor/addStock.html',context=ctx)
+        return render(request,'doctor/addBill.html',context=ctx)
 
-def insertIntoStock(request):
+def insertBill(request):
     permcheck = checkForPermission(request, "doctor.add_stock")
     if permcheck == 1 and request.method == 'POST':
-        ba_no=request.POST["batch-number"]
         bi_no=request.POST["bill-number"]
         bi_date=request.POST["bill-date"]
-        f_id=EmpanelledFirm.objects.filter(firm_id=request.POST["firm-id"])[0]
+        f_id=EmpanelledFirm.objects.filter(id=request.POST["firm-id"])[0]
         try:
-            Stock.objects.create(batch_no=ba_no,bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
+            Bill.objects.create(bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
             return redirect('doctor-home-view')
         except IntegrityError as err:
-            return render(request, 'doctor/error.html',{'msg':'Stock with same batch number exists'})
+            return render(request, 'doctor/error.html',{'msg':'Stock with same bill number exists'})
     return render(request, 'doctor/error.html')
 
 def editRequistion(request,pk):
