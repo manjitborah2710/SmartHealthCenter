@@ -90,7 +90,7 @@ class Medicine(models.Model):
         (GARGLE, 'Gargle'),
         (OTHERS, 'Others')
     )
-    medicine_id = models.CharField(max_length=MAX_ID_LENGTH, primary_key=True)
+    medicine_id = models.AutoField(primary_key=True)
     medicine_name = models.CharField(max_length=MAX_LENGTH)
     manufacturing_company = models.CharField(max_length=MAX_LENGTH, default='XX')
     quantity = models.IntegerField(default=0)
@@ -99,8 +99,7 @@ class Medicine(models.Model):
         choices=CATEGORY_CHOICES,
         default=TABLET)  # syrup,tablet
 
-    def add_new_medicine(self, medicine_id, name, company, quantity, category):
-        self.medicine_id = medicine_id
+    def add_new_medicine(self, name, company, quantity, category):
         self.medicine_name = name
         self.manufacturing_company = company
         self.quantity = quantity
