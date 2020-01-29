@@ -1,0 +1,44 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% load extra_tag %}
+
+{% block content-block %}
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <div class="div-1">           
+        {% include 'doctor/nav.html' %}
+    </div>
+
+    <div class="main-content">
+    <h1 style="text-align: center;"><u>Medicine Information</u> </h1>
+    
+    {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'doctor' %}
+        <a href="{% url 'add-medicine-view' %}" class="btn btn-custom">Add New Medicine</a>
+    {% endif %}
+    
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Manufacturing Company</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {% for i in data  %}
+            <tr>
+                <td>{{ i.medicine_name }}</td>
+                <td>{{ i.manufacturing_company }}</td>
+                <td>{{ i.category }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+    </div>
+    {% include 'doctor/footer.html' %}
+</body>
+{% endblock content-block %}

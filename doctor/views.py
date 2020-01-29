@@ -840,7 +840,7 @@ def checkForPermissions(request,*args):
     return -1
 
 #display all the medicine information in the database
-def displayMedicineNames(request):
+def displayMedicineList(request):
     permcheck = checkForPermission(request, 'doctor.view_medicine')
     if permcheck == -1:
         return redirect('login-view')
@@ -876,14 +876,12 @@ def insertIntoMedicine(request):
         med_id=request.POST["med-id"]
         med_name=request.POST["med-name"]
         company=request.POST["company"]
-        qty=request.POST["med-qty"]
         cat=request.POST["med-cat"]
         #add
         if med_id=="-1":
             Medicine.objects.create(
                 medicine_name = med_name,
                 manufacturing_company =company,
-                quantity = qty,
                 category = cat
             )
         return redirect('doctor-home-view')
