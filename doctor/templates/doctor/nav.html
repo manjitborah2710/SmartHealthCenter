@@ -21,6 +21,7 @@
             <a href="{% url 'display-medicine' %}">Medicine Stock</a>
             <a href="{% url 'display-requisition-view' %}">Requisitions</a>
             <a href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
+            <a href="{% url 'display-medicinelist-view' %}">Medicine List</a>
             {% if request.user|inGroup:'pharmacist' %}
                 <a href="{% url 'add-bill-view' %}">Add new Bill</a>
                 <a href="{% url 'add-stockmedicine-view' %}">Add medicines into Stock</a>

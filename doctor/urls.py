@@ -67,6 +67,7 @@ urlpatterns = [
 
     path('addMedicine',views.addMedicine,name='add-medicine-view'),
     path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view'),
+    path('medicinelist',views.displayMedicineList,name='display-medicinelist-view'),
 
     path('viewAllMedicinesIssued',views.viewAllMedicinesIssued,name='display-allmedicinesissued-view'),
 

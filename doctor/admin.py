@@ -12,9 +12,9 @@ class CompositionInline(admin.TabularInline):
 
 @admin.register(Medicine)
 class MedicineAdmin(ImportExportModelAdmin):
-    fields = ['medicine_name', 'manufacturing_company','quantity', 'category']
+    fields = ['medicine_name', 'manufacturing_company', 'category']
     inlines = [CompositionInline]
-    list_display = ['medicine_name', 'manufacturing_company', 'quantity', 'category']
+    list_display = ['medicine_name', 'manufacturing_company', 'category']
     search_fields = ['medicine_name']
 
 
@@ -62,7 +62,7 @@ class BillAdmin(ImportExportModelAdmin):
     list_display = ['bill_no', 'firm_id', 'bill_date']
     inlines = [StockInline]
     list_filter = ['firm_id', 'bill_date']
-    search_fields = ['batch_no', 'bill_no']
+    search_fields = ['bill_date', 'bill_no']
 
 class DoctorRequisitionProposalInline(admin.TabularInline):
     model = DoctorRequisitionProposal
