@@ -14,8 +14,11 @@
         
         <div class="link-ps">
             {% if request.user|inGroup:'doctor' %}
-                <a href="{% url 'display-mypatients-view' %}">View My Patients</a>
+                <a href="{% url 'new-presc' %}">New Prescription</a>
             {% endif %}
+{#            {% if request.user|inGroup:'doctor' %}#}
+{#                <a href="{% url 'display-mypatients-view' %}">View My Patients</a>#}
+{#            {% endif %}#}
             <a href="{% url 'display-staff-view' %}">Health Center Staff</a>
             <a href="{% url 'display-firm-view' %}">Empanelled Firms</a>
             <a href="{% url 'display-medicine' %}">Medicine Stock</a>

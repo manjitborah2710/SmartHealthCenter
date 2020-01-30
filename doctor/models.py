@@ -202,49 +202,52 @@ class DoctorRequisitionProposal(models.Model):
         return str(self.quantity)
 
 
-class PatientRecord(models.Model):
-    doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
-    patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE, default='16-1-5-009')
-    date_created = models.DateField()
-    height = models.DecimalField(max_digits=5, decimal_places=2, default=0)
-    weight = models.DecimalField(max_digits=4, decimal_places=2, default=0)
-    isDependant = models.BooleanField()
-
-    def add_patient_record(self, did, pid, dc, h, w, isdependant):
-        self.doctor_id = did
-        self.patient_id = pid
-        self.date_created = dc
-        self.height = h
-        self.weight = w
-        self.isDependant = isdependant
-        self.save()
-
-    def __str__(self):
-        return self.patient_id_id
-
+# class PatientRecord(models.Model):
+#     doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
+#     patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE, default='16-1-5-009')
+#     date_created = models.DateField()
+#     height = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+#     weight = models.DecimalField(max_digits=4, decimal_places=2, default=0)
+#     isDependant = models.BooleanField()
+#
+#     def add_patient_record(self, did, pid, dc, h, w, isdependant):
+#         self.doctor_id = did
+#         self.patient_id = pid
+#         self.date_created = dc
+#         self.height = h
+#         self.weight = w
+#         self.isDependant = isdependant
+#         self.save()
+#
+#     def __str__(self):
+#         return self.patient_id_id
+#
 
 class Prescription(models.Model):
     """
         Holds details about every prescription. The medicine details can be found in the MedicineIssue model
     """
+
     prescription_serial_no = models.CharField(max_length=MAX_LENGTH, primary_key=True)
-    patient_record_id = models.ForeignKey(PatientRecord, on_delete=models.CASCADE)
+    doctor_id = models.ForeignKey(HealthCentreStaff, db_column='staff_id', on_delete=models.CASCADE)
+    patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE, default='16-1-5-009')
     date_of_issue = models.DateField()
     complaint = models.CharField(max_length=MAX_LENGTH, default="Unspecified")
     diagnosis = models.CharField(max_length=MAX_LENGTH, default="Yet to be announced")
-    followup_date = models.DateField(blank=True, default=None, null=True)
+    # followup_date = models.DateField(blank=True, default=None, null=True)
     medicine_prescribed = models.BooleanField(default=False)
-    tests_recommended = models.BooleanField(default=False)
+    # tests_recommended = models.BooleanField(default=False)
 
-    def new_prescription(self, sl_no, patient_record_id, date_of_issue, complaint, diagnosis, followup_date, meds_pres, test_pres):
+    def new_prescription(self, sl_no, doctor_id, patient_id,  date_of_issue, complaint, diagnosis,  meds_pres):
         self.prescription_serial_no = sl_no
-        self.patient_record_id = patient_record_id
+        self.doctor_id = doctor_id
+        self.patient_id = patient_id
         self.date_of_issue = date_of_issue
         self.complaint = complaint
         self.diagnosis = diagnosis
-        self.followup_date = followup_date
+        # self.followup_date = followup_date
         self.medicine_prescribed = meds_pres
-        self.tests_recommended = test_pres
+        # self.tests_recommended = test_pres
         self.save()
 
     def __str__(self):
@@ -271,42 +274,6 @@ class MedicineIssue(models.Model):
 
     def __str__(self):
         return str(self.medicine_id_id)
-
-
-class FollowUpReport(models.Model):
-    patient_id = models.ForeignKey(PatientRecord, db_column='person_id', on_delete=models.CASCADE)
-    follow_up_date = models.DateField()
-    present = models.BooleanField()
-    cured = models.BooleanField()
-    furthercomments = models.TextField()
-
-    def add_follow_up_report(self, pid, fudate, present, cured, fc):
-        self.patient_id = pid
-        self.follow_up_date = fudate
-        self.present = present
-        self.cured = cured
-        self.furthercomments = fc
-        self.save()
-
-    def __str__(self):
-        return self.furthercomments
-
-
-class RecommendedTest(models.Model):
-    patient_id = models.ForeignKey(PatientRecord, db_column='person_id', on_delete=models.CASCADE)
-    prescription_id = models.ForeignKey(Prescription, db_column='prescription_serial_number', on_delete=models.CASCADE)
-    test_name = models.CharField(max_length=MAX_LENGTH)
-    test_result = models.CharField(max_length=MAX_LENGTH)
-
-    def add_test(self, pid, prid, test, res):
-        self.patient_id = pid
-        self.prescription_id = prid
-        self.test_name = test
-        self.test_result = res
-        self.save()
-
-    def __str__(self):
-        return self.test_name
 
 
 class Composition(models.Model):

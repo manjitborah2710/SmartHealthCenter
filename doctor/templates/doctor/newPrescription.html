@@ -10,11 +10,11 @@
         </div>
         <div class="main-content">
         {% if data%}
-            <h1>Edit Prescription </h1>
+            <h1>Edit Prescription</h1>
         {% else %}
-            <h1>Add Prescription</h1>
+            <h1>Add New Prescription</h1>
         {% endif %}
-        <form method="post" action="{% url 'insert-into-prescription-view' %}" class="form-custom">
+        <form method="post" action="{% url 'insert-into-newpresc-view' %}" class="form-custom">
             {% csrf_token %}
 
             <div class="form-group">
