@@ -6,6 +6,8 @@ from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.models import User,Group
+from django.db.models import Max,Min,Sum,Avg
+import json
 # Create your views here.
 
 # get user id
@@ -31,6 +33,11 @@ def checkIfPharmacist(request):
 
 def checkIfCommitteeMember(request):
     if request.user.groups.filter(name__in=['approval_committee']).exists():
+        return True
+    return False
+
+def checkIfDoctor(request):
+    if request.user.groups.filter(name__in=['doctor']).exists():
         return True
     return False
 
@@ -177,9 +184,10 @@ def displayEmpanelledFirms(req):
             l = []
             for i in data:
                 d={
-                    'id' : i.firm_id,
+                    'id': i.id,
                     'name' : i.firm_name,
-                    'email' : i.firm_email,
+                    'dil_no' : i.firm_dilno,
+                    'gst_no' : i.firm_gstno,
                     'phone' : i.firm_phone
                   }
                 l.append(d)
@@ -194,12 +202,13 @@ def displayEmpanelledFirms(req):
 def editFirm(request, pk):
     permcheck = checkForPermission(request,"doctor.change_empanelledfirm")
     if permcheck == 1:
-        data = EmpanelledFirm.objects.get(firm_id = pk)
+        data = EmpanelledFirm.objects.get(id = pk)
         ctx = {
             'data': {
-                'id': data.firm_id,
+                'id': data.id,
                 'name': data.firm_name,
-                'email': data.firm_email,
+                'dil_no': data.firm_dilno,
+                'gst_no': data.firm_gstno,
                 'phone': data.firm_phone
             }
         }
@@ -210,7 +219,7 @@ def editFirm(request, pk):
 def deleteFirm(request, pk):
     permcheck = checkForPermission(request, "doctor.delete_empanelledfirm")
     if permcheck == 1:
-        EmpanelledFirm.objects.filter(firm_id=pk).delete()
+        EmpanelledFirm.objects.filter(id=pk).delete()
         return redirect('display-firm-view')
     else:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
@@ -231,19 +240,29 @@ def insertIntoFirm(request):
     if permcheck == 1 and request.method == "POST":
         id=request.POST["firm-id"]
         name=request.POST["firm-name"]
-        email=request.POST["firm-email"]
+        dil_no=request.POST["firm-dilno"]
+        gst_no=request.POST["firm-gstno"]
         phone=request.POST["firm-phone"]
 
-        print(id)
+        print(request.POST["edit_or_add"])
         
-        obj, created = EmpanelledFirm.objects.update_or_create(
-            firm_id = id,
-
-            defaults = {
-                'firm_name' : name,
-                'firm_email': email,
-                'firm_phone': phone,
-            }
+        
+        #edit
+        if request.POST["edit_or_add"]=='0':
+            EmpanelledFirm.objects.filter(id=id).update(
+                firm_name = name,
+                firm_dilno= dil_no,
+                firm_gstno= gst_no,
+                firm_phone= phone,
+        )
+        #add
+        elif request.POST["edit_or_add"]=='1':
+            print("Here\n\n\n\n")
+            EmpanelledFirm.objects.create(
+                firm_name = name,
+                firm_dilno= dil_no,
+                firm_gstno= gst_no,
+                firm_phone= phone,
         )
 
         return redirect('display-firm-view')
@@ -260,7 +279,7 @@ def displayMedicine(req):
                 d = {
                     'name': i.medicine_id,
                     'category': i.medicine_id.category,
-                    'batch_no': i.batch_no,
+                    'bill_no': i.bill_no,
                     'price': i.medicine_rate,
                     'quantity': i.quantity,
                     'expiry_date': i.expiry_date,
@@ -282,10 +301,10 @@ def addStockMedicine(request):
     if permcheck == 0:
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
-        bns=[i for i in Stock.objects.all().values('batch_no')]
+        bns=[i for i in Bill.objects.all().values('bill_no')]
         meds=[i for i in Medicine.objects.all().values('medicine_id','medicine_name').order_by('medicine_name')]
         ctx={
-            'batch_no':bns,
+            'bill_no':bns,
             'meds':meds
         }
         return render(request,'doctor/addStockMedicine.html',context=ctx)
@@ -295,13 +314,13 @@ def insertIntoStockMedicine(request):
     permcheck = checkForPermission(request, "doctor.add_stockmedicine")
     if permcheck == 1 and request.method=='POST':
         med=Medicine.objects.filter(medicine_id=request.POST["med-id"])[0]
-        batch=Stock.objects.filter(batch_no=request.POST["batch-no"])[0]
+        bill=Bill.objects.filter(bill_no=request.POST["bill-no"])[0]
         qty=request.POST["qty"]
         exp_date=request.POST["expiry-date"]
         med_rate=request.POST["medicine-rate"]
 
         obj, created = StockMedicine.objects.update_or_create(
-            batch_no = batch,
+            bill_no = bill,
             medicine_id=med,
             defaults = {
             'quantity': qty,
@@ -505,7 +524,7 @@ def insertIntoRequisitionMedicine(request):
 
     return render(request,'doctor/error.html')
 
-def addStock(request):
+def addBill(request):
     permcheck=checkForPermission(request,"doctor.add_stock")
     if permcheck == -1:
         return redirect('login-view')
@@ -513,25 +532,24 @@ def addStock(request):
         return HttpResponse("<p>You do not have the permissions for this operation</p>")
     if permcheck==1:
         l=[]
-        for i in EmpanelledFirm.objects.all().values("firm_id","firm_name"):
+        for i in EmpanelledFirm.objects.all().values("id","firm_name"):
             l.append(i)
         ctx={
             'data':l
         }
-        return render(request,'doctor/addStock.html',context=ctx)
+        return render(request,'doctor/addBill.html',context=ctx)
 
-def insertIntoStock(request):
+def insertBill(request):
     permcheck = checkForPermission(request, "doctor.add_stock")
     if permcheck == 1 and request.method == 'POST':
-        ba_no=request.POST["batch-number"]
         bi_no=request.POST["bill-number"]
         bi_date=request.POST["bill-date"]
-        f_id=EmpanelledFirm.objects.filter(firm_id=request.POST["firm-id"])[0]
+        f_id=EmpanelledFirm.objects.filter(id=request.POST["firm-id"])[0]
         try:
-            Stock.objects.create(batch_no=ba_no,bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
+            Bill.objects.create(bill_no=bi_no,bill_date=bi_date,firm_id=f_id)
             return redirect('doctor-home-view')
         except IntegrityError as err:
-            return render(request, 'doctor/error.html',{'msg':'Stock with same batch number exists'})
+            return render(request, 'doctor/error.html',{'msg':'Stock with same bill number exists'})
     return render(request, 'doctor/error.html')
 
 def editRequistion(request,pk):
@@ -593,74 +611,74 @@ def submitFeedback(request):
     return render(request,'doctor/error.html',{'msg':'Something\'s wrong. Please try again.'})
 
 #for the doctors to view all their patients
-def viewMyPatients(request):
-    permcheck = checkForPermission(request, "doctor.view_patientrecord")
-    print(permcheck)
-    isDoc = False
-    if permcheck == 1:
-        try:
-            staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
-        except ObjectDoesNotExist:
-            return render(request, 'doctor/error.html',{'msg':'No data found'})
-        try:
-            data = PatientRecord.objects.filter(doctor_id = staff_id).order_by('-date_created')
-            print(data)
-        except ObjectDoesNotExist:
-            data = []
-        isDoc = True
-        return render(request, 'doctor/myPatients.html', {'data': data, 'isDoc': isDoc})
-    return render(request,'doctor/error.html')
-
-#for the doctors to add a new patient file
-def addPatientRecord(request):
-    permcheck = checkForPermission(request, "doctor.add_patientrecord")
-    if permcheck == -1:
-        return redirect('login-view')
-    if permcheck == 0:
-        return HttpResponse("<p>You do not have the permissions for this operation</p>")
-    if permcheck == 1:
-        patId = [i for i in StudentRecord.objects.all().values('person_id')]
-        return render(request, 'doctor/addNewPatient.html',{'patId':patId})
-
-#this actually inserts the patient file into the database
-def insertIntoPatientRecord(request):
-    permcheck = checkForPermission(request, "doctor.add_patientrecord")
-    if permcheck == 1 and request.method == "POST":
-        person_id = request.POST["person-id"]
-        today_date = request.POST["today-date"]
-        height = request.POST["height"]
-        weight = request.POST["weight"]
-        isDependant = request.POST["dependent"]
-        u_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
-
-        obj, created = PatientRecord.objects.update_or_create(
-            doctor_id = u_id,
-            patient_id_id = person_id,
-
-            defaults={
-                'date_created': today_date,
-                'height': height,
-                'weight': weight,
-                'isDependant': isDependant
-            }
-        )
-        return redirect('display-mypatients-view')
-    return redirect(request, 'doctor/error.html')
-
-#a doctor can view the file of one patient using this. it lists all the prescriptions issued
-def displayIndividualRecord(request,patient_id):
-    permcheck = checkForPermission(request, "doctor.view_patientrecord")
-    if permcheck == 1:
-        data = PatientRecord.objects.filter(id = patient_id)
-        presData = Prescription.objects.filter(patient_record_id=patient_id).order_by("-date_of_issue")
-        ctx = {
-            'id' : patient_id,
-            'data': data,
-            'presData': presData,
-        }
-        return render(request, 'doctor/individualRecord.html', ctx)
-    return render(request, 'doctor/error.html')
-
+# def viewMyPatients(request):
+#     permcheck = checkForPermission(request, "doctor.view_patientrecord")
+#     print(permcheck)
+#     isDoc = False
+#     if permcheck == 1:
+#         try:
+#             staff_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
+#         except ObjectDoesNotExist:
+#             return render(request, 'doctor/error.html',{'msg':'No data found'})
+#         try:
+#             data = PatientRecord.objects.filter(doctor_id = staff_id).order_by('-date_created')
+#             print(data)
+#         except ObjectDoesNotExist:
+#             data = []
+#         isDoc = True
+#         return render(request, 'doctor/myPatients.html', {'data': data, 'isDoc': isDoc})
+#     return render(request,'doctor/error.html')
+#
+# #for the doctors to add a new patient file
+# def addPatientRecord(request):
+#     permcheck = checkForPermission(request, "doctor.add_patientrecord")
+#     if permcheck == -1:
+#         return redirect('login-view')
+#     if permcheck == 0:
+#         return HttpResponse("<p>You do not have the permissions for this operation</p>")
+#     if permcheck == 1:
+#         patId = [i for i in StudentRecord.objects.all().values('person_id')]
+#         return render(request, 'doctor/addNewPatient.html',{'patId':patId})
+#
+# #this actually inserts the patient file into the database
+# def insertIntoPatientRecord(request):
+#     permcheck = checkForPermission(request, "doctor.add_patientrecord")
+#     if permcheck == 1 and request.method == "POST":
+#         person_id = request.POST["person-id"]
+#         today_date = request.POST["today-date"]
+#         height = request.POST["height"]
+#         weight = request.POST["weight"]
+#         isDependant = request.POST["dependent"]
+#         u_id = HealthCentreStaff.objects.get(user_id = getUserId(request))
+#
+#         obj, created = PatientRecord.objects.update_or_create(
+#             doctor_id = u_id,
+#             patient_id_id = person_id,
+#
+#             defaults={
+#                 'date_created': today_date,
+#                 'height': height,
+#                 'weight': weight,
+#                 'isDependant': isDependant
+#             }
+#         )
+#         return redirect('display-mypatients-view')
+#     return redirect(request, 'doctor/error.html')
+#
+# #a doctor can view the file of one patient using this. it lists all the prescriptions issued
+# def displayIndividualRecord(request,patient_id):
+#     permcheck = checkForPermission(request, "doctor.view_patientrecord")
+#     if permcheck == 1:
+#         data = PatientRecord.objects.filter(id = patient_id)
+#         presData = Prescription.objects.filter(patient_record_id=patient_id).order_by("-date_of_issue")
+#         ctx = {
+#             'id' : patient_id,
+#             'data': data,
+#             'presData': presData,
+#         }
+#         return render(request, 'doctor/individualRecord.html', ctx)
+#     return render(request, 'doctor/error.html')
+#
 #a doctor or a pharmacist can view a prescription of a patient and
 # see the medicines that were prescribed and tests that were recommended
 def displayPrescription(request,pres_id=1001):
@@ -678,13 +696,9 @@ def displayPrescription(request,pres_id=1001):
         isPharm=checkIfPharmacist(request)
         if data[0].medicine_prescribed:
             meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
-            print("manjit",meds_pres)
-        if data[0].tests_recommended:
-            tests_recom = RecommendedTest.objects.filter(prescription_serial_no=pres_id)
         ctx = {'data' : data[0],
                'name': name,
                'meds_pres': meds_pres,
-               'tests_recom': tests_recom,
                'isPharm': isPharm,
                }
         if isPharm:
@@ -720,9 +734,6 @@ def insertIntoPrescription(request):
         issue_date = request.POST["date-of-issue"]
         complaint = request.POST["complaint"]
         diagnosis = request.POST["diagnosis"]
-        followup_date = request.POST["fup-date"]
-        if followup_date=="":
-            followup_date=None
         med_pres = request.POST["med-pres"]
         test_recom = 0
         try:
@@ -731,10 +742,8 @@ def insertIntoPrescription(request):
                 date_of_issue=issue_date,
                 complaint=complaint,
                 diagnosis=diagnosis,
-                followup_date=followup_date,
                 patient_record_id_id=record_id,
                 medicine_prescribed=med_pres,
-                tests_recommended=test_recom
                 )
 
             if med_pres == '1':
@@ -828,6 +837,23 @@ def checkForPermissions(request,*args):
         return 1
     return -1
 
+#display all the medicine information in the database
+def displayMedicineList(request):
+    permcheck = checkForPermission(request, 'doctor.view_medicine')
+    if permcheck == -1:
+        return redirect('login-view')
+    elif permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    elif permcheck == 1:
+        meds = Medicine.objects.all()
+        l = []
+        for i in meds:
+            l.append(i)
+        ctx={
+            'data':l,
+        }
+        return render(request,'doctor/medicine.html',context=ctx)
+
 #this is used for adding a new medicine into the database.
 #this differs from stock medicine as stock medicine gives us an idea about
 # the medicines currently in stock while this just add a new kind of medicine into the database
@@ -848,14 +874,14 @@ def insertIntoMedicine(request):
         med_id=request.POST["med-id"]
         med_name=request.POST["med-name"]
         company=request.POST["company"]
-        qty=request.POST["med-qty"]
         cat=request.POST["med-cat"]
-        Medicine.objects.update_or_create(medicine_id=med_id,defaults={
-            'medicine_name':med_name,
-            'manufacturing_company':company,
-            'quantity':qty,
-            'category':cat
-        })
+        #add
+        if med_id=="-1":
+            Medicine.objects.create(
+                medicine_name = med_name,
+                manufacturing_company =company,
+                category = cat
+            )
         return redirect('doctor-home-view')
     return render(request, 'doctor/error.html')
 
@@ -897,3 +923,227 @@ def closeRequisition(request):
             Requisition.objects.filter(requisition_id=req_id).update(closed=False)
         return redirect('display-requisition-view')
     return HttpResponse("You don't have the permissions for this operation")
+
+def newPrescription(request):
+    if request.user.is_authenticated and checkIfDoctor(request):
+        return render(request,'doctor/newPrescription.html')
+    return render(request,'doctor/error.html',context={'msg':'You do not have permissions'})
+
+def addNewPresc(request):
+    pass
+def insertIntoNewPresc(request):
+    if checkForPermission(request,'doctor.add_prescription') and checkForPermission(request,'doctor.add_medicineissue'):
+        try:
+            date=request.POST['date-of-issue']
+            type=request.POST['type_of_patient']
+            patient_id=request.POST['id_of_patient']
+            complaint=request.POST['complaint']
+            diagnosis=request.POST['diagnosis']
+
+            id_of_user=request.user.id
+            staff_rec=HealthCentreStaff.objects.get(user_id=id_of_user)
+
+            staff_id=staff_rec.staff_id
+
+            presc_rec=Prescription.objects.filter(doctor_id=staff_id)
+            last_presc_no=presc_rec.aggregate(Max('prescription_no_of_doctor'))
+            prescription_no_of_doctor=1
+            if presc_rec:
+                prescription_no_of_doctor=last_presc_no[list(last_presc_no.keys())[0]]+1
+            id_of_presc_added=None
+            if type=='stud':
+                id_of_presc_added=Prescription.objects.create(date_of_issue=date,complaint=complaint,diagnosis=diagnosis,doctor_id=staff_rec,patient_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
+            elif type=='teach':
+                id_of_presc_added=Prescription.objects.create(date_of_issue=date, complaint=complaint, diagnosis=diagnosis,doctor_id=staff_rec, teacher_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
+            no_of_meds=request.POST['no_of_meds_in_presc']
+            # print(date," ",type," ",patient_id," ",complaint," ",diagnosis," ",no_of_meds," ")
+            for i in range(int(no_of_meds)):
+                med=request.POST['med'+str(i+1)]
+                qty=request.POST['qty'+str(i+1)]
+                dose=request.POST['dose'+str(i+1)]
+                # print(med,"-",qty,"-",dose)
+                MedicineIssue.objects.create(medicine_id_id=med,medicine_quantity=qty,dose=dose,prescription_serial_no=id_of_presc_added)
+
+            ctx={
+                'pres_id':prescription_no_of_doctor,
+                'pk_of_presc':id_of_presc_added.prescription_serial_no,
+                'staff_id_of_current_user':staff_id
+            }
+            return render(request,'doctor/resultAfterAddingPrescription.html',context={'data':ctx})
+        except:
+            return HttpResponse("Error")
+
+    return render(request,'doctor/error.html',context={'msg':'Error'})
+
+def studTeachSelect(request):
+    pat_type=request.GET['type_of_patient']
+    if pat_type=='stud':
+        s_ids=[i.person_id for i in StudentRecord.objects.all()]
+        r_data=json.dumps(s_ids)
+        return HttpResponse(r_data,content_type="application/json")
+    elif pat_type=='teach':
+        teach=RegularStaff.objects.all();
+        r_data={ k.id:k.staff_name for k in teach}
+        return HttpResponse(json.dumps(r_data), content_type="application/json")
+    return HttpResponse("")
+
+def medSelect(request):
+    meds=StockMedicine.objects.all()
+    l={k.id:k.medicine_id.medicine_name for k in meds}
+    # print(l)
+    return HttpResponse(json.dumps(l),content_type='application/json')
+
+
+def viewAndEditPresc(request,presc_id):
+    if request.user.is_authenticated and checkIfDoctor(request):
+
+        prescription=Prescription.objects.get(prescription_serial_no=presc_id)
+
+        staff_id=prescription.doctor_id_id
+        staff_rec=HealthCentreStaff.objects.get(staff_id=staff_id)
+        breach=(request.user.id!=staff_rec.user_id_id)
+        if not breach:
+            ctx={
+                'presc_id':prescription.prescription_serial_no,
+                'presc_id_for_doctor':prescription.prescription_no_of_doctor,
+                'date':prescription.date_of_issue,
+                'student_id':prescription.patient_id_id,
+                'teacher_id':prescription.teacher_id_id,
+                'teacher_name':prescription.teacher_id,
+                'complaint':prescription.complaint,
+                'diagnosis':prescription.diagnosis
+            }
+            meds_prescribed=MedicineIssue.objects.filter(prescription_serial_no=presc_id)
+            meds_to_be_passed_in_ctx=None
+            if meds_prescribed:
+                meds_to_be_passed_in_ctx=[]
+                k=0
+                for i in meds_prescribed:
+                    k=k+1
+                    d={
+                        'idx':k,
+                        'med_id':i.medicine_id_id,
+                        'med_name':i.medicine_id.medicine_id.medicine_name,
+                        'med_qty':i.medicine_quantity,
+                        'med_dose':i.dose
+                    }
+                    meds_to_be_passed_in_ctx.append(d)
+            # print(meds_to_be_passed_in_ctx)
+            ctx['meds']=meds_to_be_passed_in_ctx
+            ctx['total_meds']=len(meds_to_be_passed_in_ctx)
+            return render(request,'doctor/viewAndEditPrescription.html',context={'data':ctx})
+        else:
+            return render(request,'doctor/error.html',context={'msg':'You\'re trying to look into other doctor\'s info' })
+    return render(request, 'doctor/error.html', context={'msg': 'You do not have permissions'})
+
+
+def updatePresc(request,presc_id):
+    if request.method=='POST':
+        prescription=Prescription.objects.get(prescription_serial_no=presc_id)
+        staff_rec=prescription.doctor_id
+        uid=HealthCentreStaff.objects.get(staff_id=staff_rec.staff_id).user_id_id
+
+        breach=not(uid==request.user.id)
+        if breach:
+            return render(request,'doctor/error.html',context={'msg':'You\'re trying to trespass'})
+
+        date = request.POST['date-of-issue']
+        type = request.POST['type_of_patient']
+        patient_id = request.POST['id_of_patient']
+        complaint = request.POST['complaint']
+        diagnosis = request.POST['diagnosis']
+        no_of_meds = request.POST['no_of_meds_in_presc']
+
+
+        prescription.date_of_issue=date
+        prescription.complaint=complaint
+        prescription.diagnosis=diagnosis
+        if type=='stud':
+            prescription.patient_id_id=patient_id
+            prescription.teacher_id=None
+        elif type=='teach':
+            prescription.patient_id=None
+            prescription.teacher_id_id=patient_id
+
+        prescription.save()
+
+        MedicineIssue.objects.filter(prescription_serial_no=prescription).delete()
+
+        for i in range(int(no_of_meds)):
+            med = request.POST['med' + str(i + 1)]
+            qty = request.POST['qty' + str(i + 1)]
+            dose = request.POST['dose' + str(i + 1)]
+            MedicineIssue.objects.create(medicine_id_id=med, medicine_quantity=qty, dose=dose,prescription_serial_no=prescription)
+
+        ctx = {
+            'pres_id': prescription.prescription_no_of_doctor,
+            'pk_of_presc': prescription.prescription_serial_no,
+            'staff_id_of_current_user': prescription.doctor_id_id
+        }
+        return render(request, 'doctor/resultAfterAddingPrescription.html', context={'data': ctx})
+    return render(request,'doctor/error.html',context={'msg':'Error!!'})
+
+def printPreview(request,presc_id):
+    prescription=Prescription.objects.get(prescription_serial_no=presc_id)
+    staff_rec = prescription.doctor_id
+    uid = HealthCentreStaff.objects.get(staff_id=staff_rec.staff_id).user_id_id
+
+    breach = not (uid == request.user.id)
+    if breach:
+        return render(request, 'doctor/error.html', context={'msg': 'You\'re trying to trespass'})
+    ctx={
+        'presc_id':prescription.pk,
+        'date':prescription.date_of_issue,
+        'complaint':prescription.complaint,
+        'diagnosis':prescription.diagnosis,
+        'doctor':prescription.doctor_id.staff_name,
+        'doctor_presc_id':prescription.prescription_no_of_doctor
+    }
+    if prescription.patient_id:
+        ctx['student_id']=prescription.patient_id_id
+        ctx['student_name']=prescription.patient_id.name
+    if prescription.teacher_id:
+        ctx['teacher_name']=prescription.teacher_id.staff_name
+    medicines=MedicineIssue.objects.filter(prescription_serial_no=prescription)
+    med_data=None
+    if medicines:
+        med_data=[]
+        for i in medicines:
+            d={
+                'med':i.medicine_id.medicine_id.medicine_name,
+                'qty':i.medicine_quantity,
+                'dose':i.dose
+            }
+            med_data.append(d)
+        ctx['meds']=med_data
+    return render(request,'doctor/printPreview.html',context=ctx)
+
+def viewAllPrescs(request):
+    if checkIfDoctor(request):
+        uid=request.user.id
+        staff_rec=HealthCentreStaff.objects.get(user_id_id=uid)
+        prescriptions=Prescription.objects.filter(doctor_id=staff_rec)
+        data=None
+        if prescriptions:
+            data=[]
+            for i in prescriptions:
+                d={
+                    'p_id':i.prescription_serial_no,
+                    'p_id_doctor':i.prescription_no_of_doctor,
+                }
+                if i.patient_id:
+                    d['patient_id']=i.patient_id.name + "\n("+i.patient_id_id+")"
+                    d['patient_type']='Student'
+                elif i.teacher_id:
+                    d['patient_id']=i.teacher_id.staff_name
+                    d['patient_type'] = 'Teacher'
+                data.append(d)
+        ctx={
+            'data':data
+        }
+        return render(request,'doctor/viewAllPrescs.html',context=ctx)
+    return render(request,'doctor/error.html',context='Only doctors have prescriptions')
+
+def deletePresc(request,presc_id):
+    Prescription.objects.get(prescription_serial_no=presc_id).delete()
+    return redirect(reverse('display-myprescs-view'))

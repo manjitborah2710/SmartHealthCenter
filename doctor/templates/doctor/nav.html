@@ -14,15 +14,20 @@
         
         <div class="link-ps">
             {% if request.user|inGroup:'doctor' %}
-                <a href="{% url 'display-mypatients-view' %}">View My Patients</a>
+                <a href="{% url 'new-presc' %}">New Prescription</a>
+                <a href="{% url 'display-myprescs-view' %}">View My Prescriptions</a>
             {% endif %}
+{#            {% if request.user|inGroup:'doctor' %}#}
+{#                <a href="{% url 'display-mypatients-view' %}">View My Patients</a>#}
+{#            {% endif %}#}
             <a href="{% url 'display-staff-view' %}">Health Center Staff</a>
             <a href="{% url 'display-firm-view' %}">Empanelled Firms</a>
             <a href="{% url 'display-medicine' %}">Medicine Stock</a>
             <a href="{% url 'display-requisition-view' %}">Requisitions</a>
             <a href="{% url 'display-doctorrequisitionproposal-view' %}">Requisition proposals</a>
+            <a href="{% url 'display-medicinelist-view' %}">Medicine List</a>
             {% if request.user|inGroup:'pharmacist' %}
-                <a href="{% url 'add-stock-view' %}">Add new Stock</a>
+                <a href="{% url 'add-bill-view' %}">Add new Bill</a>
                 <a href="{% url 'add-stockmedicine-view' %}">Add medicines into Stock</a>
                 <a href="{% url 'add-medicine-view' %}">Add medicine</a>
                 <a href="{% url 'display-prescription-view' 1001 %}">Issue Medicines</a>
