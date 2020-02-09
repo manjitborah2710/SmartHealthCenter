@@ -1,0 +1,14 @@
+{% extends 'doctor/base.html' %}
+
+{% block content-block %}
+    <div class="container">
+        <div class="jumbotron text-center">
+            <p>Overall Prescription No. : {{ data.pk_of_presc }}</p>
+            <p>Your Prescription No. : {{ data.pres_id }}</p>
+            <p>Your staff ID : {{ data.staff_id_of_current_user }}</p>
+            <a class="btn btn-success" href="{% url 'display-and-edit-presc-view' data.pk_of_presc %}">View Prescription</a>
+            <a class="btn btn-primary" href="{% url 'print-preview' data.pk_of_presc %}">Print</a>
+        </div>
+
+    </div>
+{% endblock %}

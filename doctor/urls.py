@@ -47,15 +47,15 @@ urlpatterns = [
     path('editRequisitionProposal/<int:pk>/<int:user_id>',views.editRequisitionProposal,name="edit-requisitionproposal-view"),
     path('deleteRequisition/<int:pk>/<int:user_id>',views.deleteRequisitionProposal,name="delete-requisitionproposal-view"),
 
-    path('viewMyPatients',views.viewMyPatients,name="display-mypatients-view"),
-    path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
-    path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
+    # path('viewMyPatients',views.viewMyPatients,name="display-mypatients-view"),
+    # path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
+    # path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
 
     path('viewPrescription/<str:pres_id>',views.displayPrescription,name="display-prescription-view"),
     path('addPrescription/<str:record_id>',views.addPrescription,name="add-prescription-view"),
     path('insertPrescription',views.insertIntoPrescription,name="insert-into-prescription-view"),
 
-    path('individualRecord/<str:patient_id>', views.displayIndividualRecord, name="display-individualrecord-view"),
+    # path('individualRecord/<str:patient_id>', views.displayIndividualRecord, name="display-individualrecord-view"),
 
     path('addMedicineIssue/<str:presc_no>',views.addMedicineIssue,name='add-medicineissue-view'),
     path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
@@ -67,12 +67,22 @@ urlpatterns = [
 
     path('addMedicine',views.addMedicine,name='add-medicine-view'),
     path('insertMedicine',views.insertIntoMedicine,name='insert-into-medicine-view'),
+    path('medicinelist',views.displayMedicineList,name='display-medicinelist-view'),
 
     path('viewAllMedicinesIssued',views.viewAllMedicinesIssued,name='display-allmedicinesissued-view'),
 
     path('getReq',views.getReq,name='get-req'),
     path('confirm',views.confirmAdditionIntoRequisition,name='confirm-addition-into-requisition'),
-    path('closeReq',views.closeRequisition,name='close-req')
-
+    path('closeReq',views.closeRequisition,name='close-req'),
+    path('newPrescription',views.newPrescription,name='new-presc'),
+    path('addNewPresc',views.addNewPresc,name='add-newpresc-view'),
+    path('insertNewpresc',views.insertIntoNewPresc,name='insert-into-newpresc-view'),
+    path('selectBetweenStudentAndTeacher',views.studTeachSelect,name='stud-teach-select'),
+    path('medSelect',views.medSelect,name='med-select'),
+    path('viewAndEditPresc/<int:presc_id>',views.viewAndEditPresc,name='display-and-edit-presc-view'),
+    path('updatePresc/<int:presc_id>',views.updatePresc,name='update-presc-view'),
+    path('printPreview/<int:presc_id>',views.printPreview,name='print-preview'),
+    path('viewMyPrescs',views.viewAllPrescs,name='display-myprescs-view'),
+    path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc')
 
 ]

@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
-from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, PatientRecord, FollowUpReport, RecommendedTest, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback
+from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback
 # Register your models here.
 
 class CompositionInline(admin.TabularInline):
@@ -12,9 +12,9 @@ class CompositionInline(admin.TabularInline):
 
 @admin.register(Medicine)
 class MedicineAdmin(ImportExportModelAdmin):
-    fields = ['medicine_name', 'manufacturing_company','quantity', 'category']
+    fields = ['medicine_name', 'manufacturing_company', 'category']
     inlines = [CompositionInline]
-    list_display = ['medicine_name', 'manufacturing_company', 'quantity', 'category']
+    list_display = ['medicine_name', 'manufacturing_company', 'category']
     search_fields = ['medicine_name']
 
 
@@ -25,7 +25,7 @@ class MedicineIssueInline(admin.TabularInline):
 @admin.register(Prescription)
 class PrescriptionIssueAdmin(ImportExportModelAdmin):
     inlines = [MedicineIssueInline]
-    list_display = ['prescription_serial_no', 'patient_record_id', 'date_of_issue']
+    list_display = ['prescription_serial_no', 'patient_id', 'doctor_id', 'date_of_issue']
     list_filter = ['date_of_issue']
     search_fields = ['prescription_serial_no']
 
@@ -62,7 +62,7 @@ class BillAdmin(ImportExportModelAdmin):
     list_display = ['bill_no', 'firm_id', 'bill_date']
     inlines = [StockInline]
     list_filter = ['firm_id', 'bill_date']
-    search_fields = ['batch_no', 'bill_no']
+    search_fields = ['bill_date', 'bill_no']
 
 class DoctorRequisitionProposalInline(admin.TabularInline):
     model = DoctorRequisitionProposal
@@ -74,21 +74,6 @@ class RequisitionDetailsAdmin(ImportExportModelAdmin):
     list_display = ['requisition_id', 'date_of_order', 'amount', 'date_of_approval']
     search_fields = ['requisition_id']
 
-
-class FollowUpReportInline(admin.TabularInline):
-    model = FollowUpReport
-    extra = 0
-
-class RecommendedTestInline(admin.TabularInline):
-    model = RecommendedTest
-    extra = 0
-
-@admin.register(PatientRecord)
-class PatientRecordAdmin(ImportExportModelAdmin):
-    inlines = [RecommendedTestInline, FollowUpReportInline]
-    list_display = ['patient_id', 'doctor_id']
-    search_fields = ['patient_id']
-    list_filter = ['isDependant']
 
 @admin.register(DisposedMedicine)
 class DisposedMedicineAdmin(ImportExportModelAdmin):
@@ -132,3 +117,4 @@ class DoctorRequisitionProposalAdmin(ImportExportModelAdmin):
     pass
 # admin.site.register(DoctorRequisitionProposal)
 admin.site.register(Feedback)
+admin.site.register(StockMedicine)
