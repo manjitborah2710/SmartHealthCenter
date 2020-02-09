@@ -117,3 +117,4 @@ class DoctorRequisitionProposalAdmin(ImportExportModelAdmin):
     pass
 # admin.site.register(DoctorRequisitionProposal)
 admin.site.register(Feedback)
+admin.site.register(StockMedicine)

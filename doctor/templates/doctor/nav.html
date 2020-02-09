@@ -15,6 +15,7 @@
         <div class="link-ps">
             {% if request.user|inGroup:'doctor' %}
                 <a href="{% url 'new-presc' %}">New Prescription</a>
+                <a href="{% url 'display-myprescs-view' %}">View My Prescriptions</a>
             {% endif %}
 {#            {% if request.user|inGroup:'doctor' %}#}
 {#                <a href="{% url 'display-mypatients-view' %}">View My Patients</a>#}

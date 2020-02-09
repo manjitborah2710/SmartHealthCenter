@@ -76,6 +76,13 @@ urlpatterns = [
     path('closeReq',views.closeRequisition,name='close-req'),
     path('newPrescription',views.newPrescription,name='new-presc'),
     path('addNewPresc',views.addNewPresc,name='add-newpresc-view'),
-    path('insertNewpresc',views.insertIntoNewPresc,name='insert-into-newpresc-view')
+    path('insertNewpresc',views.insertIntoNewPresc,name='insert-into-newpresc-view'),
+    path('selectBetweenStudentAndTeacher',views.studTeachSelect,name='stud-teach-select'),
+    path('medSelect',views.medSelect,name='med-select'),
+    path('viewAndEditPresc/<int:presc_id>',views.viewAndEditPresc,name='display-and-edit-presc-view'),
+    path('updatePresc/<int:presc_id>',views.updatePresc,name='update-presc-view'),
+    path('printPreview/<int:presc_id>',views.printPreview,name='print-preview'),
+    path('viewMyPrescs',views.viewAllPrescs,name='display-myprescs-view'),
+    path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc')
 
 ]
