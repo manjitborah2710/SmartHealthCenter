@@ -268,15 +268,15 @@ class MedicineIssue(models.Model):
     medicine_id = models.ForeignKey(StockMedicine, on_delete=models.CASCADE)
     medicine_quantity = models.IntegerField(default=0,null=False)
     dose=models.CharField(max_length=500,null=False,default=None)
-    # issue_status = models.BooleanField()
+    issue_status = models.BooleanField(default=0)
     # non_issue_reason = models.CharField(blank=True, max_length=MAX_LENGTH)
 
-    def add_prescribed_medicine(self, sl_no, medicine_id, medicine_quantity, dosage):
+    def add_prescribed_medicine(self, sl_no, medicine_id, medicine_quantity, dosage, issue_status):
         self.prescription_serial_no = sl_no
         self.medicine_id = medicine_id
         self.medicine_quantity = medicine_quantity
         self.dose=dosage
-        # self.issue_status = issue_status
+        self.issue_status = issue_status
         # self.non_issue_reason = non_issue_reason
         self.save()
 

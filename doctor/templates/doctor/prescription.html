@@ -9,75 +9,57 @@
             {% include 'doctor/nav.html' %}
         </div>
 
+        <div class="text text-center">
+                <form method="get" action="{% url 'get-req' %}">
+                    <select name="p_no">
+                        {% for i in p_nos %}
+                            <option name="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit" value="View" class="btn btn-primary">
+                </form>
+        </div>
+
         <div class="main-content">
             <h3>{{ name}}</h3>
             Date of Issue: {{ data.date_of_issue }}<br>
             Complaint: {{ data.complaint }}<br>
             Diagnosis: {{ data.diagnosis }}<br>
-{#            Follow-up Date: {{ data.followup_date }}<br>#}
             <hr>
 
-            <div class="text text-center">
-                {% if isPharm %}
-                    <form method="get" action="{% url 'get-req' %}">
-                        <select name="p_no">
-                            {% for i in p_nos %}
-                            <option name="{{ i }}">{{ i }}</option>
-                            {% endfor %}
-                        </select>
-                        <input type="submit" value="View" class="btn btn-primary">
-                    </form>
 
-                {% else %}
-                    <a class="btn btn-custom" href="{% url 'add-medicineissue-view' data.prescription_serial_no %}">Add New Medicine</a>
-                {% endif %}
-            </div>
-
-            {% if data.medicine_prescribed %}<br>
-                <h3>Medicines Prescribed</h3><br>
-                <div>
-                <table class="table table-striped">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>Medicine</th>
-                        <th>Quantity</th>
-                        <th>Issue Status</th>
-{#                        <th>Non-issue Reason</th>#}
-                        {% if isPharm %}
-                            <th>Issue</th>
+           <br>
+            <h3>Medicines Prescribed</h3><br>
+            <div>
+            <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Medicine</th>
+                    <th>Quantity</th>
+                    <th>Issue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in meds_pres  %}
+                        <tr>
+                        <td>{{ i.medicine_id }}</td>
+                        <td>{{ i.medicine_quantity }}</td>
+                        {% if i.issue_status == 0 %}
+                        <td><a href="{% url 'issue-medicine-view' i.prescription_serial_no_id i.id %}">Issue</a></td>
                         {% else %}
-                            <th>Delete</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in meds_pres  %}
-                            <tr>
-                            <td>{{ i.medicine_id }}</td>
-                            <td>{{ i.medicine_quantity }}</td>
-                            <td>{{ i.issue_status }}</td>
-{#                            <td>{{ i.non_issue_reason }}</td>#}
-                            {% if isPharm %}
-                                {% if i.issue_status == 0 %}
-                                    <td><a href="{% url 'issue-medicine-view' i.id %}">Issue</a></td>
-                                {% else %}
-                                    <td>Issued</td>
-                                {% endif %}
-                            {% elif i.issue_status == 0 %}
-                                <td><a href="{% url 'delete-medicineissue-view' i.id %}">Delete</a></td>
-                            {% else %}
-                                <td>Issued</td>
-                            {% endif %}
-                            </tr>
-                    {% endfor %}
+                            <td>Issued</td>
 
-                </tbody>
-            </table>
-            </div>
-            {% endif %}
-            {% if data.tests_recommended %}
-                <h3>Tests Recommended</h3><br>
-            {% endif %}
+
+
+
+
+                            {% endif %}
+                        </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+        </div>
             <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
         </div>
 
