@@ -683,33 +683,32 @@ def submitFeedback(request):
 #
 #a doctor or a pharmacist can view a prescription of a patient and
 # see the medicines that were prescribed and tests that were recommended
-# def displayPrescription(request,pres_id=1001):
-#     permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
-#     isPharm = checkIfPharmacist(request)
-#     if permcheck == -1:
-#         return redirect('login-view')
-#     if permcheck == 0:
-#         return HttpResponse("<p>You do not have the permissions for this operation</p>")
-#     if permcheck == 1:
-#         data=Prescription.objects.filter(prescription_serial_no=pres_id)
-#         name = data[0].patient_record_id.patient_id
-#         meds_pres = ""
-#         tests_recom = ""
-#         isPharm=checkIfPharmacist(request)
-#         if data[0].medicine_prescribed:
-#             meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
-#         ctx = {'data' : data[0],
-#                'name': name,
-#                'meds_pres': meds_pres,
-#                'isPharm': isPharm,
-#                }
-#         if isPharm:
-#             prescriptions=[i['prescription_serial_no'] for i in Prescription.objects.all().values('prescription_serial_no')]
-#             print(prescriptions)
-#             ctx['p_nos']=prescriptions
-#         return render(request, 'doctor/prescription.html', context=ctx)
-#     return render(request, 'doctor/error.html')
-#
+def displayPrescription(request,pres_id):
+    permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+    isPharm = checkIfPharmacist(request)
+    if permcheck == -1:
+        return redirect('login-view')
+    if permcheck == 0:
+        return HttpResponse("<p>You do not have the permissions for this operation</p>")
+    if permcheck == 1:
+        data=Prescription.objects.filter(prescription_serial_no=pres_id)
+        if data[0].patient_id != None:
+            name = data[0].patient_id
+        else:
+            name = data[0].teacher_id
+        isPharm=checkIfPharmacist(request)
+        meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
+        ctx = {'data' : data[0],
+               'name': name,
+               'meds_pres': meds_pres,
+               'isPharm': isPharm,
+               }
+        if isPharm:
+            prescriptions=[i['prescription_serial_no'] for i in Prescription.objects.all().values('prescription_serial_no')]
+            ctx['p_nos']=prescriptions
+        return render(request, 'doctor/prescription.html', context=ctx)
+    return render(request, 'doctor/error.html')
+
 # #a doctor can issue a new prescription to a patient using this
 # def addPrescription(request,record_id):
 #     permcheck=checkForPermission(request,'doctor.add_prescription')
@@ -756,77 +755,74 @@ def submitFeedback(request):
 #     return render(request, 'doctor/error.html')
 
 #medicines are prescribed by a doctor to a patient using this
-def addMedicineIssue(req, presc_no):
-    permcheck = checkForPermission(req, 'doctor.add_medicineissue')
-    if permcheck == -1:
-        return redirect('login-view')
-    if permcheck == 0:
-        return HttpResponse("<p>You do not have the permissions for this operation</p>")
-    if permcheck == 1:
-        meds = [i for i in StockMedicine.objects.all().values('medicine_id', 'medicine_id__medicine_name', 'id', 'batch_no').order_by('medicine_id__medicine_name')]
-        ctx={
-            'p_no':Prescription.objects.get(prescription_serial_no=presc_no),
-            'meds':meds,
-            'type':'doctor'
-        }
-        print(ctx['p_no'])
-        return render(req,'doctor/addMedicineIssue.html',context=ctx)
-
-#this adds the prescribed medicine into the database
-def insertIntoMedicineIssue(request):
-    permcheck = checkForPermission(request, 'doctor.add_medicineissue')
-    if permcheck==1 and request.method=='POST':
-        pres_id = request.POST['presc-serial-no']
-        p=Prescription.objects.get(prescription_serial_no=pres_id)
-        if not p.medicine_prescribed:
-            p.medicine_prescribed=True
-            p.save()
-        record_id = p.patient_record_id_id
-        doi=request.POST['date-of-issue']
-        m=StockMedicine.objects.get(id=request.POST['med-id'])
-        qty=request.POST['med-qty']
-        i=request.POST['med-issued']
-        nii=request.POST['nii']
-        MedicineIssue.objects.create(prescription_serial_no=p,medicine_id=m,medicine_quantity=qty,issue_status=i,non_issue_reason=nii)
-
-        if 'submit&cont' in request.POST:
-            return redirect('add-medicineissue-view', pres_id)
-        elif 'submit' in request.POST:
-            return redirect('display-individualrecord-view', record_id)
-
-    return render(request, 'doctor/error.html')
-
-#this is used by a doctor to delete a prescribed medicine
-def deleteMedicineIssue(request,pk):
-    permcheck = checkForPermission(request, "doctor.delete_medicineissue")
-    if permcheck == 1:
-        p_no=MedicineIssue.objects.get(pk=pk).prescription_serial_no_id
-        print(p_no)
-        MedicineIssue.objects.get(pk=pk).delete()
-        return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_no}))
-    return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})
+# def addMedicineIssue(req, presc_no):
+#     permcheck = checkForPermission(req, 'doctor.add_medicineissue')
+#     if permcheck == -1:
+#         return redirect('login-view')
+#     if permcheck == 0:
+#         return HttpResponse("<p>You do not have the permissions for this operation</p>")
+#     if permcheck == 1:
+#         meds = [i for i in StockMedicine.objects.all().values('medicine_id', 'medicine_id__medicine_name', 'id', 'batch_no').order_by('medicine_id__medicine_name')]
+#         ctx={
+#             'p_no':Prescription.objects.get(prescription_serial_no=presc_no),
+#             'meds':meds,
+#             'type':'doctor'
+#         }
+#         print(ctx['p_no'])
+#         return render(req,'doctor/addMedicineIssue.html',context=ctx)
+#
+# #this adds the prescribed medicine into the database
+# def insertIntoMedicineIssue(request):
+#     permcheck = checkForPermission(request, 'doctor.add_medicineissue')
+#     if permcheck==1 and request.method=='POST':
+#         pres_id = request.POST['presc-serial-no']
+#         p=Prescription.objects.get(prescription_serial_no=pres_id)
+#         if not p.medicine_prescribed:
+#             p.medicine_prescribed=True
+#             p.save()
+#         record_id = p.patient_record_id_id
+#         doi=request.POST['date-of-issue']
+#         m=StockMedicine.objects.get(id=request.POST['med-id'])
+#         qty=request.POST['med-qty']
+#         i=request.POST['med-issued']
+#         nii=request.POST['nii']
+#         MedicineIssue.objects.create(prescription_serial_no=p,medicine_id=m,medicine_quantity=qty,issue_status=i,non_issue_reason=nii)
+#
+#         if 'submit&cont' in request.POST:
+#             return redirect('add-medicineissue-view', pres_id)
+#         elif 'submit' in request.POST:
+#             return redirect('display-individualrecord-view', record_id)
+#
+#     return render(request, 'doctor/error.html')
+#
+# #this is used by a doctor to delete a prescribed medicine
+# def deleteMedicineIssue(request,pk):
+#     permcheck = checkForPermission(request, "doctor.delete_medicineissue")
+#     if permcheck == 1:
+#         p_no=MedicineIssue.objects.get(pk=pk).prescription_serial_no_id
+#         print(p_no)
+#         MedicineIssue.objects.get(pk=pk).delete()
+#         return redirect(reverse('display-prescription-view', kwargs={'pres_id':p_no}))
+#     return render(request, "doctor/error.html", {'msg': 'Deletion failed...you may not have the required permissions'})
 
 #a pharmacist can issue medicines that are prescribed by a doctor using this
 #this is currently not working properly as medicine_id_id returns a multivalued set
 #update function updates every tuple's quantity value
-def issueMedicine(request, med_id):
+def issueMedicine(request,pres_id, med_id): #med_id is the id of the entry in the medicineissue table
     if checkIfPharmacist(request):
-        med = MedicineIssue.objects.filter(id=med_id)
-        presc_no = med[0].prescription_serial_no_id
-        issue_quantity = med[0].medicine_quantity
-        med_id = med[0].medicine_id_id
-        stock_med = StockMedicine.objects.filter(id=med_id)
-        stock_quantity=0
-        if stock_med.exists():
-            stock_quantity = stock_med[0].quantity
-        # else:
-        #     stock_quantity = 0
-        if stock_quantity>issue_quantity:
-            new = stock_quantity - issue_quantity
-            print (new)
-            stock_med.update(quantity=new)
-            med.update(issue_status=1)
-        return redirect('display-prescription-view',presc_no)
+        med_to_issue = MedicineIssue.objects.get(id = med_id)
+        med_in_stock = StockMedicine.objects.get(id = med_to_issue.medicine_id_id)
+
+        quant_req = med_to_issue.medicine_quantity
+        quant_avail = med_in_stock.quantity
+
+        if(quant_req>quant_avail):
+            return render(request, "doctor/error.html", {'msg': 'Insufficient Stock!'})
+        else:
+            quant_avail = quant_avail - quant_req
+            StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).update(quantity = quant_avail)
+            MedicineIssue.objects.filter(id = med_id).update(issue_status = 1)
+        return redirect('display-prescription-view',pres_id)
     return render(request, "doctor/error.html", {'msg': 'You do not have the permission for this action'})
 
 #this is probably redundant

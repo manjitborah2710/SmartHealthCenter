@@ -51,17 +51,17 @@ urlpatterns = [
     # path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
     # path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
 
-    # path('viewPrescription/<str:pres_id>',views.displayPrescription,name="display-prescription-view"),
+    path('viewPrescription/<str:pres_id>',views.displayPrescription,name="display-prescription-view"),
     # path('addPrescription/<str:record_id>',views.addPrescription,name="add-prescription-view"),
     # path('insertPrescription',views.insertIntoPrescription,name="insert-into-prescription-view"),
 
     # path('individualRecord/<str:patient_id>', views.displayIndividualRecord, name="display-individualrecord-view"),
 
-    path('addMedicineIssue/<str:presc_no>',views.addMedicineIssue,name='add-medicineissue-view'),
-    path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
-    path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),
+    # path('addMedicineIssue/<str:presc_no>',views.addMedicineIssue,name='add-medicineissue-view'),
+    # path('insertMedicineIssue',views.insertIntoMedicineIssue,name='insert-into-medicineissue-view'),
+    # path('deleteMedicineIssue/<int:pk>',views.deleteMedicineIssue,name='delete-medicineissue-view'),
 
-    path('issueMedicine/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
+    path('issueMedicine/<str:pres_id>/<str:med_id>', views.issueMedicine,name='issue-medicine-view'),
 
     path('submitfeedback',views.submitFeedback,name='submit-feedback'),
 
