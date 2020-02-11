@@ -15,6 +15,10 @@
     {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
         <a href="{% url 'add-firm-view' %}" class="btn btn-custom">Add New Firm</a>
     {% endif %}
+    <form action="#">
+        <input type="text" name='s1'/>
+        <input type="submit" value="search"/>
+    </forrm>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>

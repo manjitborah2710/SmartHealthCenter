@@ -178,6 +178,7 @@ def displayEmpanelledFirms(req):
     if user.is_authenticated:
         if user.has_perm("doctor.view_empanelledfirm"):
             data_all=EmpanelledFirm.objects.all()
+            data_all=filterFirms(req,data_all)
             paginator = Paginator(data_all, 10)
             page = req.GET.get('page')
             data = paginator.get_page(page)
@@ -1148,3 +1149,9 @@ def viewAllPrescs(request):
 def deletePresc(request,presc_id):
     Prescription.objects.get(prescription_serial_no=presc_id).delete()
     return redirect(reverse('display-myprescs-view'))
+
+def filterFirms(req,data_all):
+    s1=req.GET.get('s1','')
+    if s1!='':
+        data_all=data_all.filter(firm_name__icontains=s1)
+    return data_all
