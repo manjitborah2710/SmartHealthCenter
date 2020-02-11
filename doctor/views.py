@@ -6,7 +6,7 @@ from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.models import User,Group
-from django.db.models import Max,Min,Sum,Avg
+from django.db.models import Max,Min,Sum,Avg,Q
 import json
 # Create your views here.
 
@@ -1123,6 +1123,7 @@ def viewAllPrescs(request):
         uid=request.user.id
         staff_rec=HealthCentreStaff.objects.get(user_id_id=uid)
         prescriptions=Prescription.objects.filter(doctor_id=staff_rec)
+        prescriptions=filterPrescs(request,prescriptions)
         data=None
         if prescriptions:
             data=[]
@@ -1142,8 +1143,25 @@ def viewAllPrescs(request):
             'data':data
         }
         return render(request,'doctor/viewAllPrescs.html',context=ctx)
-    return render(request,'doctor/error.html',context='Only doctors have prescriptions')
+    return render(request,'doctor/error.html',context={'msg':'Only doctors have prescriptions'})
 
 def deletePresc(request,presc_id):
     Prescription.objects.get(prescription_serial_no=presc_id).delete()
     return redirect(reverse('display-myprescs-view'))
+def filterPrescs(request,prescriptions):
+    searchString=request.GET.get('search','')
+    dateFrom=request.GET.get('dateFrom','')
+    dateTo=request.GET.get('dateTo','')
+    if(searchString!=''):
+        student_ids=prescriptions.values('patient_id')
+        students=StudentRecord.objects.filter(person_id__in=student_ids).filter(Q(person_id__icontains=searchString) | Q(name__icontains=searchString))
+        teacher_ids=prescriptions.values('teacher_id')
+        teachers=RegularStaff.objects.filter(id__in=teacher_ids).filter(Q(id__icontains=searchString) | Q(staff_name__icontains=searchString))
+        prescriptions1=prescriptions.filter(patient_id_id__in=students.values('person_id'))
+        prescriptions2=prescriptions.filter(teacher_id_id__in=teachers.values('id'))
+        prescriptions= prescriptions1 | prescriptions2
+    if(dateFrom!=''):
+        prescriptions= prescriptions.filter(date_of_issue__gte= dateFrom)
+    if(dateTo!=''):
+        prescriptions= prescriptions.filter(date_of_issue__lte= dateTo)
+    return prescriptions
