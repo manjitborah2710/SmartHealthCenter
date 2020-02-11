@@ -72,7 +72,6 @@ urlpatterns = [
 
     path('getReq',views.getReq,name='get-req'),
     path('confirm',views.confirmAdditionIntoRequisition,name='confirm-addition-into-requisition'),
-    path('closeReq',views.closeRequisition,name='close-req')
-
-
+    path('closeReq',views.closeRequisition,name='close-req'),
+    path('search',views.searchMedicine, name='search-med'),
 ]
