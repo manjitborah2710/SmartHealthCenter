@@ -15,11 +15,24 @@
     </div>
     <div class="main-content">
         {% if data %}
+            <form action="#">
+                <input type="text" name='search' placeholder="search"/>
+                <button id="dateFilterToggle">Apply date fliter</button>
+                <div id="dateInputs">
+                    <label for="dateFrom">starting date:</label>
+                    <input type="date" name="dateFrom" id='dateFrom'/>
+                    <label for="dateTo">ending date:</label>
+                    <input type="date" name="dateTo" id='dateTo'/>
+                </div>
+                <input type="submit" value="search"/>
+                <a href="{% url 'display-myprescs-view' %}">Clear all searches and filters</a>
+            </form>
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th>Overall Presc. No.</th>
                         <th>Doctor Presc. No.</th>
+                        <th>Date</th>
                         <th>Patient Type</th>
                         <th>Patient ID</th>
                         <th>View</th>
@@ -31,6 +44,7 @@
                         <tr>
                             <td>{{ i.p_id }}</td>
                             <td>{{ i.p_id_doctor }}</td>
+                            <td>{{ i.p_date }}</td>
                             <td>{{ i.patient_type }}</td>
                             <td>{{ i.patient_id }}</td>
                             <td><a class="btn btn-link" href="{% url 'display-and-edit-presc-view' i.p_id %}">View</a></td>
@@ -53,6 +67,25 @@
                 window.location.href='deletePresc/'+$val;
             }
         });
+        const toggleButton=document.getElementById('dateFilterToggle');
+        const dateInputs=document.getElementById('dateInputs');
+        const x=dateInputs.style;
+        x.display='none';
+        // x.width="300px";
+        toggleButton.addEventListener('click',(e)=>{
+            e.preventDefault();
+            if(x.display=="inline"){
+                x.display="none";
+                document.getElementById('dateFrom').value='';
+                document.getElementById('dateTo').value='';
+                toggleButton.textContent="Apply date filter";
+            }
+            else{
+                x.display="inline";
+                toggleButton.textContent="Remove date filter";
+            }
+
+        })
 
     </script>
 </body>
