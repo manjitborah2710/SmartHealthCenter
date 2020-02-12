@@ -1031,7 +1031,10 @@ def viewAndEditPresc(request,presc_id):
                     meds_to_be_passed_in_ctx.append(d)
             # print(meds_to_be_passed_in_ctx)
             ctx['meds']=meds_to_be_passed_in_ctx
-            ctx['total_meds']=len(meds_to_be_passed_in_ctx)
+            if meds_prescribed:
+                ctx['total_meds']=len(meds_to_be_passed_in_ctx)
+            else:
+                ctx['total_meds']=0
             return render(request,'doctor/viewAndEditPrescription.html',context={'data':ctx})
         else:
             return render(request,'doctor/error.html',context={'msg':'You\'re trying to look into other doctor\'s info' })
