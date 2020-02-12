@@ -7,7 +7,7 @@
             <p>Your Prescription No. : {{ data.pres_id }}</p>
             <p>Your staff ID : {{ data.staff_id_of_current_user }}</p>
             <a class="btn btn-success" href="{% url 'display-and-edit-presc-view' data.pk_of_presc %}">View Prescription</a>
-            <a class="btn btn-primary" href="{% url 'print-preview' data.pk_of_presc %}">Print</a>
+            <a target="_blank" class="btn btn-primary" href="{% url 'print-preview' data.pk_of_presc %}">Print</a>
             <br>
             <a class="btn btn-secondary" href="{% url 'display-myprescs-view' %}">View All Prescriptions</a>
             <a class="btn btn-secondary" href="{% url 'doctor-home-view' %}">Home</a>
