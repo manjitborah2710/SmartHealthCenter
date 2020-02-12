@@ -6,6 +6,13 @@ from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.models import User,Group
+
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+from itertools import chain
+
 from django.db.models import Max,Min,Sum,Avg,Q
 import json
 # Create your views here.
@@ -925,6 +932,37 @@ def closeRequisition(request):
             Requisition.objects.filter(requisition_id=req_id).update(closed=False)
         return redirect('display-requisition-view')
     return HttpResponse("You don't have the permissions for this operation")
+
+def searchMedicine(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
+            if request.method == "POST":
+                search_text = request.POST.get('search_text', False)
+                logger.error(search_text)
+            else:
+                search_text = ''
+            medicines = Medicine.objects.filter(medicine_name__contains=search_text)
+            medicines = StockMedicine.objects.filter(medicine_id__in=medicines)
+            l = []
+            for i in medicines:
+                d = {
+                    'name': i.medicine_id,
+                    'category': i.medicine_id.category,
+                    'batch_no': i.batch_no,
+                    'price': i.medicine_rate,
+                    'quantity': i.quantity,
+                    'expiry_date': i.expiry_date,
+                    'manufacturing_company':i.medicine_id.manufacturing_company
+                }
+                l.append(d)
+            ctx = {
+                    'data': l
+                  }
+            return render(request,'doctor/medicinestock.html',context=ctx)
+        else:
+            return render(request,'doctor/error.html')
+
 
 def newPrescription(request):
     if request.user.is_authenticated and checkIfDoctor(request):
