@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'SmartHealthCenter.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'health_center',
+        'NAME': 'finalproj_small',
         'USER':'root',
-        'PASSWORD':'Coolmanu@2017',
+        'PASSWORD':'password',
         'HOST':'localhost',
         'PORT':''
     }

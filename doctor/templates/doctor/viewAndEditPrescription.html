@@ -1,0 +1,211 @@
+{% extends 'doctor/base.html' %}id
+{% load static %}
+{% block style-block %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.15.0/d3.min.js"></script>
+{% endblock %}
+{% block content-block %}
+
+{% include 'doctor/header.html' %}
+
+
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <h2 style="display: inline">Prescription No. : {{ data.presc_id_for_doctor }} (Overall : {{ data.presc_id }} )</h2>
+                <button type="button" id="edit-btn" class="btn btn-primary float-right">Edit</button>
+                <br>
+                <br>
+                <form method="post" action="{% url 'update-presc-view' data.presc_id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="date-of-issue">Date of Issue</label>
+                        <input id="date-of-issue" class="form-control form-field" name="date-of-issue" type="date" value="{{ data.date|date:'Y-m-d' }}" required disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type_of_patient">Type of patient : </label>
+                        <select class="form-field" id="type_of_patient" name="type_of_patient" required disabled>
+                            <option value="">--Select--</option>
+                            {% if data.student_id %}
+                                <option value="stud" selected>Student</option>
+                                <option value="teach">Teacher</option>
+                            {% elif data.teacher_id %}
+                                <option value="stud">Student</option>
+                                <option value="teach" selected>Teacher</option>
+                            {% endif %}
+                        </select>
+
+                        {% if data.student_id %}
+                            <label for="id_of_patient" id="label_for_id">Scholar ID : </label>
+                            <select class="form-field" id="id_of_patient" name="id_of_patient" required disabled>
+                                <option value="{{ data.student_id }}">{{ data.student_id }}</option>
+                            </select>
+                        {% elif data.teacher_id %}
+                            <label for="id_of_patient" id="label_for_id">Name of teacher : </label>
+                            <select class="form-field" id="id_of_patient" name="id_of_patient" required disabled>
+                                <option value="{{ data.teacher_id }}">{{ data.teacher_name }}</option>
+                            </select>
+                        {% endif %}
+
+
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="complaint">Complaint</label>
+                        <input id="complaint" class="form-control form-field" name="complaint" value="{{ data.complaint }}" required type="text" disabled>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="diagnosis">Diagnosis</label>
+                        <input id="diagnosis" class="form-control form-field" name="diagnosis" value="{{ data.diagnosis }}" required type="text" disabled>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <h5>Add Medicines</h5>
+                        <button type="button" id="add-med-btn" class="btn btn-warning form-field" disabled>Add</button>
+                        <div id="meds-in-presc-div">
+                            {% if data.meds %}
+                                {% for i in data.meds %}
+                                    <div id="meddivs{{ i.idx }}">
+                                        <select name="med{{ i.idx }}" id="med{{ i.idx }}" class="med-selects form-field" disabled required><option value="{{ i.med_id }}">{{ i.med_name }}</option></select>
+                                        <input id="qty{{ i.idx }}" type="number" name="qty{{ i.idx }}" placeholder="Qty" class="quantity-container form-field" value="{{ i.med_qty }}" disabled required>
+                                        <input id="dose{{ i.idx }}" type="text" name="dose{{ i.idx }}" placeholder="Dose" class="form-field" value="{{ i.med_dose }}" disabled required>
+                                        <button id="addMedBtn{{ i.idx }}" type="button" class="btn btn-danger remove-med-btn form-field" disabled>X</button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <input id="no_of_meds_in_presc" type="number" step="1" hidden name="no_of_meds_in_presc" value="{{ data.total_meds }}">
+                    </div>
+
+
+                    <div class="form-group">
+                        <input class="btn btn-success form-field" name="submit" type="submit" value="Save" disabled>
+                        <a class="btn btn-danger form-field" type="button" href="{% url 'doctor-home-view' %}" >Cancel</a>
+                        <a target="_blank" class="btn btn-primary" href="{% url 'print-preview' data.presc_id %}">Print</a>
+                    </div>
+                </form>
+                </div>
+        </div>
+        {% include 'doctor/footer.html' %}
+        <script type="text/javascript">
+            $(document).on('click','#edit-btn',function (e) {
+                $('.form-field').prop('disabled',false);
+            });
+        </script>
+        <script type="text/javascript">
+           $(document).on('change','#type_of_patient',function (e) {
+               typ=$('#type_of_patient').val();
+               if(typ=='stud' || typ=='teach'){
+                   if(typ=='stud') $('#label_for_id').text("Scholar ID : ");
+                   else $('#label_for_id').text("Name of teacher : ");
+                   $.ajax({
+                       type: 'GET',
+                       url: '{% url "stud-teach-select" %}',
+                       dataType:'json',
+                       async: true,
+                       data:{
+                           type_of_patient:typ
+                       },
+                       success:function (resp) {
+                           ajaxResponseHandler(resp,typ);
+                       }
+                   });
+
+               }
+               else{
+                   $('#id_of_patient').empty().append($('<option></option>').attr('value',"").text("--Select--"));
+                   $('#label_for_id').text("Select type : ");
+               }
+           });
+           function ajaxResponseHandler(json,typ){
+               console.log(json)
+               var $el=$('#id_of_patient');
+               $el.empty();
+               $.each(json,function (k,v) {
+                   {#$el.append($('<option></option>').attr('value',k).text(v));#}
+                   if(typ=='stud') $el.append($('<option></option>').attr('value',v).text(v));
+                   else if (typ=='teach') $el.append($('<option></option>').attr('value',k).text(v));
+               })
+           }
+        </script>
+        <script type="text/javascript">
+            var $i={{ data.total_meds }};
+            $(document).on('click','#add-med-btn',function (e) {
+                $i++;
+                var $el=$('#meds-in-presc-div');
+                $el.append(
+                    getTextToAppend($i)
+                );
+                $('#no_of_meds_in_presc').attr('value',$i);
+                var $select_id="med"+$i;
+                populateOptions($select_id);
+            });
+
+            function getTextToAppend(value){
+                return '<div id="meddivs'+value+'">'+
+                    '<select name='+'"med'+value+'"id="med'+value+'" class="med-selects" required><option value="">--Select Medicine--</option></select>'+
+                    '<input id="qty'+value+'" type="number" name='+'"qty'+value+'" placeholder="Qty" class="quantity-container" required>'+
+                    '<input id="dose'+value+'" type="text" name='+'"dose'+value+'" placeholder="Dose" required>'+
+                    '<button id="addMedBtn'+value+'" type="button" class="btn btn-danger remove-med-btn">X</button>'+
+                    '</div>'
+            }
+
+            $(document).on('click','.remove-med-btn',function (e) {
+                var $el_id=$(this).parent().attr('id');
+                var $no=parseInt($el_id.replace('meddivs',''));
+                var $num=$no;
+                var $el_to_remove=$('#'+$el_id);
+                $el_to_remove.remove();
+                var $val=1;
+                for(var $j=1;$j<=$i;$j++){
+                    if($j==$num) continue;
+                    $('#meddivs'+$j).attr('id','meddivs'+$val);
+                    $('#med'+$j).attr('name','med'+$val).attr('id','med'+$val);
+                    $('#qty'+$j).attr('name','qty'+$val).attr('id','qty'+$val);
+                    $('#dose'+$j).attr('name','dose'+$val).attr('id','dose'+$val);
+                    $('#addMedBtn'+$j).attr('id','addMedBtn'+$val);
+                    $val++;
+
+                }
+                $i--;
+                $('#no_of_meds_in_presc').attr('value',$i);
+
+
+            });
+
+            function populateOptions(id) {
+                $.ajax({
+                    type:'GET',
+                    url:'{% url "med-select" %}',
+                    async:true,
+                    dataType: 'json',
+                    data:{
+                        'id':id
+                    },
+                    success:function (resp) {
+                        medSelectResponsehandler(resp,id);
+                    }
+                });
+            }
+            function medSelectResponsehandler(json,id){
+               console.log(json)
+               var $elm=$('#'+id);
+               $elm.empty();
+               $elm.append($('<option></option>').attr('value',"").text("--Select Medicine--"));
+               $.each(json,function (k,v) {
+                   $elm.append($('<option></option>').attr('value',k).text(v));
+               });
+           }
+
+
+        </script>
+    </body>
+
+{% endblock %}

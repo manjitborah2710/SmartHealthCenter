@@ -15,11 +15,16 @@
     {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
         <a href="{% url 'add-firm-view' %}" class="btn btn-custom">Add New Firm</a>
     {% endif %}
+    <form action="#">
+        <input type="text" name='s1'/>
+        <input type="submit" value="search"/>
+    </form>
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
                 <th>Name</th>
-                <th>Email</th>
+                <th>DIL Number</th>
+                <th>GST Number</th>
                 <th>Phone</th>
                 {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
                     <th>Edit</th>
@@ -32,11 +37,12 @@
             {% for i in data  %}
             <tr>
                 <td>{{ i.firm_name }}</td>
-                <td>{{ i.firm_email }}</td>
+                <td>{{ i.firm_dilno }}</td>
+                <td>{{ i.firm_gstno }}</td>
                 <td>{{ i.firm_phone }}</td>
                 {% if request.user|inGroup:'pharmacist' or request.user|inGroup:'admin' %}
-                    <td> <a href="{% url 'edit-firm-view' i.firm_id %}">Edit</a></td>
-                    <td> <a href="{% url 'delete-firm-view' i.firm_id %}">Delete</a></td>
+                    <td> <a href="{% url 'edit-firm-view' i.id %}">Edit</a></td>
+                    <td> <a href="{% url 'delete-firm-view' i.id %}">Delete</a></td>
                 {% endif %}
             </tr>
             {% endfor %}

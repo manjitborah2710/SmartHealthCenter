@@ -13,10 +13,10 @@
         <form method="post" action="{% url 'insert-into-stockmedicine-view' %}" class="form-custom">
             {% csrf_token %}
             <div class="form-group">
-                <label for="batch-no">Batch No.</label>
-                <select id="batch-no" class="form-control" name="batch-no" required>
-                    {% for i in batch_no %}
-                        <option value="{{ i.batch_no }}">{{ i.batch_no }}</option>
+                <label for="bill-no">Bill No.</label>
+                <select id="bill-no" class="form-control" name="bill-no" required>
+                    {% for i in bill_no %}
+                        <option value="{{ i.bill_no }}">{{ i.bill_no }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -25,7 +25,7 @@
                 <label for="med-id">Medicine</label>
                 <select id="med-id" class="form-control" name="med-id" required>
                     {% for i in meds %}
-                        <option value="{{ i.medicine_id }}">{{ i.medicine_name }} | {{ i.medicine_id }}</option>
+                        <option value="{{ i.medicine_id }}">{{ i.medicine_name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="form-group">
-                <label for="medicine-rate">Medicine rate</label>
+                <label for="medicine-rate">Medicine Rate</label>
                 <input id="medicine-rate" class="form-control" name="medicine-rate" type="number" step="0.01" max="99999.99" required>
             </div>
 
