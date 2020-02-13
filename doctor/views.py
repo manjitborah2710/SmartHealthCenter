@@ -691,29 +691,39 @@ def submitFeedback(request):
 #
 #a doctor or a pharmacist can view a prescription of a patient and
 # see the medicines that were prescribed and tests that were recommended
-def displayPrescription(request,pres_id):
-    permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+def displayPrescription(request):
+    ctx={}
     isPharm = checkIfPharmacist(request)
-    if permcheck == -1:
-        return redirect('login-view')
-    if permcheck == 0:
-        return HttpResponse("<p>You do not have the permissions for this operation</p>")
-    if permcheck == 1:
-        data=Prescription.objects.filter(prescription_serial_no=pres_id)
-        if data[0].patient_id != None:
-            name = data[0].patient_id
-        else:
-            name = data[0].teacher_id
-        isPharm=checkIfPharmacist(request)
-        meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
-        ctx = {'data' : data[0],
-               'name': name,
-               'meds_pres': meds_pres,
-               'isPharm': isPharm,
-               }
-        if isPharm:
-            prescriptions=[i['prescription_serial_no'] for i in Prescription.objects.all().values('prescription_serial_no')]
-            ctx['p_nos']=prescriptions
+    if isPharm:
+        pres_id=None
+        if request.GET:
+            pres_id=request.GET['p_no']
+        if pres_id:
+            permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+            if permcheck == -1:
+                return redirect('login-view')
+            if permcheck == 0:
+                return HttpResponse("<p>You do not have the permissions for this operation</p>")
+            if permcheck == 1:
+                data=Prescription.objects.filter(prescription_serial_no=pres_id)
+                if data[0].patient_id != None:
+                    name = data[0].patient_id
+                else:
+                    name = data[0].teacher_id
+                p_number=data[0].prescription_serial_no
+                p_number_of_doctor=data[0].prescription_no_of_doctor
+                isPharm=checkIfPharmacist(request)
+                meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
+                ctx = {'data' : data[0],
+                       'name': name,
+                       'meds_pres': meds_pres,
+                       'isPharm': isPharm,
+                       'p_no':str(p_number)+"("+str(p_number_of_doctor)+")",
+                       'doctor':data[0].doctor_id
+                       }
+        prescriptions = [i['prescription_serial_no'] for i in
+                         Prescription.objects.all().values('prescription_serial_no').order_by('prescription_serial_no')]
+        ctx['p_nos'] = prescriptions
         return render(request, 'doctor/prescription.html', context=ctx)
     return render(request, 'doctor/error.html')
 
@@ -942,14 +952,13 @@ def searchMedicine(request):
                 logger.error(search_text)
             else:
                 search_text = ''
-            medicines = Medicine.objects.filter(medicine_name__contains=search_text)
+            medicines = Medicine.objects.filter(medicine_name__icontains=search_text)
             medicines = StockMedicine.objects.filter(medicine_id__in=medicines)
             l = []
             for i in medicines:
                 d = {
                     'name': i.medicine_id,
                     'category': i.medicine_id.category,
-                    'batch_no': i.batch_no,
                     'price': i.medicine_rate,
                     'quantity': i.quantity,
                     'expiry_date': i.expiry_date,

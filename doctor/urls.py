@@ -51,7 +51,7 @@ urlpatterns = [
     # path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
     # path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
 
-    path('viewPrescription/<str:pres_id>',views.displayPrescription,name="display-prescription-view"),
+    path('viewPrescription',views.displayPrescription,name="display-prescription-view"),
     # path('addPrescription/<str:record_id>',views.addPrescription,name="add-prescription-view"),
     # path('insertPrescription',views.insertIntoPrescription,name="insert-into-prescription-view"),
 

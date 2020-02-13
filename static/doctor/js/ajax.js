@@ -15,7 +15,7 @@ $(function(){
 
 function searchSuccess(data, textStatus, jqXHR)
 {
-    console.log("Data is: ", data)
-    $(".table").empty()
-    $(".table").html($(data).find(".table"))
+    // console.log("Data is : "+$(data).find('.table'))
+    $(".table").empty();
+    $(".table").html($(data).find(".table"));
 }
