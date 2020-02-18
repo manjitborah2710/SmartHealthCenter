@@ -838,12 +838,9 @@ def issueMedicine(request,pres_id, med_id): #med_id is the id of the entry in th
             return render(request, "doctor/error.html", {'msg': 'Insufficient Stock!'})
         else:
             quant_avail = quant_avail - quant_req
-            if(quant_avail>0):
-                StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).update(quantity = quant_avail)
-            else:
-                StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).delete()
+            StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).update(quantity = quant_avail)
             MedicineIssue.objects.filter(id = med_id).update(issue_status = 1)
-        return redirect('display-prescription-view',pres_id)
+        return redirect(reverse('display-prescription-view')+"?p_no="+pres_id)
     return render(request, "doctor/error.html", {'msg': 'You do not have the permission for this action'})
 
 #this is probably redundant
