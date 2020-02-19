@@ -1027,7 +1027,7 @@ def studTeachSelect(request):
         studs=StudentRecord.objects.all().order_by('person_id')
         print(len(studs))
         r_data={i.person_id:i.name for i in studs}
-        print("no of studs : ",len(r_data),r_data)
+        print("no of studs : ",len(r_data))
         return HttpResponse(json.dumps(r_data),content_type="application/json")
     elif pat_type=='teach':
         teach=RegularStaff.objects.all();
