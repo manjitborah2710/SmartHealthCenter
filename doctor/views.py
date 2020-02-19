@@ -1197,6 +1197,8 @@ def viewAllPrescs(request):
 
 def deletePresc(request,presc_id):
     Prescription.objects.get(prescription_serial_no=presc_id).delete()
+
+    Prescription.objects.raw('')
     return redirect(reverse('display-myprescs-view'))
 
 

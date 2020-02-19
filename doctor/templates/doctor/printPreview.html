@@ -10,13 +10,6 @@
     <div class="container">
         <div class="jumbotron" id="div_to_print">
             <style>
-                .blue{
-                    color: blue;
-                }
-                .text-block{
-                    border: 1px solid black;
-                    padding: 3%;
-                }
                 .btn {
                   display: inline-block;
                   font-weight: 400;
@@ -405,44 +398,73 @@
                     color: inherit;
                     border-color: #dee2e6;
                 }
+                .blue{
+                    color: blue;
+                }
+                .text-block{
+                    border: 1px solid black;
+                    padding: 1%;
+                }
+
+                #clinical-note{
+                    border-right: 1px solid rgba(63, 63, 64, 0.79);
+                    width: 12%;
+                    height: 75%;
+                    float: left;
+                }
+                #presc-body{
+                    margin-left: 18%;
+                    margin-right: 5%;
+                }
+                #presc_header{
+                    height: 150px;
+                }
+
+
             </style>
-            <h2 class=""><center>Prescription No: {{ presc_id }}</center></h2>
+            <div style="text-align: center"><img src="{% static 'doctor/images/presc_header.jpg' %}" id="presc_header"></div>
+            <h3 class=""><center>Prescription No: {{ presc_id }} ({{ doctor_presc_id }})</center></h3>
             <br>
-            <p>
-                <b>Name of patient :</b>
-                {% if student_id %}
-                    <span class="blue">{{ student_name }}</span> &nbsp;
-                    <b>Scholar ID :</b> <span class="blue">{{ student_id }}</span> &nbsp;
-                {% else %}
-                    <span class="blue">{{ teacher_name }}</span> &nbsp;
-                {% endif %}
-                <b>Age:&nbsp;</b>................. <b>Sex:&nbsp;</b>................. <b>Date:&nbsp;</b><span class="blue">{{ date }}</span>
-                <br>
-            </p>
-            <p><b>Doctor:&nbsp</b>Dr. {{ doctor }}</p>
-            <p><b><u>Complaint:</u></b></p>
-            <p class="blue text-block">{{ complaint }}</p>
-            <p><b><u>Diagnosis:</u></b></p>
-            <p class="blue text-block">{{ diagnosis }}</p>
-            <p><b><u>Medicines:</u></b></p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Medicine</th>
-                        <th>Quantity</th>
-                        <th>Dosage</th>
-                    </tr>
-                </thead>
-                {% for i in meds %}
-                    <tbody>
+            <div id="clinical-note">
+                <p><b><u>Clinical Note</u></b></p>
+            </div>
+            <div id="presc-body">
+                <p>
+                    <b>Name: </b>
+                    {% if student_id %}
+                        <span class="blue">{{ student_name }}</span> &nbsp;
+                        <b>Scholar ID:</b> <span class="blue">{{ student_id }}</span> &nbsp;
+                    {% else %}
+                        <span class="blue">{{ teacher_name }}</span> &nbsp;
+                    {% endif %}
+                    <b>Age:&nbsp;</b>........ <b>Sex:&nbsp;</b>....... <b>Date:&nbsp;</b><span class="blue">{{ date }}</span>
+                    <br>
+                </p>
+                <p><b>Doctor:&nbsp</b>Dr. {{ doctor }}</p>
+                <p><b><u>Complaint:</u></b></p>
+                <p class="blue text-block">{{ complaint }}</p>
+                <p><b><u>Diagnosis:</u></b></p>
+                <p class="blue text-block">{{ diagnosis }}</p>
+                <p><b><u>Medicines:</u></b></p>
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td><center>{{ i.med }}</center></td>
-                            <td><center>{{ i.qty }}</center></td>
-                            <td><center>{{ i.dose }}</center></td>
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Dosage</th>
                         </tr>
-                    </tbody>
-                {% endfor %}
-            </table>
+                    </thead>
+                    {% for i in meds %}
+                        <tbody>
+                            <tr>
+                                <td><center>{{ i.med }}</center></td>
+                                <td><center>{{ i.qty }}</center></td>
+                                <td><center>{{ i.dose }}</center></td>
+                            </tr>
+                        </tbody>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
         <center><button type="button" class="btn btn-primary" id="print-btn" style="background:">Print</button></center>
     </div>
