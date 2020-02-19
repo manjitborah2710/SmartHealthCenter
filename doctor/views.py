@@ -1024,9 +1024,11 @@ def insertIntoNewPresc(request):
 def studTeachSelect(request):
     pat_type=request.GET['type_of_patient']
     if pat_type=='stud':
-        s_ids=[i.person_id for i in StudentRecord.objects.all()]
-        r_data=json.dumps(s_ids)
-        return HttpResponse(r_data,content_type="application/json")
+        studs=StudentRecord.objects.all().order_by('person_id')
+        print(len(studs))
+        r_data={i.person_id:i.name for i in studs}
+        print("no of studs : ",len(r_data),r_data)
+        return HttpResponse(json.dumps(r_data),content_type="application/json")
     elif pat_type=='teach':
         teach=RegularStaff.objects.all();
         r_data={ k.id:k.staff_name for k in teach}

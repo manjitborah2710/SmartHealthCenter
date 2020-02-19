@@ -474,7 +474,7 @@
            var newWin=window.open("");
            newWin.document.write(document.getElementById('div_to_print').outerHTML);
            newWin.print();
-           newWin.close();
+           setTimeout(function(){newWin.close();}, 10000);
         });
     </script>
 </body>
