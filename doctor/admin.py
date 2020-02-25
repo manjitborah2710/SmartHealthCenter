@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
-from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback
+from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback,RegularStaff
 # Register your models here.
 
 class CompositionInline(admin.TabularInline):
@@ -118,3 +118,4 @@ class DoctorRequisitionProposalAdmin(ImportExportModelAdmin):
 # admin.site.register(DoctorRequisitionProposal)
 admin.site.register(Feedback)
 admin.site.register(StockMedicine)
+admin.site.register(RegularStaff)
