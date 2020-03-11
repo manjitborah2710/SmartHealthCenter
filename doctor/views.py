@@ -6,6 +6,13 @@ from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.models import User,Group
+
+import logging
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
+from itertools import chain
+
 from django.db.models import Max,Min,Sum,Avg,Q
 import json
 # Create your views here.
@@ -178,6 +185,7 @@ def displayEmpanelledFirms(req):
     if user.is_authenticated:
         if user.has_perm("doctor.view_empanelledfirm"):
             data_all=EmpanelledFirm.objects.all()
+            data_all=filterFirms(req,data_all)
             paginator = Paginator(data_all, 10)
             page = req.GET.get('page')
             data = paginator.get_page(page)
@@ -683,29 +691,39 @@ def submitFeedback(request):
 #
 #a doctor or a pharmacist can view a prescription of a patient and
 # see the medicines that were prescribed and tests that were recommended
-def displayPrescription(request,pres_id):
-    permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+def displayPrescription(request):
+    ctx={}
     isPharm = checkIfPharmacist(request)
-    if permcheck == -1:
-        return redirect('login-view')
-    if permcheck == 0:
-        return HttpResponse("<p>You do not have the permissions for this operation</p>")
-    if permcheck == 1:
-        data=Prescription.objects.filter(prescription_serial_no=pres_id)
-        if data[0].patient_id != None:
-            name = data[0].patient_id
-        else:
-            name = data[0].teacher_id
-        isPharm=checkIfPharmacist(request)
-        meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
-        ctx = {'data' : data[0],
-               'name': name,
-               'meds_pres': meds_pres,
-               'isPharm': isPharm,
-               }
-        if isPharm:
-            prescriptions=[i['prescription_serial_no'] for i in Prescription.objects.all().values('prescription_serial_no')]
-            ctx['p_nos']=prescriptions
+    if isPharm:
+        pres_id=None
+        if request.GET:
+            pres_id=request.GET['p_no']
+        if pres_id:
+            permcheck = checkForPermissions(request, "doctor.view_prescription","doctor.view_medicineissue")
+            if permcheck == -1:
+                return redirect('login-view')
+            if permcheck == 0:
+                return HttpResponse("<p>You do not have the permissions for this operation</p>")
+            if permcheck == 1:
+                data=Prescription.objects.filter(prescription_serial_no=pres_id)
+                if data[0].patient_id != None:
+                    name = data[0].patient_id
+                else:
+                    name = data[0].teacher_id
+                p_number=data[0].prescription_serial_no
+                p_number_of_doctor=data[0].prescription_no_of_doctor
+                isPharm=checkIfPharmacist(request)
+                meds_pres = MedicineIssue.objects.filter(prescription_serial_no=pres_id)
+                ctx = {'data' : data[0],
+                       'name': name,
+                       'meds_pres': meds_pres,
+                       'isPharm': isPharm,
+                       'p_no':str(p_number)+"("+str(p_number_of_doctor)+")",
+                       'doctor':data[0].doctor_id
+                       }
+        prescriptions = [i['prescription_serial_no'] for i in
+                         Prescription.objects.all().values('prescription_serial_no').order_by('prescription_serial_no')]
+        ctx['p_nos'] = prescriptions
         return render(request, 'doctor/prescription.html', context=ctx)
     return render(request, 'doctor/error.html')
 
@@ -820,12 +838,9 @@ def issueMedicine(request,pres_id, med_id): #med_id is the id of the entry in th
             return render(request, "doctor/error.html", {'msg': 'Insufficient Stock!'})
         else:
             quant_avail = quant_avail - quant_req
-            if(quant_avail>0):
-                StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).update(quantity = quant_avail)
-            else:
-                StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).delete()
+            StockMedicine.objects.filter(id = med_to_issue.medicine_id_id).update(quantity = quant_avail)
             MedicineIssue.objects.filter(id = med_id).update(issue_status = 1)
-        return redirect('display-prescription-view',pres_id)
+        return redirect(reverse('display-prescription-view')+"?p_no="+pres_id)
     return render(request, "doctor/error.html", {'msg': 'You do not have the permission for this action'})
 
 #this is probably redundant
@@ -925,6 +940,36 @@ def closeRequisition(request):
         return redirect('display-requisition-view')
     return HttpResponse("You don't have the permissions for this operation")
 
+def searchMedicine(request):
+    user = request.user
+    if user.is_authenticated:
+        if user.has_perm("doctor.view_medicine") and user.has_perm("doctor.view_stockmedicine"):
+            if request.method == "POST":
+                search_text = request.POST.get('search_text', False)
+                logger.error(search_text)
+            else:
+                search_text = ''
+            medicines = Medicine.objects.filter(medicine_name__icontains=search_text)
+            medicines = StockMedicine.objects.filter(medicine_id__in=medicines)
+            l = []
+            for i in medicines:
+                d = {
+                    'name': i.medicine_id,
+                    'category': i.medicine_id.category,
+                    'price': i.medicine_rate,
+                    'quantity': i.quantity,
+                    'expiry_date': i.expiry_date,
+                    'manufacturing_company':i.medicine_id.manufacturing_company
+                }
+                l.append(d)
+            ctx = {
+                    'data': l
+                  }
+            return render(request,'doctor/medicinestock.html',context=ctx)
+        else:
+            return render(request,'doctor/error.html')
+
+
 def newPrescription(request):
     if request.user.is_authenticated and checkIfDoctor(request):
         return render(request,'doctor/newPrescription.html')
@@ -982,9 +1027,11 @@ def insertIntoNewPresc(request):
 def studTeachSelect(request):
     pat_type=request.GET['type_of_patient']
     if pat_type=='stud':
-        s_ids=[i.person_id for i in StudentRecord.objects.all()]
-        r_data=json.dumps(s_ids)
-        return HttpResponse(r_data,content_type="application/json")
+        studs=StudentRecord.objects.all().order_by('person_id')
+        print(len(studs))
+        r_data={i.person_id:i.name for i in studs}
+        print("no of studs : ",len(r_data))
+        return HttpResponse(json.dumps(r_data),content_type="application/json")
     elif pat_type=='teach':
         teach=RegularStaff.objects.all();
         r_data={ k.id:k.staff_name for k in teach}
@@ -1036,7 +1083,10 @@ def viewAndEditPresc(request,presc_id):
                     meds_to_be_passed_in_ctx.append(d)
             # print(meds_to_be_passed_in_ctx)
             ctx['meds']=meds_to_be_passed_in_ctx
-            ctx['total_meds']=len(meds_to_be_passed_in_ctx)
+            if meds_prescribed:
+                ctx['total_meds']=len(meds_to_be_passed_in_ctx)
+            else:
+                ctx['total_meds']=0
             return render(request,'doctor/viewAndEditPrescription.html',context={'data':ctx})
         else:
             return render(request,'doctor/error.html',context={'msg':'You\'re trying to look into other doctor\'s info' })
@@ -1137,6 +1187,7 @@ def viewAllPrescs(request):
                 d={
                     'p_id':i.prescription_serial_no,
                     'p_id_doctor':i.prescription_no_of_doctor,
+                    'p_date':i.date_of_issue
                 }
                 if i.patient_id:
                     d['patient_id']=i.patient_id.name + "<br>("+i.patient_id_id+")"
@@ -1158,7 +1209,17 @@ def viewAllPrescs(request):
 
 def deletePresc(request,presc_id):
     Prescription.objects.get(prescription_serial_no=presc_id).delete()
+
+    Prescription.objects.raw('')
     return redirect(reverse('display-myprescs-view'))
+
+
+def filterFirms(req,data_all):
+    s1=req.GET.get('s1','')
+    if s1!='':
+        data_all=data_all.filter(firm_name__icontains=s1)
+    return data_all
+
 def filterPrescs(request,prescriptions):
     searchString=request.GET.get('search','')
     dateFrom=request.GET.get('dateFrom','')
@@ -1176,3 +1237,4 @@ def filterPrescs(request,prescriptions):
     if(dateTo!=''):
         prescriptions= prescriptions.filter(date_of_issue__lte= dateTo)
     return prescriptions
+

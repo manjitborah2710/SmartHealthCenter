@@ -3,6 +3,15 @@
 {% block style-block %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/d3js/5.15.0/d3.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css" integrity="sha256-EH/CzgoJbNED+gZgymswsIOrM9XhIbdSJ6Hwro09WE4=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" integrity="sha256-c4gVE6fn+JRKMRvqjoDp+tlG4laudNYrXI1GncbfAYY=" crossorigin="anonymous"></script>
+    <style type="text/css">
+        select{
+            width: 25%;
+        }
+    </style>
 {% endblock %}
 {% block content-block %}
 
@@ -28,7 +37,7 @@
 
             <div class="form-group">
                 <label for="type_of_patient">Type of patient : </label>
-                <select class="" id="type_of_patient" name="type_of_patient" required>
+                <select class="chosen-container chosen-container-single" id="type_of_patient" name="type_of_patient" required>
                     <option value="">--Select--</option>
                     <option value="stud">Student</option>
                     <option value="teach">Teacher</option>
@@ -36,7 +45,7 @@
                 </select>
 
                 <label for="id_of_patient" id="label_for_id">Select type : </label>
-                <select class="" id="id_of_patient" name="id_of_patient" required>
+                <select class="chosen" id="id_of_patient" name="id_of_patient" required>
                     <option value="">--Select--</option>
                 </select>
 
@@ -85,6 +94,7 @@
         {% include 'doctor/footer.html' %}
 
         <script type="text/javascript">
+            $('.chosen').chosen();
            $(document).on('change','#type_of_patient',function (e) {
                typ=$('#type_of_patient').val();
                if(typ=='stud' || typ=='teach'||typ=='depend'){
@@ -115,9 +125,10 @@
                $el.empty();
                $.each(json,function (k,v) {
                    {#$el.append($('<option></option>').attr('value',k).text(v));#}
-                   if(typ=='stud') $el.append($('<option></option>').attr('value',v).text(v));
-                   else  $el.append($('<option></option>').attr('value',k).text(v));
-               })
+                   if(typ=='stud') $el.append($('<option></option>').attr('value',k).text(k+" ("+v+")"));
+                   else if (typ=='teach' || type=='depend') $el.append($('<option></option>').attr('value',k).text(v));
+               });
+               $('.chosen').trigger('chosen:updated');
            }
         </script>
         <script type="text/javascript">
@@ -136,9 +147,9 @@
 
             function getTextToAppend(value){
                 return '<div id="meddivs'+value+'">'+
-                    '<select name='+'"med'+value+'"id="med'+value+'" class="med-selects" required><option value="">--Select Medicine--</option></select>'+
-                    '<input id="qty'+value+'" type="number" name='+'"qty'+value+'" placeholder="Qty" class="quantity-container" required>'+
-                    '<input id="dose'+value+'" type="text" name='+'"dose'+value+'" placeholder="Dose" required>'+
+                    '<select name='+'"med'+value+'"id="med'+value+'" class="chosen med-selects" required><option value="">--Select Medicine--</option></select>'+
+                    '<input id="qty'+value+'" type="number" name='+'"qty'+value+'" placeholder="Qty" class="chosen-container chosen-container-single quantity-container" required>'+
+                    '<input id="dose'+value+'" type="text" name='+'"dose'+value+'" placeholder="Dose" class="chosen-container chosen-container-single" required>'+
                     '<button id="addMedBtn'+value+'" type="button" class="btn btn-danger remove-med-btn">X</button>'+
                     '</div>'
             }
@@ -185,9 +196,8 @@
                $.each(json,function (k,v) {
                    $elm.append($('<option></option>').attr('value',k).text(v));
                });
+               $('.chosen').chosen();
            }
-
-
         </script>
         <script>
             const select=document.getElementById('type_of_patient');

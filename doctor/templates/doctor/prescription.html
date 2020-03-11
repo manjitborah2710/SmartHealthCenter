@@ -9,60 +9,76 @@
             {% include 'doctor/nav.html' %}
         </div>
 
-        <div class="text text-center">
-                <form method="get" action="{% url 'get-req' %}">
-                    <select name="p_no">
-                        {% for i in p_nos %}
-                            <option name="{{ i }}">{{ i }}</option>
-                        {% endfor %}
-                    </select>
-                    <input type="submit" value="View" class="btn btn-primary">
-                </form>
-        </div>
-
         <div class="main-content">
-            <h3>{{ name}}</h3>
-            Date of Issue: {{ data.date_of_issue }}<br>
-            Complaint: {{ data.complaint }}<br>
-            Diagnosis: {{ data.diagnosis }}<br>
-            <hr>
+            <div class="text text-center">
+                <br>
+                <select name="p_no" id="presc_select">
+                    <option value="">--Select--</option>
+                    {% for i in p_nos %}
+                        <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <br>
+            </div>
+            <div id="prescription_block">
+                <h3>{{ name}}</h3>
+                <u>Prescription No:</u> {{ p_no }}<br>
+                <u>Doctor visited:</u> Dr. {{ doctor }}<br>
+                <u>Date of Issue:</u> {{ data.date_of_issue }}<br>
+                <u>Complaint:</u> {{ data.complaint }}<br>
+                <u>Diagnosis:</u> {{ data.diagnosis }}<br>
+                <hr>
 
 
-           <br>
-            <h3>Medicines Prescribed</h3><br>
-            <div>
-            <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Medicine</th>
-                    <th>Quantity</th>
-                    <th>Issue</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for i in meds_pres  %}
+               <br>
+                <h3>Medicines Prescribed</h3><br>
+                <div>
+                    <table class="table table-striped">
+                    <thead class="thead-dark">
                         <tr>
-                        <td>{{ i.medicine_id }}</td>
-                        <td>{{ i.medicine_quantity }}</td>
-                        {% if i.issue_status == 0 %}
-                        <td><a href="{% url 'issue-medicine-view' i.prescription_serial_no_id i.id %}">Issue</a></td>
-                        {% else %}
-                            <td>Issued</td>
-
-
-
-
-
-                            {% endif %}
+                            <th>Medicine</th>
+                            <th>Quantity</th>
+                            <th>Issue</th>
                         </tr>
-                {% endfor %}
+                    </thead>
+                    <tbody>
+                        {% for i in meds_pres  %}
+                            <tr>
+                                <td>{{ i.medicine_id }}</td>
+                                <td>{{ i.medicine_quantity }}</td>
+                                {% if i.issue_status == 0 %}
+                                    <td><a href="{% url 'issue-medicine-view' i.prescription_serial_no_id i.id %}">Issue</a></td>
+                                {% else %}
+                                    <td>Issued</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
 
-            </tbody>
-        </table>
-        </div>
-            <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         {% include 'doctor/footer.html' %}
+    <script type="text/javascript">
+        $(document).on('change','#presc_select',function () {
+            var $val=$('#presc_select').val();
+            $.ajax({
+                type:'GET',
+                url:'{% url "display-prescription-view" %}',
+                async:true,
+                dataType:'html',
+                data:{
+                    p_no:$val
+                },
+                success:function (data) {
+                    var $result=$(data).find('#prescription_block');
+                    $('#prescription_block').html($result);
+                }
+            });
+        });
+    </script>
     </body>
 {% endblock content-block %}

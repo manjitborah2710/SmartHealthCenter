@@ -25,6 +25,7 @@ class StudentRecord(models.Model):
 
 class RegularStaff(models.Model):
     staff_name = models.CharField(max_length=MAX_LENGTH)
+    staff_dept = models.CharField(max_length=MAX_LENGTH)
 
     def __str__(self):
         return self.staff_name

@@ -1,0 +1,54 @@
+{% extends 'doctor/base.html' %}
+{% load static %}
+{% load extra_tag %}
+
+{% block content-block %}
+<body class="body">
+    {% include 'doctor/header.html' %}
+    <div class="div-1">
+                   
+            {% include 'doctor/nav.html' %}
+
+  </div>
+    <div class="main-content">
+    {% csrf_token %}
+    <h3>Search</h3>
+    <input type="text" id="search" name="search" />
+
+    <h1 style="text-align: center;"><u>Medicine Stock</u> </h1>
+        {% if request.user|inGroup:'pharmacist' %}
+            <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
+        {% endif %}
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Batch Number</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Manufacturing Company</th>
+                    <th>Expiry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for i in data  %}
+            <tr>
+                <td>{{ i.name }}</td>
+                <td>{{ i.category }}</td>
+                <td>{{ i.batch_no }}</td>
+                <td>{{ i.price }}</td>
+                <td>{{ i.quantity }}</td>
+                <td>{{ i.manufacturing_company }}</td>
+                <td>{{ i.expiry_date }}</td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a href="{% url 'doctor-home-view' %}" class="btn btn-custom">Home</a>
+    </div>
+    {% include 'doctor/footer.html' %}
+</body>
+{% endblock content-block %}

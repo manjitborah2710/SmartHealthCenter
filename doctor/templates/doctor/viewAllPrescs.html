@@ -25,12 +25,14 @@
                     <input type="date" name="dateTo" id='dateTo'/>
                 </div>
                 <input type="submit" value="search"/>
+                <a href="{% url 'display-myprescs-view' %}">Clear all searches and filters</a>
             </form>
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th>Overall Presc. No.</th>
                         <th>Doctor Presc. No.</th>
+                        <th>Date</th>
                         <th>Patient Type</th>
                         <th>Patient ID</th>
                         <th>View</th>
@@ -42,6 +44,7 @@
                         <tr>
                             <td>{{ i.p_id }}</td>
                             <td>{{ i.p_id_doctor }}</td>
+                            <td>{{ i.p_date }}</td>
                             <td>{{ i.patient_type }}</td>
                             <td>{{ i.patient_id | safe}}</td>
                             <td><a class="btn btn-link" href="{% url 'display-and-edit-presc-view' i.p_id %}">View</a></td>

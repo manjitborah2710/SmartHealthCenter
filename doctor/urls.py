@@ -51,7 +51,7 @@ urlpatterns = [
     # path('addNewPatient',views.addPatientRecord,name="add-newpatient-view"),
     # path('insertNewPatient',views.insertIntoPatientRecord,name="insert-into-patientrecord-view"),
 
-    path('viewPrescription/<str:pres_id>',views.displayPrescription,name="display-prescription-view"),
+    path('viewPrescription',views.displayPrescription,name="display-prescription-view"),
     # path('addPrescription/<str:record_id>',views.addPrescription,name="add-prescription-view"),
     # path('insertPrescription',views.insertIntoPrescription,name="insert-into-prescription-view"),
 
@@ -74,6 +74,9 @@ urlpatterns = [
     path('getReq',views.getReq,name='get-req'),
     path('confirm',views.confirmAdditionIntoRequisition,name='confirm-addition-into-requisition'),
     path('closeReq',views.closeRequisition,name='close-req'),
+
+    path('search',views.searchMedicine, name='search-med'),
+
     path('newPrescription',views.newPrescription,name='new-presc'),
     path('addNewPresc',views.addNewPresc,name='add-newpresc-view'),
     path('insertNewpresc',views.insertIntoNewPresc,name='insert-into-newpresc-view'),
@@ -84,5 +87,4 @@ urlpatterns = [
     path('printPreview/<int:presc_id>',views.printPreview,name='print-preview'),
     path('viewMyPrescs',views.viewAllPrescs,name='display-myprescs-view'),
     path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc')
-
 ]
