@@ -435,7 +435,11 @@
                         <span class="blue">{{ student_name }}</span> &nbsp;
                         <b>Scholar ID:</b> <span class="blue">{{ student_id }}</span> &nbsp;
                     {% else %}
-                        <span class="blue">{{ teacher_name }}</span> &nbsp;
+                        {% if dependent %}
+                          <span class="blue">{{dependent}} (dependent of {{ teacher_name }})</span> &nbsp;
+                        {% else %}
+                          <span class="blue">{{ teacher_name }}</span> &nbsp;
+                        {% endif %}
                     {% endif %}
                     <b>Age:&nbsp;</b>........ <b>Sex:&nbsp;</b>....... <b>Date:&nbsp;</b><span class="blue">{{ date }}</span>
                     <br>

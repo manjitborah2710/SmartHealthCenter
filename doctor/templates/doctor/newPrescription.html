@@ -126,7 +126,7 @@
                $.each(json,function (k,v) {
                    {#$el.append($('<option></option>').attr('value',k).text(v));#}
                    if(typ=='stud') $el.append($('<option></option>').attr('value',k).text(k+" ("+v+")"));
-                   else if (typ=='teach' || type=='depend') $el.append($('<option></option>').attr('value',k).text(v));
+                   else if (typ=='teach' || typ=='depend') $el.append($('<option></option>').attr('value',k).text(v));
                });
                $('.chosen').trigger('chosen:updated');
            }

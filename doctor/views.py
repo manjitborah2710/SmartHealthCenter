@@ -1160,6 +1160,8 @@ def printPreview(request,presc_id):
         ctx['student_name']=prescription.patient_id.name
     if prescription.teacher_id:
         ctx['teacher_name']=prescription.teacher_id.staff_name
+        if prescription.isDependent:
+            ctx['dependent']=Dependent.objects.get(prescription=prescription)
     medicines=MedicineIssue.objects.filter(prescription_serial_no=prescription)
     med_data=None
     if medicines:
