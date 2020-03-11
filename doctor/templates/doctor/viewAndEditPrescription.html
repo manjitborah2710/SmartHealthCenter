@@ -32,7 +32,12 @@
                                 <option value="teach">Teacher</option>
                             {% elif data.teacher_id %}
                                 <option value="stud">Student</option>
-                                <option value="teach" selected>Teacher</option>
+                                {% if data.depend %}
+                                    <option value="teach">Teacher</option>
+                                    <option value="depend" selected>Dependent</option>
+                                {% else %}
+                                    <option value="teach" selected>Teacher</option>
+                                {% endif %}
                             {% endif %}
                         </select>
 
@@ -52,7 +57,12 @@
 
                     </div>
 
-
+                    {% if data.depend %}
+                        <div class="form-group" id="dependent_name">
+                            <label for="this_input">dependent name:</label>
+                            <input type="text" class="form-control" id="this_input" name="depend" value="{{data.depend}}">
+                        </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="complaint">Complaint</label>
                         <input id="complaint" class="form-control form-field" name="complaint" value="{{ data.complaint }}" required type="text" disabled>
@@ -205,6 +215,19 @@
            }
 
 
+        </script>
+        <script>
+            const select=document.getElementById('type_of_patient');
+            const name=document.getElementById('dependent_name');
+            // name.style.display="none";
+            select.addEventListener('change',(e)=>{
+                if(e.target.value=='depend'){
+                    name.style.display='inline';
+                }
+                else{
+                    name.style.display='none';
+                }
+            })
         </script>
     </body>
 

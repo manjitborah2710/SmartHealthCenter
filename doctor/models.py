@@ -236,6 +236,7 @@ class Prescription(models.Model):
     date_of_issue = models.DateField()
     complaint = models.CharField(max_length=MAX_LENGTH, default="Unspecified")
     diagnosis = models.CharField(max_length=MAX_LENGTH, default="Yet to be announced")
+    isDependent = models.BooleanField(default=False,null=False)
     # followup_date = models.DateField(blank=True, default=None, null=True)
     # medicine_prescribed = models.BooleanField(default=False)
     # tests_recommended = models.BooleanField(default=False)
@@ -258,6 +259,12 @@ class Prescription(models.Model):
 
     def __str__(self):
         return str(self.prescription_serial_no)
+
+class Dependent(models.Model):
+    prescription=models.ForeignKey(Prescription,on_delete=models.CASCADE,null=False)
+    name= models.CharField(max_length=100,default="relative")
+    def __str__(self):
+        return str(self.name)
 
 
 class MedicineIssue(models.Model):

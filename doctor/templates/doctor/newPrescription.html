@@ -32,6 +32,7 @@
                     <option value="">--Select--</option>
                     <option value="stud">Student</option>
                     <option value="teach">Teacher</option>
+                    <option value="depend">Dependent</option>
                 </select>
 
                 <label for="id_of_patient" id="label_for_id">Select type : </label>
@@ -40,7 +41,10 @@
                 </select>
 
             </div>
-
+            <div class="form-group" id="dependent_name">
+                <label for="this_input">dependent name:</label>
+                <input type="text" class="form-control" id="this_input" name="depend">
+            </div>
 
             <div class="form-group">
                 <label for="complaint">Complaint</label>
@@ -83,7 +87,7 @@
         <script type="text/javascript">
            $(document).on('change','#type_of_patient',function (e) {
                typ=$('#type_of_patient').val();
-               if(typ=='stud' || typ=='teach'){
+               if(typ=='stud' || typ=='teach'||typ=='depend'){
                    if(typ=='stud') $('#label_for_id').text("Scholar ID : ");
                    else $('#label_for_id').text("Name of teacher : ");
                    $.ajax({
@@ -92,7 +96,7 @@
                        dataType:'json',
                        async: true,
                        data:{
-                           type_of_patient:typ
+                           type_of_patient:(typ=='teach'|| typ=='depend')?'teach': 'stud'
                        },
                        success:function (resp) {
                            ajaxResponseHandler(resp,typ);
@@ -112,7 +116,7 @@
                $.each(json,function (k,v) {
                    {#$el.append($('<option></option>').attr('value',k).text(v));#}
                    if(typ=='stud') $el.append($('<option></option>').attr('value',v).text(v));
-                   else if (typ=='teach') $el.append($('<option></option>').attr('value',k).text(v));
+                   else  $el.append($('<option></option>').attr('value',k).text(v));
                })
            }
         </script>
@@ -184,6 +188,20 @@
            }
 
 
+        </script>
+        <script>
+            const select=document.getElementById('type_of_patient');
+            const name=document.getElementById('dependent_name');
+            name.style.display="none";
+            select.addEventListener('change',(e)=>{
+                if(e.target.value=='depend'){
+                    name.style.display='inline';
+                }
+                else{
+                    name.style.display='none';
+                    name.lastElementChild.value='';
+                }
+            })
         </script>
     </body>
 

@@ -956,6 +956,8 @@ def insertIntoNewPresc(request):
                 id_of_presc_added=Prescription.objects.create(date_of_issue=date,complaint=complaint,diagnosis=diagnosis,doctor_id=staff_rec,patient_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
             elif type=='teach':
                 id_of_presc_added=Prescription.objects.create(date_of_issue=date, complaint=complaint, diagnosis=diagnosis,doctor_id=staff_rec, teacher_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
+            elif type=='depend':
+                id_of_presc_added=Prescription.objects.create(date_of_issue=date, complaint=complaint, diagnosis=diagnosis,doctor_id=staff_rec, teacher_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor,isDependent=True)
             no_of_meds=request.POST['no_of_meds_in_presc']
             # print(date," ",type," ",patient_id," ",complaint," ",diagnosis," ",no_of_meds," ")
             for i in range(int(no_of_meds)):
@@ -964,7 +966,8 @@ def insertIntoNewPresc(request):
                 dose=request.POST['dose'+str(i+1)]
                 # print(med,"-",qty,"-",dose)
                 MedicineIssue.objects.create(medicine_id_id=med,medicine_quantity=qty,dose=dose,prescription_serial_no=id_of_presc_added)
-
+            if type=='depend':
+                dep=Dependent.objects.create(prescription=id_of_presc_added, name=request.POST['depend'])
             ctx={
                 'pres_id':prescription_no_of_doctor,
                 'pk_of_presc':id_of_presc_added.prescription_serial_no,
@@ -1014,6 +1017,8 @@ def viewAndEditPresc(request,presc_id):
                 'complaint':prescription.complaint,
                 'diagnosis':prescription.diagnosis
             }
+            if prescription.isDependent:
+                ctx['depend']=Dependent.objects.get(prescription=prescription).name
             meds_prescribed=MedicineIssue.objects.filter(prescription_serial_no=presc_id)
             meds_to_be_passed_in_ctx=None
             if meds_prescribed:
@@ -1134,11 +1139,16 @@ def viewAllPrescs(request):
                     'p_id_doctor':i.prescription_no_of_doctor,
                 }
                 if i.patient_id:
-                    d['patient_id']=i.patient_id.name + "\n("+i.patient_id_id+")"
+                    d['patient_id']=i.patient_id.name + "<br>("+i.patient_id_id+")"
                     d['patient_type']='Student'
                 elif i.teacher_id:
-                    d['patient_id']=i.teacher_id.staff_name
-                    d['patient_type'] = 'Teacher'
+                    if i.isDependent:
+                        name=Dependent.objects.get(prescription=i)
+                        d['patient_id']=str(name)+'<br>(dependent of '+i.teacher_id.staff_name+')'
+                        d['patient_type'] = 'Dependent'
+                    else:
+                        d['patient_id']=i.teacher_id.staff_name
+                        d['patient_type'] = 'Teacher'
                 data.append(d)
         ctx={
             'data':data

@@ -43,7 +43,7 @@
                             <td>{{ i.p_id }}</td>
                             <td>{{ i.p_id_doctor }}</td>
                             <td>{{ i.patient_type }}</td>
-                            <td>{{ i.patient_id }}</td>
+                            <td>{{ i.patient_id | safe}}</td>
                             <td><a class="btn btn-link" href="{% url 'display-and-edit-presc-view' i.p_id %}">View</a></td>
                             <td><button class="btn btn-link delete-btn-custom" value={{ i.p_id }}>Delete</button></td>
                         </tr>
