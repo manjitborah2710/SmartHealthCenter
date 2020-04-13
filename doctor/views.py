@@ -6,7 +6,8 @@ from django.contrib.auth import login,logout,authenticate
 from .models import *
 from django.db import IntegrityError
 from django.contrib.auth.models import User,Group
-
+from .resources import *
+import pandas as pd
 import logging
 
 # Get an instance of a logger
@@ -1228,3 +1229,16 @@ def filterPrescs(request,prescriptions):
         prescriptions= prescriptions.filter(date_of_issue__lte= dateTo)
     return prescriptions
 
+def predData(request):
+    prescription_resource = PrescriptionResource()
+    dataset = prescription_resource.export()
+    dates = dataset.get_col(5)
+    diagnosis = dataset.get_col(7)
+    data = {
+        'Date': dates,
+        'Diagnosis': diagnosis
+    }
+    df = pd.DataFrame(data)
+    df.to_csv('csv/PrescData.csv', index=None)
+    return render(request,'doctor/home.html')
+    

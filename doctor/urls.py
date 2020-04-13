@@ -86,5 +86,7 @@ urlpatterns = [
     path('updatePresc/<int:presc_id>',views.updatePresc,name='update-presc-view'),
     path('printPreview/<int:presc_id>',views.printPreview,name='print-preview'),
     path('viewMyPrescs',views.viewAllPrescs,name='display-myprescs-view'),
-    path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc')
+    path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc'),
+
+    path('preddata/',views.predData,name='prepare-predictiondata-view'),
 ]
