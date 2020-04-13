@@ -4,6 +4,9 @@
 
 {% block style-block %}
     <script src={% static "doctor/js/ajax.js" %}></script>
+    <script>
+        var new_date=3;
+        </script>
 {% endblock %}
 {% block content-block %}
 <body class="body">
@@ -22,6 +25,7 @@
         {% if request.user|inGroup:'pharmacist' %}
             <a href="{% url 'add-stockmedicine-view' %}" class="btn btn-custom">Add medicines into Stock</a>
         {% endif %}
+
         <table id="med-table" class="table table-striped">
             <thead class="thead-dark">
                 <tr>
@@ -35,16 +39,31 @@
             </thead>
             <tbody>
 
-            {% for i in data  %}
-            <tr>
-                <td>{{ i.name }}</td>
-                <td>{{ i.category }}</td>
-                <td>{{ i.price }}</td>
-                <td>{{ i.quantity }}</td>
-                <td>{{ i.manufacturing_company }}</td>
-                <td>{{ i.expiry_date }}</td>
-            </tr>
-            {% endfor %}
+        {% for i in data  %}
+            {% now "y-m-d" as todays_date %}
+            {% if todays_date > i.expiry_date|date:"y-m-d" %}
+                <tr>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.name }}</td>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.category }}</td>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.price }}</td>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.quantity }}</td>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.manufacturing_company }}</td>
+                    <td style="background-color: rgb(206, 136, 136);">{{ i.expiry_date  }}   Expired</td>
+                </tr>
+                <script>
+                        alert("Red marked medicines have expired");
+                </script>
+            {% else %}
+                <tr>
+                    <td>{{ i.name }}</td>
+                    <td>{{ i.category }} </td>
+                    <td>{{ i.price }}</td>
+                    <td>{{ i.quantity }}</td>
+                    <td>{{ i.manufacturing_company }}</td>
+                    <td>{{ i.expiry_date }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
 
         </tbody>
     </table>
