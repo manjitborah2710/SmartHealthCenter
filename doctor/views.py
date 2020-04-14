@@ -9,6 +9,7 @@ from django.contrib.auth.models import User,Group
 from .resources import *
 import pandas as pd
 import logging
+from .forecasting.formatter import ToForecastFormat
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -1239,6 +1240,8 @@ def predData(request):
         'Diagnosis': diagnosis
     }
     df = pd.DataFrame(data)
+    obj=ToForecastFormat(dataFrame=df)
+    df=obj.fit_transform(date_format='%Y-%m-%d')
     df.to_csv('csv/PrescData.csv', index=None)
     return render(request,'doctor/home.html')
     
