@@ -3,17 +3,12 @@ from __future__ import unicode_literals
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 
-from . models import HealthCentreStaff, MedicineIssue ,Medicine ,EmpanelledFirm, Bill, Requisition, DoctorRequisitionProposal, Composition, HealthCentreStaffContact, DisposedMedicine, Prescription, StockMedicine, StudentRecord, RequisitionMedicine, Feedback,RegularStaff
+from . models import *
 # Register your models here.
-
-class CompositionInline(admin.TabularInline):
-    model = Composition
-    extra = 1
 
 @admin.register(Medicine)
 class MedicineAdmin(ImportExportModelAdmin):
     fields = ['medicine_name', 'manufacturing_company', 'category']
-    inlines = [CompositionInline]
     list_display = ['medicine_name', 'manufacturing_company', 'category']
     search_fields = ['medicine_name']
 
@@ -29,14 +24,8 @@ class PrescriptionIssueAdmin(ImportExportModelAdmin):
     list_filter = ['date_of_issue']
     search_fields = ['prescription_serial_no']
 
-
-class HealthCentreStaffContactInline(admin.TabularInline):
-    model = HealthCentreStaffContact
-    extra = 1
-
 @admin.register(HealthCentreStaff)
 class HealthCentreStaffAdmin(ImportExportModelAdmin):
-    inlines = [HealthCentreStaffContactInline]
     list_display = ['staff_id', 'staff_name', 'staff_type', 'staff_address']
     list_filter = ['staff_type']
     search_fields = ['staff_id', 'staff_name']
@@ -75,15 +64,6 @@ class RequisitionDetailsAdmin(ImportExportModelAdmin):
     search_fields = ['requisition_id']
 
 
-@admin.register(DisposedMedicine)
-class DisposedMedicineAdmin(ImportExportModelAdmin):
-    list_display = ['medicine_id', 'batch_no', 'reason', 'quantity', 'date']
-    search_fields = ['medicine_id', 'batch_no']
-    list_filter = ['date']
-
-
-# class RequisitionAdmin(admin.ModelAdmin):
-#    list_display = []
 
 # admin.site.register(HealthCentreStaff, HealthCentreStaffAdmin)
 # admin.site.register(Medicine, MedicineAdmin)
@@ -108,13 +88,6 @@ class StudentRecordAdmin(ImportExportModelAdmin):
 
 
 # admin.site.register(RequisitionMedicine)
-@admin.register(RequisitionMedicine)
-class RequisitionMedicineAdmin(ImportExportModelAdmin):
-    list_display = ['medicine_id_id','medicine_id']
-
-@admin.register(DoctorRequisitionProposal)
-class DoctorRequisitionProposalAdmin(ImportExportModelAdmin):
-    pass
 # admin.site.register(DoctorRequisitionProposal)
 admin.site.register(Feedback)
 admin.site.register(StockMedicine)
