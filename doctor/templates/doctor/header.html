@@ -8,25 +8,28 @@
             <h4>स्वास्थ्य केंद्र, एन.आई.टी. सिलचर</h4>
         </div>
        
-     <div class="header-content-right">
-          <ul>
-              <li>
-                  <p style="padding:10px;background: red;color: white;">Ambulance : 96787 80002</p>
-              </li>
-              <li>
-                  <i class="material-icons">home</i>
-                  <a href="{% url 'index-view' %}" class="link-style">Home</a>
-              </li>
-              <li>
-                  <i class="material-icons">account_box</i>
-                  {% if user.is_authenticated %}
-                    <a href="{%  url 'logout-view' %}" class="link-style">Logout</a>
-                  {% else %}
-                    <a href="{% url 'login-view' %}" class="link-style">Login</a>
-                  {% endif %}
-              </li>
+         <div class="header-content-right">
+              <ul>
+                  <li>
+                      <p style="padding:10px;background: red;color: white;">Ambulance : 96787 80002</p>
+                  </li>
+                  <li>
+                      <a style="padding:10px;background: black;color: white;" href="{% url 'dash' %}" target="_blank">Dashboard</a>
+                  </li>
+                  <li>
+                      <i class="material-icons">home</i>
+                      <a href="{% url 'index-view' %}" class="link-style">Home</a>
+                  </li>
+                  <li>
+                      <i class="material-icons">account_box</i>
+                      {% if user.is_authenticated %}
+                        <a href="{%  url 'logout-view' %}" class="link-style">Logout</a>
+                      {% else %}
+                        <a href="{% url 'login-view' %}" class="link-style">Login</a>
+                      {% endif %}
+                  </li>
 
-              
-          </ul>
-     </div>
+
+              </ul>
+         </div>
 </header>

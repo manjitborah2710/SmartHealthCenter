@@ -35,4 +35,8 @@
 .std{
     height:310px;
 }
-
+#dash-btn:hover{
+    color: black;
+    background: white;
+    border: 2px solid black;
+}

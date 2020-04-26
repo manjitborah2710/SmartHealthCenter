@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Hello Dashboard</h2>
+    <p id="con"></p>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(()=>{
+            getContents();
+        });
+        function getContents(){
+            alert("Wait till the content loads");
+            $.ajax({
+                type:'GET',
+                url:'{% url "dash-content" %}',
+                dataType:'json',
+                async:true,
+                success:function(response){
+                    handleResponse(response);
+                }
+
+            });
+        }
+        function handleResponse(json) {
+            console.log(json);
+            $("#con").html("Look console for details<br><br>"+JSON.stringify(json));
+        }
+    </script>
+
+</body>
+</html>

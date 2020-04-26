@@ -1,10 +1,12 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 urlpatterns = [
     path('',views.indexView,name='index-view'),
     path('login',views.loginView,name='login-view'),
     path('home',views.homeView,name="doctor-home-view"),
     path('logout',views.log_out,name="logout-view"),
+    path('dash',views.dashHome,name='dash'),
+    path('dashcontent',views.dashContent,name='dash-content'),
 
     path('viewStaff',views.displayHealthCenterStaff,name="display-staff-view"),
     path('addStaff',views.addHealthCenterStaff,name="add-staff-view"),
@@ -89,4 +91,5 @@ urlpatterns = [
     path('deletePresc/<int:presc_id>',views.deletePresc,name='delete-presc'),
 
     path('preddata/',views.predData,name='prepare-predictiondata-view'),
+
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,reverse
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.core.paginator import Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import login,logout,authenticate
@@ -10,6 +10,7 @@ from .resources import *
 import pandas as pd
 import logging
 from .forecasting.formatter import ToForecastFormat
+from .forecasting.grouped_data_info import DataPreparationHelper
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -1244,4 +1245,19 @@ def predData(request):
     df=obj.fit_transform(date_format='%Y-%m-%d')
     df.to_csv('csv/PrescData.csv', index=None)
     return render(request,'doctor/home.html')
-    
+
+def dashHome(request):
+    return render(request,'doctor/dashBoard.html')
+
+def dashContent(request):
+    predData(request)
+    p_helper=DataPreparationHelper(date_format="%d-%m-%Y")
+    res_week=p_helper.prepare('csv/dummy.csv',group_by='W')
+    res_month = p_helper.prepare('csv/dummy.csv', group_by='M')
+    data={
+        'weekly':res_week,
+        'monthly':res_month
+    }
+    print(data)
+
+    return JsonResponse(data)
