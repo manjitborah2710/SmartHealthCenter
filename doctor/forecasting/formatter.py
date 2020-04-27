@@ -50,4 +50,20 @@ class ToForecastFormat():
 
         df = pd.DataFrame(data_csv)
 
+        #set start date
+        start_month = df['Date'][0].month
+        start_year = df['Date'][0].year
+        start_date = datetime(start_year, start_month, 1).date()
+
+        #set end date
+        end_date = df['Date'].iloc[-1].date()
+
+        #set Date as index
+        df = df.set_index('Date')
+
+        #reindex
+        df.index = pd.DatetimeIndex(df.index)
+        idx = pd.date_range(start_date, end_date, name="Date")
+        df = df.reindex(idx, fill_value=0)
+
         return df
