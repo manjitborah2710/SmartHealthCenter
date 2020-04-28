@@ -18,4 +18,5 @@ def main():
 
 
 if __name__ == '__main__':
+    from doctor.forecasting.pickle_class_info import SerializableData
     main()

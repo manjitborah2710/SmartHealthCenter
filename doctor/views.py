@@ -10,7 +10,7 @@ from .resources import *
 import pandas as pd
 import logging
 from .forecasting.formatter import ToForecastFormat
-from .forecasting.grouped_data_info import DataPreparationHelper
+from .forecasting.grouped_data_info import DataPreparationHelper,getPlottableData
 
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
@@ -1254,10 +1254,32 @@ def dashContent(request):
     p_helper=DataPreparationHelper(date_format="%d-%m-%Y")
     res_week=p_helper.prepare('csv/dummy.csv',group_by='W')
     res_month = p_helper.prepare('csv/dummy.csv', group_by='M')
+    to_plot=getPlottableData('time_series_models/model_urti',steps=11)
+
+    ## contents of to plot
+    # data = {
+    #     'train_data': train,
+    #     'predicted_data': pred_df,
+    #     'total_data': total_df,
+    #     'disease_name': label,
+    #     'last_train_date': last_date,
+    #     'first_predicted_date': last_date + timedelta(weeks=1)
+    # }
+    to_plot['train_data']=convertToDictionary(to_plot['train_data'])
+    to_plot['predicted_data'] = convertToDictionary(to_plot['predicted_data'])
+    to_plot['total_data'] = convertToDictionary(to_plot['total_data'])
+
     data={
         'weekly':res_week,
-        'monthly':res_month
+        'monthly':res_month,
+        'plot_data':to_plot
     }
-    print(data)
 
     return JsonResponse(data)
+
+def convertToDictionary(df):
+    index_list = df.index
+    col = list(df.columns)[-1]
+    disease_vals = df[col].values
+    d = {str(k.date()): float(v) for k, v in zip(index_list, disease_vals)}
+    return d
