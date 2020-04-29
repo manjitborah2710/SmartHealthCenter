@@ -27,6 +27,13 @@ class DataPreparationHelper:
         week_percentages["total"] = int(sorted_data.sum())
         return week_percentages
 
+def convertToDictionary(df):
+    index_list = df.index
+    col = list(df.columns)[-1]
+    disease_vals = df[col].values
+    d = {str(k.date()):float(v) for k, v in zip(index_list, disease_vals)}
+    return d
+
 def getPlottableData(path:str,steps:int):
     f = open(path, "rb")
     pkl = pickle.load(f)
@@ -50,9 +57,9 @@ def getPlottableData(path:str,steps:int):
     total_df = pd.DataFrame(data=total_values, index=total_df_index)
 
     data={
-        'train_data':train,
-        'predicted_data':pred_df,
-        'total_data':total_df,
+        'train_data':convertToDictionary(train),
+        'predicted_data':convertToDictionary(pred_df),
+        'total_data':convertToDictionary(total_df),
         'disease_name':label,
         'last_train_date':last_date,
         'first_predicted_date':last_date+timedelta(weeks=1)
