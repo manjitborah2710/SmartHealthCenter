@@ -234,6 +234,7 @@ class Prescription(models.Model):
     prescription_no_of_doctor=models.IntegerField(default=1,null=False)
     patient_id = models.ForeignKey(StudentRecord, db_column='person_id', on_delete=models.CASCADE,null=True)
     teacher_id=models.ForeignKey(RegularStaff,on_delete=models.CASCADE,null=True)
+    hostel=models.CharField(max_length=100,default=None)
     date_of_issue = models.DateField()
     complaint = models.CharField(max_length=MAX_LENGTH, default="Unspecified")
     diagnosis = models.CharField(max_length=MAX_LENGTH, default="Yet to be announced")

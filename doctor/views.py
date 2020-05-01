@@ -989,6 +989,7 @@ def insertIntoNewPresc(request):
             patient_id=request.POST['id_of_patient']
             complaint=request.POST['complaint']
             diagnosis=request.POST['diagnosis']
+            hostel=request.POST['hostel']
 
             id_of_user=request.user.id
             staff_rec=HealthCentreStaff.objects.get(user_id=id_of_user)
@@ -1002,9 +1003,9 @@ def insertIntoNewPresc(request):
                 prescription_no_of_doctor=last_presc_no[list(last_presc_no.keys())[0]]+1
             id_of_presc_added=None
             if type=='stud':
-                id_of_presc_added=Prescription.objects.create(date_of_issue=date,complaint=complaint,diagnosis=diagnosis,doctor_id=staff_rec,patient_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
+                id_of_presc_added=Prescription.objects.create(date_of_issue=date,complaint=complaint,diagnosis=diagnosis,doctor_id=staff_rec,patient_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor,hostel=hostel)
             elif type=='teach':
-                id_of_presc_added=Prescription.objects.create(date_of_issue=date, complaint=complaint, diagnosis=diagnosis,doctor_id=staff_rec, teacher_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor)
+                id_of_presc_added=Prescription.objects.create(date_of_issue=date, complaint=complaint, diagnosis=diagnosis,doctor_id=staff_rec, teacher_id_id=patient_id,prescription_no_of_doctor=prescription_no_of_doctor,hostel=hostel)
             no_of_meds=request.POST['no_of_meds_in_presc']
             # print(date," ",type," ",patient_id," ",complaint," ",diagnosis," ",no_of_meds," ")
             for i in range(int(no_of_meds)):
@@ -1063,7 +1064,8 @@ def viewAndEditPresc(request,presc_id):
                 'teacher_id':prescription.teacher_id_id,
                 'teacher_name':prescription.teacher_id,
                 'complaint':prescription.complaint,
-                'diagnosis':prescription.diagnosis
+                'diagnosis':prescription.diagnosis,
+                'hostel':prescription.hostel
             }
             meds_prescribed=MedicineIssue.objects.filter(prescription_serial_no=presc_id)
             meds_to_be_passed_in_ctx=None
@@ -1108,11 +1110,13 @@ def updatePresc(request,presc_id):
         complaint = request.POST['complaint']
         diagnosis = request.POST['diagnosis']
         no_of_meds = request.POST['no_of_meds_in_presc']
+        hostel=request.POST['hostel']
 
 
         prescription.date_of_issue=date
         prescription.complaint=complaint
         prescription.diagnosis=diagnosis
+        prescription.hostel=hostel
         if type=='stud':
             prescription.patient_id_id=patient_id
             prescription.teacher_id=None
@@ -1152,7 +1156,8 @@ def printPreview(request,presc_id):
         'complaint':prescription.complaint,
         'diagnosis':prescription.diagnosis,
         'doctor':prescription.doctor_id.staff_name,
-        'doctor_presc_id':prescription.prescription_no_of_doctor
+        'doctor_presc_id':prescription.prescription_no_of_doctor,
+        'hostel':prescription.hostel
     }
     if prescription.patient_id:
         ctx['student_id']=prescription.patient_id_id
