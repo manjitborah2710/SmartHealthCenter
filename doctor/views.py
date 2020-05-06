@@ -1240,8 +1240,11 @@ def filterPrescs(request,prescriptions):
 def predData(request):
     prescription_resource = PrescriptionResource()
     dataset = prescription_resource.export()
-    dates = dataset.get_col(5)
-    diagnosis = dataset.get_col(7)
+    h_list = dataset.headers
+    date_idx = h_list.index('date_of_issue')
+    diag_idx = h_list.index('diagnosis')
+    dates = dataset.get_col(date_idx)
+    diagnosis = dataset.get_col(diag_idx)
     data = {
         'Date': dates,
         'Diagnosis': diagnosis
@@ -1249,7 +1252,7 @@ def predData(request):
     df = pd.DataFrame(data)
     obj=ToForecastFormat(dataFrame=df)
     df=obj.fit_transform(date_format='%Y-%m-%d')
-    df.to_csv('csv/PrescData.csv', index=None)
+    df.to_csv('csv/PrescData.csv')
     return render(request,'doctor/home.html')
 
 def dashHome(request):
