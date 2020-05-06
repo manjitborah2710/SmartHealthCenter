@@ -1,13 +1,13 @@
--- MySQL dump 10.15  Distrib 10.0.38-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.29, for Linux (x86_64)
 --
 -- Host: localhost    Database: finalproj_small
 -- ------------------------------------------------------
--- Server version	10.0.38-MariaDB-0ubuntu0.16.04.1
+-- Server version	5.7.29-0ubuntu0.18.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -127,7 +127,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$150000$FaPRUzqadzyH$utLp1s/xrNv04BSiHTRiuw2Al/ypVJFMnW3E7y+KcP4=','2020-02-04 11:09:38.964439',1,'manjit','Manjit','Borah','',1,1,'2019-10-14 09:11:11.000000'),(6,'pbkdf2_sha256$150000$OLUBHg0h62nA$Gp+w/ymdGKbjWRM5vKMA7hANYfWqVt0PfUQhIP6oqeY=','2020-02-07 09:36:09.663077',0,'ban_cha','','','',0,1,'2019-09-01 07:43:04.000000'),(7,'pbkdf2_sha256$150000$nls92tNyjAFF$0FuFohk+Xwf5k+6wJVa+IWzNAwQfrJSf9l5Zzm9+H/8=','2019-09-01 09:23:56.394963',0,'sub_bha','','','',0,1,'2019-09-01 09:13:23.000000'),(8,'pbkdf2_sha256$150000$uWz9xvfwTvQh$XYrgbUynS4vobuN7SDQLZ+35b5w1P7761lN0vohIO9w=',NULL,0,'arr_las','','','',0,1,'2019-09-01 09:13:49.000000'),(9,'pbkdf2_sha256$150000$fzi9oMBxbOq2$15P+9q6iLrFKq8GdTdQrbRQcbLgSxHTGWoil6wX7s6M=',NULL,0,'sum_deb','','','',0,1,'2019-09-01 09:14:20.000000'),(10,'pbkdf2_sha256$150000$VS10o7STD0zq$5hPqGXix0XLpIPY1zxOKOWuEe72o8wHamq33b2QaniI=',NULL,0,'sri_sam','','','',0,1,'2019-09-01 09:15:01.000000'),(11,'pbkdf2_sha256$150000$feO3syx8E6kS$GuWPZfJZZ1bgvw5PBNrjDHdbzgfCNf6GkYNKEKho3Q8=','2020-01-31 08:05:56.312826',0,'san_ban','','','',0,1,'2019-09-01 09:15:32.000000'),(12,'pbkdf2_sha256$150000$DknhxG1iA8mZ$yU0h0/aN0xFmDHlzQLsLc8phmY1VmoOZIGkQHtm86HE=',NULL,0,'shi_nat','','','',0,1,'2019-09-01 09:16:03.000000'),(13,'pbkdf2_sha256$150000$dxfPaGgFhrrX$UUZ36GDKGrrulYj9+k6pfLxtgAT+At6ANctvXNS1ZTo=',NULL,0,'mon_aki','','','',0,1,'2019-09-01 09:16:27.000000'),(14,'pbkdf2_sha256$150000$E2u6jBBHSTjA$QxKHjl2z4750NM9kzhwv7xLrquNVaiImEpLLigp4kyc=',NULL,0,'dee_roy','','','',0,1,'2019-09-01 09:16:55.000000'),(16,'pbkdf2_sha256$150000$0oBOL8GqcKht$8q7qR0wqov9wpLZQBiF+b9Xaa8pY41eDC3NGTShMGUk=','2019-11-13 09:01:50.556075',1,'atma','','','',1,1,'2019-09-24 18:28:31.157938'),(17,'pbkdf2_sha256$150000$lgGWQSGw47pN$mExZN1KzujGi99c7Ep2J6/+w9I0STEiDAiat+7tutXY=','2020-02-03 15:08:24.607556',0,'subham','','','',0,1,'2019-11-01 09:57:12.000000'),(18,'pbkdf2_sha256$150000$HEgMWEVKRHHW$a0jWFVklyJ2L9eGtp3SWzxTvWmxPQN2q9vt/MBhB6lk=','2019-11-13 09:44:52.656445',0,'approve','','','',0,1,'2019-11-13 09:44:16.000000');
+INSERT INTO `auth_user` VALUES (1,'pbkdf2_sha256$150000$FaPRUzqadzyH$utLp1s/xrNv04BSiHTRiuw2Al/ypVJFMnW3E7y+KcP4=','2020-02-04 11:09:38.964439',1,'manjit','Manjit','Borah','',1,1,'2019-10-14 09:11:11.000000'),(6,'pbkdf2_sha256$150000$OLUBHg0h62nA$Gp+w/ymdGKbjWRM5vKMA7hANYfWqVt0PfUQhIP6oqeY=','2020-05-01 12:33:40.375449',0,'ban_cha','','','',0,1,'2019-09-01 07:43:04.000000'),(7,'pbkdf2_sha256$150000$nls92tNyjAFF$0FuFohk+Xwf5k+6wJVa+IWzNAwQfrJSf9l5Zzm9+H/8=','2019-09-01 09:23:56.394963',0,'sub_bha','','','',0,1,'2019-09-01 09:13:23.000000'),(8,'pbkdf2_sha256$150000$uWz9xvfwTvQh$XYrgbUynS4vobuN7SDQLZ+35b5w1P7761lN0vohIO9w=',NULL,0,'arr_las','','','',0,1,'2019-09-01 09:13:49.000000'),(9,'pbkdf2_sha256$150000$fzi9oMBxbOq2$15P+9q6iLrFKq8GdTdQrbRQcbLgSxHTGWoil6wX7s6M=',NULL,0,'sum_deb','','','',0,1,'2019-09-01 09:14:20.000000'),(10,'pbkdf2_sha256$150000$VS10o7STD0zq$5hPqGXix0XLpIPY1zxOKOWuEe72o8wHamq33b2QaniI=',NULL,0,'sri_sam','','','',0,1,'2019-09-01 09:15:01.000000'),(11,'pbkdf2_sha256$150000$feO3syx8E6kS$GuWPZfJZZ1bgvw5PBNrjDHdbzgfCNf6GkYNKEKho3Q8=','2020-04-30 19:12:57.129722',0,'san_ban','','','',0,1,'2019-09-01 09:15:32.000000'),(12,'pbkdf2_sha256$150000$DknhxG1iA8mZ$yU0h0/aN0xFmDHlzQLsLc8phmY1VmoOZIGkQHtm86HE=',NULL,0,'shi_nat','','','',0,1,'2019-09-01 09:16:03.000000'),(13,'pbkdf2_sha256$150000$dxfPaGgFhrrX$UUZ36GDKGrrulYj9+k6pfLxtgAT+At6ANctvXNS1ZTo=',NULL,0,'mon_aki','','','',0,1,'2019-09-01 09:16:27.000000'),(14,'pbkdf2_sha256$150000$E2u6jBBHSTjA$QxKHjl2z4750NM9kzhwv7xLrquNVaiImEpLLigp4kyc=',NULL,0,'dee_roy','','','',0,1,'2019-09-01 09:16:55.000000'),(16,'pbkdf2_sha256$150000$0oBOL8GqcKht$8q7qR0wqov9wpLZQBiF+b9Xaa8pY41eDC3NGTShMGUk=','2019-11-13 09:01:50.556075',1,'atma','','','',1,1,'2019-09-24 18:28:31.157938'),(17,'pbkdf2_sha256$150000$lgGWQSGw47pN$mExZN1KzujGi99c7Ep2J6/+w9I0STEiDAiat+7tutXY=','2020-02-03 15:08:24.607556',0,'subham','','','',0,1,'2019-11-01 09:57:12.000000'),(18,'pbkdf2_sha256$150000$HEgMWEVKRHHW$a0jWFVklyJ2L9eGtp3SWzxTvWmxPQN2q9vt/MBhB6lk=','2019-11-13 09:44:52.656445',0,'approve','','','',0,1,'2019-11-13 09:44:16.000000');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +261,7 @@ CREATE TABLE `django_migrations` (
   `name` varchar(255) NOT NULL,
   `applied` datetime(6) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `django_migrations` (
 
 LOCK TABLES `django_migrations` WRITE;
 /*!40000 ALTER TABLE `django_migrations` DISABLE KEYS */;
-INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2020-01-28 08:04:43.550405'),(2,'auth','0001_initial','2020-01-28 08:04:45.044832'),(3,'admin','0001_initial','2020-01-28 08:04:49.591061'),(4,'admin','0002_logentry_remove_auto_add','2020-01-28 08:04:50.603962'),(5,'admin','0003_logentry_add_action_flag_choices','2020-01-28 08:04:50.659403'),(6,'contenttypes','0002_remove_content_type_name','2020-01-28 08:04:51.358360'),(7,'auth','0002_alter_permission_name_max_length','2020-01-28 08:04:51.857445'),(8,'auth','0003_alter_user_email_max_length','2020-01-28 08:04:52.387844'),(9,'auth','0004_alter_user_username_opts','2020-01-28 08:04:52.444841'),(10,'auth','0005_alter_user_last_login_null','2020-01-28 08:04:52.817686'),(11,'auth','0006_require_contenttypes_0002','2020-01-28 08:04:52.844642'),(12,'auth','0007_alter_validators_add_error_messages','2020-01-28 08:04:52.877164'),(13,'auth','0008_alter_user_username_max_length','2020-01-28 08:04:53.430250'),(14,'auth','0009_alter_user_last_name_max_length','2020-01-28 08:04:54.072808'),(15,'auth','0010_alter_group_name_max_length','2020-01-28 08:04:54.604613'),(16,'auth','0011_update_proxy_permissions','2020-01-28 08:04:54.636531'),(17,'doctor','0001_initial','2020-01-28 08:04:58.910142'),(18,'sessions','0001_initial','2020-01-28 08:05:09.774214'),(19,'doctor','0002_auto_20200128_0055','2020-01-30 07:28:40.141704'),(20,'doctor','0003_auto_20200128_2147','2020-01-30 07:28:48.026547'),(21,'doctor','0004_remove_medicine_quantity','2020-01-30 07:28:48.341081'),(22,'doctor','0005_auto_20200130_1347','2020-01-30 08:18:19.830524'),(23,'doctor','0006_auto_20200130_1351','2020-01-30 08:21:44.243364'),(24,'doctor','0007_auto_20200131_1601','2020-01-31 10:31:13.144038'),(25,'doctor','0008_medicine_quantity','2020-02-02 12:04:06.949977'),(26,'doctor','0009_remove_medicine_quantity','2020-02-02 12:07:51.976929'),(27,'doctor','0010_auto_20200203_1745','2020-02-03 12:16:01.346057'),(28,'doctor','0011_auto_20200203_1812','2020-02-03 12:43:07.080067'),(29,'doctor','0012_remove_prescription_medicine_prescribed','2020-02-03 12:46:24.504606'),(30,'doctor','0013_auto_20200203_1850','2020-02-03 13:20:15.962022'),(31,'doctor','0014_auto_20200203_1901','2020-02-03 13:31:38.898380'),(32,'doctor','0015_auto_20200203_1913','2020-02-03 13:43:13.968839'),(33,'doctor','0016_auto_20200203_1913','2020-02-03 13:43:46.011008'),(34,'doctor','0017_auto_20200203_1917','2020-02-03 13:48:02.715362'),(35,'doctor','0018_auto_20200206_1618','2020-02-06 10:48:30.748773');
+INSERT INTO `django_migrations` VALUES (1,'contenttypes','0001_initial','2020-01-28 08:04:43.550405'),(2,'auth','0001_initial','2020-01-28 08:04:45.044832'),(3,'admin','0001_initial','2020-01-28 08:04:49.591061'),(4,'admin','0002_logentry_remove_auto_add','2020-01-28 08:04:50.603962'),(5,'admin','0003_logentry_add_action_flag_choices','2020-01-28 08:04:50.659403'),(6,'contenttypes','0002_remove_content_type_name','2020-01-28 08:04:51.358360'),(7,'auth','0002_alter_permission_name_max_length','2020-01-28 08:04:51.857445'),(8,'auth','0003_alter_user_email_max_length','2020-01-28 08:04:52.387844'),(9,'auth','0004_alter_user_username_opts','2020-01-28 08:04:52.444841'),(10,'auth','0005_alter_user_last_login_null','2020-01-28 08:04:52.817686'),(11,'auth','0006_require_contenttypes_0002','2020-01-28 08:04:52.844642'),(12,'auth','0007_alter_validators_add_error_messages','2020-01-28 08:04:52.877164'),(13,'auth','0008_alter_user_username_max_length','2020-01-28 08:04:53.430250'),(14,'auth','0009_alter_user_last_name_max_length','2020-01-28 08:04:54.072808'),(15,'auth','0010_alter_group_name_max_length','2020-01-28 08:04:54.604613'),(16,'auth','0011_update_proxy_permissions','2020-01-28 08:04:54.636531'),(17,'doctor','0001_initial','2020-01-28 08:04:58.910142'),(18,'sessions','0001_initial','2020-01-28 08:05:09.774214'),(19,'doctor','0002_auto_20200128_0055','2020-01-30 07:28:40.141704'),(20,'doctor','0003_auto_20200128_2147','2020-01-30 07:28:48.026547'),(21,'doctor','0004_remove_medicine_quantity','2020-01-30 07:28:48.341081'),(22,'doctor','0005_auto_20200130_1347','2020-01-30 08:18:19.830524'),(23,'doctor','0006_auto_20200130_1351','2020-01-30 08:21:44.243364'),(24,'doctor','0007_auto_20200131_1601','2020-01-31 10:31:13.144038'),(25,'doctor','0008_medicine_quantity','2020-02-02 12:04:06.949977'),(26,'doctor','0009_remove_medicine_quantity','2020-02-02 12:07:51.976929'),(27,'doctor','0010_auto_20200203_1745','2020-02-03 12:16:01.346057'),(28,'doctor','0011_auto_20200203_1812','2020-02-03 12:43:07.080067'),(29,'doctor','0012_remove_prescription_medicine_prescribed','2020-02-03 12:46:24.504606'),(30,'doctor','0013_auto_20200203_1850','2020-02-03 13:20:15.962022'),(31,'doctor','0014_auto_20200203_1901','2020-02-03 13:31:38.898380'),(32,'doctor','0015_auto_20200203_1913','2020-02-03 13:43:13.968839'),(33,'doctor','0016_auto_20200203_1913','2020-02-03 13:43:46.011008'),(34,'doctor','0017_auto_20200203_1917','2020-02-03 13:48:02.715362'),(35,'doctor','0018_auto_20200206_1618','2020-02-06 10:48:30.748773'),(36,'doctor','0019_medicineissue_issue_status','2020-02-19 11:25:09.116476'),(37,'doctor','0020_auto_20200210_2315','2020-02-19 11:25:09.169290'),(38,'doctor','0021_regularstaff_staff_dept','2020-04-14 08:29:51.521860'),(39,'doctor','0022_auto_20200419_2111','2020-04-21 09:19:58.681657'),(40,'doctor','0023_prescription_hostel','2020-05-01 12:19:09.719378');
 /*!40000 ALTER TABLE `django_migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('0nllgc2nkclmuet2otxyznkf36gqcytx','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-11 08:08:45.116651'),('2wuk6nrdeuxfp1nq6wb5zxszijb8xq3h','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 14:47:11.658769'),('5zlp2tdop1qqlh8gywvhfue6rd2731f7','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-16 08:40:15.316416'),('a68pfdz3jrvpo8ewktlqdzyi5bpgu6ih','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-19 10:27:08.076468'),('cn70po4a0a3qc35wazhbhqw48gdmrhib','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-16 12:04:54.452094'),('fm6s4lazactu5vmry0wb7ml7bq3uglzm','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 12:33:01.897850'),('fu9er36sv1ncx3hlwrz0xkv0jzblyep5','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-14 10:32:28.834505'),('fv14cxe036641sa5bopcvwvqyh4m5yz3','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 12:32:00.137039'),('j5j615jyy1uo7cms8ki8a1sh3wlpb8qe','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-19 11:32:30.259059'),('t7jdcrajxhcklmoebmy82ctkbfk9rhnw','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-16 12:49:05.988729'),('umnkwkla98ke4fad6b0bpp5rajyxybch','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-13 07:29:22.711039'),('wow0k6kkrnzszsksxxj626xrh5n6czke','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-18 14:00:09.491248'),('y0tn9piiu04v0yfl7q32rfh1tkn3dp4x','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-17 15:08:54.950628'),('ykifhti8zt9v1fvh795p4kzm7p20gvfq','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-21 09:25:52.783133'),('yusksjfwf810pua71fa8umgmy7dynxby','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-18 11:09:50.750693'),('zoompc6kyfx7osaouojxq7s5dd17dymz','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-20 09:11:50.494934');
+INSERT INTO `django_session` VALUES ('0nllgc2nkclmuet2otxyznkf36gqcytx','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-11 08:08:45.116651'),('2wuk6nrdeuxfp1nq6wb5zxszijb8xq3h','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 14:47:11.658769'),('5zlp2tdop1qqlh8gywvhfue6rd2731f7','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-16 08:40:15.316416'),('a68pfdz3jrvpo8ewktlqdzyi5bpgu6ih','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-19 10:27:08.076468'),('cn70po4a0a3qc35wazhbhqw48gdmrhib','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-16 12:04:54.452094'),('fm6s4lazactu5vmry0wb7ml7bq3uglzm','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 12:33:01.897850'),('fu9er36sv1ncx3hlwrz0xkv0jzblyep5','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-14 10:32:28.834505'),('fv14cxe036641sa5bopcvwvqyh4m5yz3','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-17 12:32:00.137039'),('hr2jjtbyr2fazdxd5q5sas1zz1n9yb4n','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-03-04 11:25:40.625517'),('i0uf517zr4zuc4hhf50btzs3awup47pk','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-05-15 12:33:40.412097'),('j5j615jyy1uo7cms8ki8a1sh3wlpb8qe','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-19 11:32:30.259059'),('t7jdcrajxhcklmoebmy82ctkbfk9rhnw','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-16 12:49:05.988729'),('umnkwkla98ke4fad6b0bpp5rajyxybch','NmU5MTU0MTk3MzM1NTQ2YWUxZTkzNDhkZDZhN2YzOWQ2YzA2NjI3YTp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI1YWUzNTQyNGU4YWU5MzFiZmRjZDg3YTcxODI5ZGM4Y2RmMGRmZTBmIn0=','2020-02-13 07:29:22.711039'),('winb4fmjz6g0bqoc83d0hp035es8rkhs','NGJmNjQwMzc5YWM3YzIxZjU4NjIxYjRhYmQ4YjIwYjA2ZTA3ZWEwMzp7Il9hdXRoX3VzZXJfaWQiOiIxMSIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9oYXNoIjoiNmEyZDA1ZjM1ZTNjOGRlOWY2MWIwM2VkOTFmYzA0MDIyMzBlNjExMiJ9','2020-05-14 19:12:57.197240'),('wow0k6kkrnzszsksxxj626xrh5n6czke','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-18 14:00:09.491248'),('y0tn9piiu04v0yfl7q32rfh1tkn3dp4x','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-17 15:08:54.950628'),('ykifhti8zt9v1fvh795p4kzm7p20gvfq','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-21 09:25:52.783133'),('yusksjfwf810pua71fa8umgmy7dynxby','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-18 11:09:50.750693'),('zoompc6kyfx7osaouojxq7s5dd17dymz','YjJmYzBkNDZkOWMwZjE1MjNkMzk0ZWQxNjMzYTgzYWU3N2U1MmMzZTp7Il9hdXRoX3VzZXJfaWQiOiI2IiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiJjMmFiNmIyMjY0ODlhYTg2ZDIxMTdkMWE4YWEzM2MyYjE2YjJjNmZkIn0=','2020-02-20 09:11:50.494934');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -325,63 +325,6 @@ LOCK TABLES `doctor_bill` WRITE;
 /*!40000 ALTER TABLE `doctor_bill` DISABLE KEYS */;
 INSERT INTO `doctor_bill` VALUES ('23','2020-01-28',2);
 /*!40000 ALTER TABLE `doctor_bill` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `doctor_composition`
---
-
-DROP TABLE IF EXISTS `doctor_composition`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doctor_composition` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `primary_ingredient` varchar(50) NOT NULL,
-  `medicine_id_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `doctor_composition_medicine_id_id_9063ef74_fk` (`medicine_id_id`),
-  CONSTRAINT `doctor_composition_medicine_id_id_9063ef74_fk` FOREIGN KEY (`medicine_id_id`) REFERENCES `doctor_medicine` (`medicine_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor_composition`
---
-
-LOCK TABLES `doctor_composition` WRITE;
-/*!40000 ALTER TABLE `doctor_composition` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_composition` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `doctor_disposedmedicine`
---
-
-DROP TABLE IF EXISTS `doctor_disposedmedicine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doctor_disposedmedicine` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `reason` longtext NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `batch_no_id` varchar(20) NOT NULL,
-  `medicine_id_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `doctor_disposedmedic_batch_no_id_f0bc1dc6_fk_doctor_re` (`batch_no_id`),
-  KEY `doctor_disposedmedicine_medicine_id_id_deaaa6b6_fk` (`medicine_id_id`),
-  CONSTRAINT `doctor_disposedmedic_batch_no_id_f0bc1dc6_fk_doctor_re` FOREIGN KEY (`batch_no_id`) REFERENCES `doctor_requisition` (`requisition_id`),
-  CONSTRAINT `doctor_disposedmedicine_medicine_id_id_deaaa6b6_fk` FOREIGN KEY (`medicine_id_id`) REFERENCES `doctor_medicine` (`medicine_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor_disposedmedicine`
---
-
-LOCK TABLES `doctor_disposedmedicine` WRITE;
-/*!40000 ALTER TABLE `doctor_disposedmedicine` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_disposedmedicine` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -499,33 +442,6 @@ INSERT INTO `doctor_healthcentrestaff` VALUES ('1001','Banibrata Chakraborty','D
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctor_healthcentrestaffcontact`
---
-
-DROP TABLE IF EXISTS `doctor_healthcentrestaffcontact`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doctor_healthcentrestaffcontact` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `staff_phone_no` varchar(10) NOT NULL,
-  `staff_email_id` varchar(254) NOT NULL,
-  `staff_id_id` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `doctor_healthcentres_staff_id_id_9710e6b2_fk_doctor_he` (`staff_id_id`),
-  CONSTRAINT `doctor_healthcentres_staff_id_id_9710e6b2_fk_doctor_he` FOREIGN KEY (`staff_id_id`) REFERENCES `doctor_healthcentrestaff` (`staff_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor_healthcentrestaffcontact`
---
-
-LOCK TABLES `doctor_healthcentrestaffcontact` WRITE;
-/*!40000 ALTER TABLE `doctor_healthcentrestaffcontact` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_healthcentrestaffcontact` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `doctor_medicine`
 --
 
@@ -564,12 +480,13 @@ CREATE TABLE `doctor_medicineissue` (
   `medicine_id_id` int(11) NOT NULL,
   `prescription_serial_no_id` int(11) NOT NULL,
   `dose` varchar(500) NOT NULL,
+  `issue_status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `doctor_medicineissue_medicine_id_id_ed6c4bbc_fk_doctor_st` (`medicine_id_id`),
   KEY `doctor_medicineissue_prescription_serial_no_id_8747ba63_fk` (`prescription_serial_no_id`),
   CONSTRAINT `doctor_medicineissue_medicine_id_id_ed6c4bbc_fk_doctor_st` FOREIGN KEY (`medicine_id_id`) REFERENCES `doctor_stockmedicine` (`id`),
   CONSTRAINT `doctor_medicineissue_prescription_serial_no_id_8747ba63_fk` FOREIGN KEY (`prescription_serial_no_id`) REFERENCES `doctor_prescription` (`prescription_serial_no`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -578,7 +495,7 @@ CREATE TABLE `doctor_medicineissue` (
 
 LOCK TABLES `doctor_medicineissue` WRITE;
 /*!40000 ALTER TABLE `doctor_medicineissue` DISABLE KEYS */;
-INSERT INTO `doctor_medicineissue` VALUES (4,23,1,35,'ads');
+INSERT INTO `doctor_medicineissue` VALUES (4,23,1,35,'ads',0),(8,12,2,38,'wqewe',0),(12,12,1,37,'asad',0);
 /*!40000 ALTER TABLE `doctor_medicineissue` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -598,6 +515,7 @@ CREATE TABLE `doctor_prescription` (
   `person_id` varchar(20) DEFAULT NULL,
   `teacher_id_id` int(11) DEFAULT NULL,
   `prescription_no_of_doctor` int(11) NOT NULL,
+  `hostel` varchar(100) NOT NULL,
   PRIMARY KEY (`prescription_serial_no`),
   UNIQUE KEY `doctor_prescription_staff_id_prescription_no_b64adac9_uniq` (`staff_id`,`prescription_no_of_doctor`),
   KEY `doctor_prescription_person_id_a1ba57d5_fk_doctor_st` (`person_id`),
@@ -606,7 +524,7 @@ CREATE TABLE `doctor_prescription` (
   CONSTRAINT `doctor_prescription_person_id_a1ba57d5_fk_doctor_st` FOREIGN KEY (`person_id`) REFERENCES `doctor_studentrecord` (`person_id`),
   CONSTRAINT `doctor_prescription_staff_id_71ee2361_fk_doctor_he` FOREIGN KEY (`staff_id`) REFERENCES `doctor_healthcentrestaff` (`staff_id`),
   CONSTRAINT `doctor_prescription_teacher_id_id_0534b62a_fk_doctor_re` FOREIGN KEY (`teacher_id_id`) REFERENCES `doctor_regularstaff` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -615,7 +533,7 @@ CREATE TABLE `doctor_prescription` (
 
 LOCK TABLES `doctor_prescription` WRITE;
 /*!40000 ALTER TABLE `doctor_prescription` DISABLE KEYS */;
-INSERT INTO `doctor_prescription` VALUES (35,'2020-02-03','sdf','sdf','1003',NULL,1,1);
+INSERT INTO `doctor_prescription` VALUES (35,'2020-02-03','sdf','sdf','1003',NULL,1,1,''),(37,'2020-02-19','wth','nothing','1001','16-1-3-011',NULL,1,'5'),(38,'2020-05-01','sadasdd','nothing','1001','16-1-5-009',NULL,2,'4');
 /*!40000 ALTER TABLE `doctor_prescription` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -629,6 +547,7 @@ DROP TABLE IF EXISTS `doctor_regularstaff`;
 CREATE TABLE `doctor_regularstaff` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `staff_name` varchar(50) NOT NULL,
+  `staff_dept` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -639,7 +558,7 @@ CREATE TABLE `doctor_regularstaff` (
 
 LOCK TABLES `doctor_regularstaff` WRITE;
 /*!40000 ALTER TABLE `doctor_regularstaff` DISABLE KEYS */;
-INSERT INTO `doctor_regularstaff` VALUES (1,'Manjit Borah');
+INSERT INTO `doctor_regularstaff` VALUES (1,'Manjit Borah','x');
 /*!40000 ALTER TABLE `doctor_regularstaff` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -671,36 +590,6 @@ LOCK TABLES `doctor_requisition` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `doctor_requisitionmedicine`
---
-
-DROP TABLE IF EXISTS `doctor_requisitionmedicine`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `doctor_requisitionmedicine` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `quantity_requested` int(11) NOT NULL,
-  `quantity_received` int(11) NOT NULL,
-  `medicine_id_id` int(11) NOT NULL,
-  `requisition_id_id` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `doctor_requisitionme_requisition_id_id_563d709c_fk_doctor_re` (`requisition_id_id`),
-  KEY `doctor_requisitionmedicine_medicine_id_id_7cb7c2dc_fk` (`medicine_id_id`),
-  CONSTRAINT `doctor_requisitionme_requisition_id_id_563d709c_fk_doctor_re` FOREIGN KEY (`requisition_id_id`) REFERENCES `doctor_requisition` (`requisition_id`),
-  CONSTRAINT `doctor_requisitionmedicine_medicine_id_id_7cb7c2dc_fk` FOREIGN KEY (`medicine_id_id`) REFERENCES `doctor_medicine` (`medicine_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `doctor_requisitionmedicine`
---
-
-LOCK TABLES `doctor_requisitionmedicine` WRITE;
-/*!40000 ALTER TABLE `doctor_requisitionmedicine` DISABLE KEYS */;
-/*!40000 ALTER TABLE `doctor_requisitionmedicine` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `doctor_stockmedicine`
 --
 
@@ -719,7 +608,7 @@ CREATE TABLE `doctor_stockmedicine` (
   KEY `doctor_stockmedicine_medicine_id_id_fe978236_fk` (`medicine_id_id`),
   CONSTRAINT `doctor_stockmedicine_bill_no_id_5bf52956_fk_doctor_bill_bill_no` FOREIGN KEY (`bill_no_id`) REFERENCES `doctor_bill` (`bill_no`),
   CONSTRAINT `doctor_stockmedicine_medicine_id_id_fe978236_fk` FOREIGN KEY (`medicine_id_id`) REFERENCES `doctor_medicine` (`medicine_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -728,7 +617,7 @@ CREATE TABLE `doctor_stockmedicine` (
 
 LOCK TABLES `doctor_stockmedicine` WRITE;
 /*!40000 ALTER TABLE `doctor_stockmedicine` DISABLE KEYS */;
-INSERT INTO `doctor_stockmedicine` VALUES (1,10,120.00,'2020-02-29',240,'23'),(2,120,120.00,'2020-02-01',47,'23');
+INSERT INTO `doctor_stockmedicine` VALUES (1,10,120.00,'2020-02-29',240,'23'),(2,120,120.00,'2020-02-01',47,'23'),(3,500,125.00,'2020-03-20',103,'23');
 /*!40000 ALTER TABLE `doctor_stockmedicine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -765,4 +654,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-02-07 15:07:17
+-- Dump completed on 2020-05-06 18:59:39
